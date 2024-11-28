@@ -10,5 +10,6 @@ public class Provision extends Equipo{
         this.caducidad[1]= caducidad[1];
         this.caducidad[2]= caducidad[2];
         this.tipo = tipo;
+        //Hola, prueba
     }
 }
