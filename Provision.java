@@ -62,7 +62,7 @@ public class Provision extends Equipo{
         else{
             nombreTipo = "Bebida";
         }
-        return("La provision: "+this.getNombre()+" tiene: "+this.getKcal()+"Kcal caduca: "+this.getCaducidad(0)+"/"+this.getCaducidad(1)+"/"+this.getCaducidad(2)+" Tipo: "+nombreTipo);
+return("Provision: "+this.getNombre()+" [Tipo: "+nombreTipo+", " +this.getKcal()+"Kcal, caduca: "+this.getCaducidad(0)+"/"+this.getCaducidad(1)+"/"+this.getCaducidad(2)+"]");
     }
 
     @Override
