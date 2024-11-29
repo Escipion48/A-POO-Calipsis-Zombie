@@ -9,4 +9,12 @@ public abstract class EntidadActivable {
         this(0);
     }
     
+    public void setAcciones(int acciones) {
+        this.acciones = acciones;
+    }
+    
+    public int getAcciones() {
+        return acciones;
+    }
+
 }
