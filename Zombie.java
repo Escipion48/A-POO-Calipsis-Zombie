@@ -2,8 +2,8 @@ public class Zombie extends EntidadActivable{
     private int id;
     private int aguante;
 
-    public Zombie( int aguante){
-        super(1);
+    public Zombie( int aguante, int acciones){
+        super(acciones);
         this.aguante = aguante;
         this.id = id++;
     }
