@@ -1,0 +1,12 @@
+public abstract class EntidadActivable {
+    private int acciones;
+
+    public EntidadActivable(int acciones) {
+        this.acciones = acciones;
+    }
+
+    public EntidadActivable() {
+        this(0);
+    }
+    
+}
