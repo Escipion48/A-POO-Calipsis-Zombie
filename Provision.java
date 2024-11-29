@@ -8,6 +8,7 @@ public class Provision extends Equipo{
         super();
         this.nombre = nombre;
         this.kcal = kcal;
+        this.caducidad=new int[3];
         this.caducidad[0] = caducidad[0]; //Dia
         this.caducidad[1]= caducidad[1]; //Mes
         this.caducidad[2]= caducidad[2]; //Año
