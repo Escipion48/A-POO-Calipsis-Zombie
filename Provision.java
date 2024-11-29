@@ -8,51 +8,51 @@ public class Provision extends Equipo{
         super();
         this.nombre = nombre;
         this.kcal = kcal;
-        this.caducidad=new int[3];
-        this.caducidad[0] = caducidad[0]; //Dia
-        this.caducidad[1]= caducidad[1]; //Mes
-        this.caducidad[2]= caducidad[2]; //Año
+        this.caducidad = new int[3];
+        this.caducidad=caducidad.clone();
         this.tipo = tipo;
     }
 
     public Provision(){
         this("Provision por defecto",1,new int[]{1,1,2025},false);
     }
-    
+
     public void setNombre(String nombre){
         this.nombre = nombre;
     }
-    
+
     public void setKcal(int kcal){
         this.kcal = kcal;
     }
-    
+
     public void setCaducidad(int[] caducidad){
-        this.caducidad[0] = caducidad[0];
-        this.caducidad[1]= caducidad[1];
-        this.caducidad[2]= caducidad[2];
+       caducidad = caducidad.clone();
     }
-    
+
     public void setTipo(boolean tipo){
         this.tipo = tipo;
     }
-    
+
     public String getNombre(){
         return this.nombre;
     }
-    
+
     public int getKcal(){
         return this.kcal;
     }
-    
+
+    public int[] getCaducidad(){
+        return this.caducidad.clone();
+    }
+
     public int getCaducidad(int posicion){
         return this.caducidad[posicion];
     }
-    
+
     public boolean getTipo(){
         return this.tipo;
     }
-    
+
     @Override
     public String toString(){
         String nombreTipo;
@@ -64,7 +64,7 @@ public class Provision extends Equipo{
         }
         return("La provision: "+this.getNombre()+" tiene: "+this.getKcal()+"Kcal caduca: "+this.getCaducidad(0)+"/"+this.getCaducidad(1)+"/"+this.getCaducidad(2)+" Tipo: "+nombreTipo);
     }
-    
+
     @Override
     public boolean equals(Object o){
         if(this == o) return true;
