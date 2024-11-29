@@ -60,7 +60,7 @@ public class Arma extends Equipo{
 
     @Override
     public String toString(){
-        return ("El arma es:"+this.nombre+" de potencia, alcance, numero de dados y valor de exito, en ese orden: "+this.alcance+this.numeroDados+this.valorExito);
+        return ("El arma es: "+this.nombre+" [potencia: "+this.potencia+", alcance: "+this.alcance+", numero de dados: "+this.numeroDados+ " y valor de exito: "+this.valorExito+"]");
     }
 
 
