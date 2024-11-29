@@ -13,4 +13,65 @@ public class Arma extends Equipo{
         this.numeroDados = numeroDados;
         this.valorExito = valorExito;
     }
+
+    public Arma(){
+        this("Defecto", 1, 1, 1, 1);
+    }
+
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public void setPotencia(int potencia){
+        this.potencia = potencia;
+    }
+
+    public void setAlcance(int alcance){
+        this.alcance = alcance;
+    }
+
+    public void setNumeroDados(int numeroDados){
+        this.numeroDados = numeroDados;
+    }
+
+    public void setValorExito(int valorExito){
+        this.valorExito = valorExito;
+    }
+
+    public String getNombre(){
+        return nombre;
+    }
+
+    public int getPotencia(){
+        return potencia;
+    }
+
+    public int getAlcance(){
+        return alcance;
+    }
+
+    public int getNumeroDados(){
+        return numeroDados;
+    }
+
+    public int getValorExito(){
+        return valorExito;
+    }
+
+    @Override
+    public String toString(){
+        return ("El arma es:"+this.nombre+" de potencia, alcance, numero de dados y valor de exito, en ese orden: "+this.alcance+this.numeroDados+this.valorExito);
+    }
+
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o==null || getClass() != o.getClass()) return false;
+        Arma arma = (Arma) o;
+        if(this.getNombre() == arma.getNombre()){
+            return true;
+        }
+        return false;
+    }
 }
