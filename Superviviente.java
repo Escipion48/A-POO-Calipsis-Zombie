@@ -20,16 +20,18 @@ public class Superviviente extends EntidadActivable{
         this.inventario=inventario.clone();
         this.contadorZombiesEliminados = contadorZombiesEliminados;
         this.heridas = heridas;
+        this.zombiesEliminados = new ArrayList<Zombie>();
         this.zombiesEliminados.addAll(zombiesEliminados);
+        this.ataquesRecibidos = new ArrayList<Zombie>();
         this.ataquesRecibidos.addAll(ataquesRecibidos);
     }
 
     public Superviviente(String nombre) {
-        this(nombre, false, null, null, 0,0,null, null,3);
+        this(nombre, false, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
     }
 
     public Superviviente(){
-        this("SupervivienteDefault", false, null, null, 0,0,null, null,3);
+        this("SupervivienteDefault", false, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
     }
 
     public void setNombre(String nombre) {
@@ -116,12 +118,12 @@ public class Superviviente extends EntidadActivable{
 
     @Override
     public String toString(){
-
+        String estado;
         if(this.getEstado()==true){
-            String estado = "Muerto";
+             estado = "Muerto";
         }
         else{
-            String estado = "Vivo";
+             estado = "Vivo";
         }
 
         StringBuilder str = new StringBuilder("Superviviente: "+this.getNombre()+"\n");
