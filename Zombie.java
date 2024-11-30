@@ -73,7 +73,11 @@ public class Zombie implements EntidadActivable {
         Zombie zombie = (Zombie) o;
         return getIdentificador() == zombie.getIdentificador();
     }
-    
+
+    @Override
+    public String toString() {
+        return ("Zombie: "+this.getIdentificador()+" Tipo:"+this.getTipo());
+    }
 
     public void reaccionAtaque() {
         //TODO: Implementar
