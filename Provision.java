@@ -1,12 +1,10 @@
 public class Provision extends Equipo{
-    private String nombre;
     private int kcal;
     private int[] caducidad;
     private boolean tipo;  // 0 o false para alimento y 1 o true para bebida
 
     public Provision(String nombre, int kcal, int[] caducidad, boolean tipo){
-        super();
-        this.nombre = nombre;
+        super(nombre);
         this.kcal = kcal;
         this.caducidad = new int[3];
         this.caducidad=caducidad.clone();
@@ -17,24 +15,16 @@ public class Provision extends Equipo{
         this("Provision por defecto",1,new int[]{1,1,2025},false);
     }
 
-    public void setNombre(String nombre){
-        this.nombre = nombre;
-    }
-
     public void setKcal(int kcal){
         this.kcal = kcal;
     }
 
     public void setCaducidad(int[] caducidad){
-       caducidad = caducidad.clone();
+        caducidad = caducidad.clone();
     }
 
     public void setTipo(boolean tipo){
         this.tipo = tipo;
-    }
-
-    public String getNombre(){
-        return this.nombre;
     }
 
     public int getKcal(){
@@ -62,7 +52,7 @@ public class Provision extends Equipo{
         else{
             nombreTipo = "Bebida";
         }
-return("Provision: "+this.getNombre()+" [Tipo: "+nombreTipo+", " +this.getKcal()+"Kcal, caduca: "+this.getCaducidad(0)+"/"+this.getCaducidad(1)+"/"+this.getCaducidad(2)+"]");
+        return("Provision: "+this.getNombre()+" [Tipo: "+nombreTipo+", " +this.getKcal()+"Kcal, caduca: "+this.getCaducidad(0)+"/"+this.getCaducidad(1)+"/"+this.getCaducidad(2)+"]");
     }
 
     @Override
