@@ -1,6 +1,6 @@
 package es.urjc.poo.equipoj.entidades;
 
-public enum TipoZombi
+public enum TipoZombie
 {
     CAMINANTE, CORREDOR, ABOMINACION
 }
