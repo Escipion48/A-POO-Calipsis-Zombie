@@ -1,17 +1,19 @@
 import java.util.ArrayList;
 
-public class Superviviente extends EntidadActivable{
+public class Superviviente implements EntidadActivable{
+    
+    private int acciones;
     private String nombre;
-    private boolean estado; // 0 o false vivo y 1 o true eliminado
+    private TipoEstado estado;
     private Arma [] armasActivas;
     private Equipo [] inventario;
     private int contadorZombiesEliminados;
     private int heridas;
-    private ArrayList <Zombie> zombiesEliminados;
+    private ArrayList<Zombie> zombiesEliminados;
     private ArrayList <Zombie> ataquesRecibidos;
 
-    public Superviviente(String nombre, boolean estado, Arma[] armasActivas, Equipo [] inventario, int contadorZombiesEliminados, int heridas, ArrayList<Zombie> zombiesEliminados, ArrayList<Zombie> ataquesRecibidos, int acciones) {
-        super(acciones);
+    public Superviviente(String nombre, TipoEstado estado, Arma[] armasActivas, Equipo [] inventario, int contadorZombiesEliminados, int heridas, ArrayList<Zombie> zombiesEliminados, ArrayList<Zombie> ataquesRecibidos, int acciones) {
+        this.acciones = acciones;
         this.nombre = nombre;
         this.estado = estado;
         this.armasActivas = new Arma[2];
@@ -27,18 +29,22 @@ public class Superviviente extends EntidadActivable{
     }
 
     public Superviviente(String nombre) {
-        this(nombre, false, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
+        this(nombre, TipoEstado.VIVO, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
     }
 
     public Superviviente(){
-        this("SupervivienteDefault", false, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
+        this("SupervivienteDefault", TipoEstado.VIVO, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
+    }
+
+    public void setAcciones(int acciones) {
+        this.acciones = acciones;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(TipoEstado estado) {
         this.estado = estado;
     }
 
@@ -66,14 +72,18 @@ public class Superviviente extends EntidadActivable{
         this.ataquesRecibidos.addAll(ataquesRecibidos);
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getAcciones() {
+        return this.acciones;
     }
 
-    public boolean getEstado() {
+    public TipoEstado getEstado() {
         return this.estado;
     }
 
+    public String getNombre() {
+        return this.nombre;
+    }
+    
     public Arma[] getArmasActivas() {
         return this.armasActivas.clone();
     }
@@ -118,31 +128,23 @@ public class Superviviente extends EntidadActivable{
 
     @Override
     public String toString(){
-        String estado;
-        if(this.getEstado()==true){
-             estado = "Muerto";
-        }
-        else{
-             estado = "Vivo";
-        }
-
         StringBuilder str = new StringBuilder("Superviviente: "+this.getNombre()+"\n");
         str.append(estado+"\n"+"Armas activadas: \n");
 
         for(int i =0; i<2;i++){
 
             if(this.getArmaActiva(i)!=null){
-            str.append(this.getArmaActiva(i).toString()+"\n");}
+                str.append(this.getArmaActiva(i).toString()+"\n");}
 
             else{
-            str.append("Espacio vacio\n");}
+                str.append("Espacio vacio\n");}
 
         }
 
         str.append("Inventario: \n");
         for(int i = 0; i<5;i++){
             if(this.getInventario(i)!=null){
-              str.append(this.getInventario(i).toString()+"\n");
+                str.append(this.getInventario(i).toString()+"\n");
             }
             else {
                 str.append("Espacio vacio\n");
@@ -160,6 +162,25 @@ public class Superviviente extends EntidadActivable{
         for(int i =0; i<this.getAtaquesRecibidos().size();i++){
             str.append(this.getAtaquesRecibidos().get(i).toString()+"\n");
         }
+
+        return str.toString();
+    }
+
+    @Override
+    public void activarse() {
+    //TODO: Implementar
+    }
+
+    @Override
+    public void moverse() {
+    //TODO: Implementar
+    }
+
+    @Override
+    public void atacar() {
+    //TODO: Implementar
+    }
+}
 
         return str.toString();
     }
