@@ -1,13 +1,11 @@
-public class Arma extends Equipo{
-    private String nombre;
+public class Arma extends Equipo {
     private int potencia;
     private int alcance;
     private int numeroDados;
     private int valorExito;
 
     public Arma(String nombre, int potencia, int alcance, int numeroDados, int valorExito) {
-        super();
-        this.nombre = nombre;
+        super(nombre);
         this.potencia = potencia;
         this.alcance = alcance;
         this.numeroDados = numeroDados;
@@ -15,11 +13,7 @@ public class Arma extends Equipo{
     }
 
     public Arma(){
-        this("Defecto", 1, 1, 1, 1);
-    }
-
-    public void setNombre(String nombre){
-        this.nombre = nombre;
+        this("ArmaDefecto", 1, 1, 1, 1);
     }
 
     public void setPotencia(int potencia){
@@ -36,10 +30,6 @@ public class Arma extends Equipo{
 
     public void setValorExito(int valorExito){
         this.valorExito = valorExito;
-    }
-
-    public String getNombre(){
-        return nombre;
     }
 
     public int getPotencia(){
@@ -60,7 +50,7 @@ public class Arma extends Equipo{
 
     @Override
     public String toString(){
-        return ("El arma es: "+this.nombre+" [potencia: "+this.potencia+", alcance: "+this.alcance+", numero de dados: "+this.numeroDados+ " y valor de exito: "+this.valorExito+"]");
+        return ("El arma es: "+this.getNombre()+" [potencia: "+this.potencia+", alcance: "+this.alcance+", numero de dados: "+this.numeroDados+ " y valor de exito: "+this.valorExito+"]");
     }
 
 
