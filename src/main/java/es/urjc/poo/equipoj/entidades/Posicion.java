@@ -1,3 +1,7 @@
+package es.urjc.poo.equipoj.entidades;
+
+import java.util.Objects;
+
 public class Posicion {
     int posicionX = 0;
     int posicionY = 0;

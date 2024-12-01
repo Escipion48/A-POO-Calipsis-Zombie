@@ -1,3 +1,5 @@
+package es.urjc.poo.equipoj.entidades;
+
 public class Provision extends Equipo{
     private int kcal;
     private int[] caducidad;
