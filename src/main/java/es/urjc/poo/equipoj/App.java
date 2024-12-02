@@ -47,5 +47,9 @@ public class App {
         System.out.println(c3.toString());
         System.out.println(c1.equals(c2));
         System.out.println(c2.equals(c3));
+
+        Tablero t1 = new Tablero();
+
+        System.out.println(t1.toString());
     }
 }
