@@ -13,11 +13,13 @@ public class Superviviente implements EntidadActivable{
     private int heridas;
     private ArrayList<Zombie> zombiesEliminados;
     private ArrayList <Zombie> ataquesRecibidos;
+    private Posicion posicion;
 
-    public Superviviente(String nombre, TipoEstado estado, Arma[] armasActivas, Equipo [] inventario, int contadorZombiesEliminados, int heridas, ArrayList<Zombie> zombiesEliminados, ArrayList<Zombie> ataquesRecibidos, int acciones) {
+    public Superviviente(String nombre, TipoEstado estado, Arma[] armasActivas, Equipo [] inventario, int contadorZombiesEliminados, int heridas, ArrayList<Zombie> zombiesEliminados, ArrayList<Zombie> ataquesRecibidos, int acciones, Posicion posicion) {
         this.acciones = acciones;
         this.nombre = nombre;
         this.estado = estado;
+        this.posicion = posicion;
         this.armasActivas = new Arma[2];
         this.armasActivas = armasActivas.clone();
         this.inventario = new Equipo[5];
@@ -31,11 +33,11 @@ public class Superviviente implements EntidadActivable{
     }
 
     public Superviviente(String nombre) {
-        this(nombre, TipoEstado.VIVO, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
+        this(nombre, TipoEstado.VIVO, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3,new Posicion());
     }
 
     public Superviviente(){
-        this("SupervivienteDefault", TipoEstado.VIVO, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3);
+        this("SupervivienteDefault", TipoEstado.VIVO, new Arma[2], new Equipo[5], 0,0,new ArrayList<Zombie>(), new ArrayList<Zombie>(),3,new Posicion());
     }
 
     public void setAcciones(int acciones) {

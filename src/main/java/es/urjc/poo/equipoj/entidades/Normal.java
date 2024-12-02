@@ -14,6 +14,10 @@ public class Normal extends Zombie {
         super(identificador, tipo);
     }
 
+    public Normal(TipoZombie tipo, Posicion posicion) {
+        super(tipo, posicion);
+    }
+
 
     @Override
     public String toString() {

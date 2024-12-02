@@ -8,13 +8,18 @@ public class Zombie implements EntidadActivable {
     private int aguante;
     private int activaciones;
     private TipoZombie tipo;
+    private Posicion posicion;
 
     public Zombie() {
         this(System.currentTimeMillis(),TipoZombie.CAMINANTE);
 
     }
 
-    public Zombie (long identificador, TipoZombie tipo){
+    public Zombie(TipoZombie tipo, Posicion posicion) {
+        this(System.currentTimeMillis(),tipo,posicion);
+    }
+
+    public Zombie (long identificador, TipoZombie tipo) {
         this.identificador = identificador;
         this.tipo = tipo;
         if(tipo == TipoZombie.CAMINANTE){
@@ -31,11 +36,17 @@ public class Zombie implements EntidadActivable {
         }
     }
 
-    public Zombie(long identificador, int aguante, int activaciones, TipoZombie tipo) {
+    public Zombie (long identificador, TipoZombie tipo, Posicion posicion) {
+        this(identificador,tipo);
+        this.posicion = posicion;
+    }
+
+    public Zombie(long identificador, int aguante, int activaciones, TipoZombie tipo, Posicion posicion) {
         this.identificador = identificador;
         this.aguante = aguante;
         this.activaciones = activaciones;
         this.tipo = tipo;
+        this.posicion = posicion;
     }
 
     public long getIdentificador() {
@@ -70,6 +81,14 @@ public class Zombie implements EntidadActivable {
         this.tipo = tipo;
     }
 
+    public Posicion getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(Posicion posicion) {
+        this.posicion = posicion;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;
@@ -80,7 +99,7 @@ public class Zombie implements EntidadActivable {
 
     @Override
     public String toString() {
-        return ("Zombie: "+this.getIdentificador()+" Tipo:"+this.getTipo());
+        return ("Zombie: "+this.getIdentificador()+" Posicion: "+this.getPosicion().toString()+" Tipo:"+this.getTipo());
     }
 
     public void reaccionAtaque() {

@@ -4,6 +4,7 @@ public class Toxico extends Zombie {
 
 
     public Toxico() {
+        super();
     }
 
     public Toxico(TipoZombie tipo){
@@ -12,6 +13,10 @@ public class Toxico extends Zombie {
 
     public Toxico(long identificador, TipoZombie tipo) {
         super(identificador, tipo);
+    }
+
+    public Toxico(TipoZombie tipo, Posicion posicion) {
+        super(tipo,posicion);
     }
 
     @Override
