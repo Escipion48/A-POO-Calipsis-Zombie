@@ -3,8 +3,8 @@ package es.urjc.poo.equipoj.entidades;
 import java.util.Objects;
 
 public class Posicion {
-    int posicionX = 0;
-    int posicionY = 0;
+    int posicionX;
+    int posicionY;
 
     public Posicion(int posicionX, int posicionY) {
         this.posicionX = posicionX;

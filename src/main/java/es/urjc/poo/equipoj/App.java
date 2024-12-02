@@ -36,5 +36,16 @@ public class App {
         System.out.println(n2.equals(n3));
         System.out.println(n2.toString());
         System.out.println(n3.toString());
+
+
+        Casilla c1 = new Casilla();
+        Casilla c2 = new Casilla(posicion);
+        Casilla c3 = new Casilla(posicion4);
+
+        System.out.println(c1.toString());
+        System.out.println(c2.toString());
+        System.out.println(c3.toString());
+        System.out.println(c1.equals(c2));
+        System.out.println(c2.equals(c3));
     }
 }
