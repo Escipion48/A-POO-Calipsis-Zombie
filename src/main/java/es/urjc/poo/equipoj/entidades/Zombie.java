@@ -12,11 +12,12 @@ public class Zombie implements EntidadActivable {
 
     public Zombie() {
         this(System.currentTimeMillis(),TipoZombie.CAMINANTE, new Posicion());
-
+        try { Thread.sleep(1);  } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     public Zombie(TipoZombie tipo, Posicion posicion) {
         this(System.currentTimeMillis(),tipo,posicion);
+        try { Thread.sleep(1);  } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     //Deseamos usar este constructor dentro de otros constructores, principalmente el de tipo y posicion.
@@ -35,11 +36,13 @@ public class Zombie implements EntidadActivable {
             this.aguante = 3;
             this.activaciones = 1;
         }
+        try { Thread.sleep(1);  } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     public Zombie (long identificador, TipoZombie tipo, Posicion posicion) {
         this(identificador,tipo);
         this.posicion = posicion;
+        try { Thread.sleep(1);  } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
 
@@ -50,6 +53,7 @@ public class Zombie implements EntidadActivable {
         this.activaciones = activaciones;
         this.tipo = tipo;
         this.posicion = posicion;
+        try { Thread.sleep(1);  } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     public long getIdentificador() {
