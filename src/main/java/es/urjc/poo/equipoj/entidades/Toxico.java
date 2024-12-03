@@ -8,13 +8,15 @@ public class Toxico extends Zombie {
     }
 
     public Toxico(TipoZombie tipo){
-        super(System.currentTimeMillis(),tipo);
+        super(System.currentTimeMillis(),tipo, new Posicion());
     }
 
     public Toxico(long identificador, TipoZombie tipo) {
-        super(identificador, tipo);
+        super(identificador, tipo, new Posicion());
     }
 
+
+    //Constructor principal
     public Toxico(TipoZombie tipo, Posicion posicion) {
         super(tipo,posicion);
     }

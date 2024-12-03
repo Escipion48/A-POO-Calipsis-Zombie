@@ -7,13 +7,15 @@ public class Berserker extends Zombie {
     }
 
     public Berserker(TipoZombie tipo){
-        super(System.currentTimeMillis(),tipo);
+        super(System.currentTimeMillis(),tipo, new Posicion());
     }
 
     public Berserker(long identificador, TipoZombie tipo) {
-        super(identificador, tipo);
+        super(identificador, tipo, new Posicion());
     }
 
+
+    //constructor principal
     public Berserker(TipoZombie tipo, Posicion posicion) {
         super(tipo,posicion);
     }

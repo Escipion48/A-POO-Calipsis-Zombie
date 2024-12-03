@@ -7,13 +7,15 @@ public class Normal extends Zombie {
     }
 
     public Normal(TipoZombie tipo){
-        super(System.currentTimeMillis(),tipo);
+        super(System.currentTimeMillis(),tipo, new Posicion());
     }
 
     public Normal(long identificador, TipoZombie tipo) {
-        super(identificador, tipo);
+        super(identificador, tipo,new Posicion());
     }
 
+
+    //Constructor principal
     public Normal(TipoZombie tipo, Posicion posicion) {
         super(tipo, posicion);
     }

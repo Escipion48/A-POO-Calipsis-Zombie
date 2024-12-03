@@ -11,7 +11,7 @@ public class Zombie implements EntidadActivable {
     private Posicion posicion;
 
     public Zombie() {
-        this(System.currentTimeMillis(),TipoZombie.CAMINANTE);
+        this(System.currentTimeMillis(),TipoZombie.CAMINANTE, new Posicion());
 
     }
 
@@ -19,7 +19,8 @@ public class Zombie implements EntidadActivable {
         this(System.currentTimeMillis(),tipo,posicion);
     }
 
-    public Zombie (long identificador, TipoZombie tipo) {
+    //Deseamos usar este constructor dentro de otros constructores, principalmente el de tipo y posicion.
+    private Zombie (long identificador, TipoZombie tipo) {
         this.identificador = identificador;
         this.tipo = tipo;
         if(tipo == TipoZombie.CAMINANTE){
@@ -41,6 +42,8 @@ public class Zombie implements EntidadActivable {
         this.posicion = posicion;
     }
 
+
+    //Lo podemos llegar a utilizar para hacer zombies distintos o para pruebas posteriores.
     public Zombie(long identificador, int aguante, int activaciones, TipoZombie tipo, Posicion posicion) {
         this.identificador = identificador;
         this.aguante = aguante;
