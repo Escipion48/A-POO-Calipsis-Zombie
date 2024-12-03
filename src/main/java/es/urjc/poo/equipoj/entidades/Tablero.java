@@ -18,6 +18,11 @@ public class Tablero {
         this.dimensiones = new Posicion(9, 9);
         this.objetivo = new Posicion(9, 9);
         this.tablero = new Casilla[10][10];
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                tablero[i][j] = new Casilla();
+            }
+        }
     }
 
     public Posicion getDimensiones() {
@@ -55,6 +60,13 @@ public class Tablero {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Tablero{ Dimensiones: "+getDimensiones().toString()+", Objetivo: "+getObjetivo().toString()+"}");
+        builder.append("\nCasillas:\n");
+        for(int i = 0; i <= this.getDimensiones().posicionX; i++){
+            for(int j = 0; j <= this.getDimensiones().posicionY; j++){
+                builder.append(tablero[i][j].toString()+"\t");
+            }
+            builder.append("\n");
+        }
         return builder.toString();
     }
 
