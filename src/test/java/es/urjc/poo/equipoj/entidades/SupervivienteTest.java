@@ -35,7 +35,7 @@ public class SupervivienteTest extends TestCase {
         listaArmas[0] = arma;
         Superviviente superviviente = new Superviviente();
         superviviente.setArmasActivas(listaArmas);
-        Equipo []ArmaObtenida= superviviente.getArmasActivas();
+        Arma []ArmaObtenida= superviviente.getArmasActivas();
         for (int i = 0; i < ArmaObtenida.length; i++) {
             assertEquals(listaArmas[i],ArmaObtenida[i]);
         }
