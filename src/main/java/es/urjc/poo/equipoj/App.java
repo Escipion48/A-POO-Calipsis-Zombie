@@ -2,6 +2,8 @@ package es.urjc.poo.equipoj;
 
 import es.urjc.poo.equipoj.entidades.*;
 
+import java.util.ArrayList;
+
 import static java.lang.Thread.sleep;
 
 public class App {
@@ -51,5 +53,22 @@ public class App {
         Tablero t1 = new Tablero();
 
         System.out.println(t1.toString());
+
+
+        int [] dados = new int[3];
+        dados[0] = 1;
+        dados[1] = 2;
+        dados[2] = 3;
+        Ataque a1 = new Ataque(dados, "S1 ataco a Z2");
+        Ataque a2 = new Ataque(dados, "S2 ataco a Z3");
+        Ataque a3 = new Ataque(dados, "S3 ataco a Z4");
+        ArrayList<Ataque> ataques = new ArrayList<Ataque>();
+        ataques.add(a1);
+        ataques.add(a2);
+        ataques.add(a3);
+        Ataques ats = new Ataques(ataques);
+        System.out.println(a1.toString());
+        System.out.println(ats.toString());
+
     }
 }
