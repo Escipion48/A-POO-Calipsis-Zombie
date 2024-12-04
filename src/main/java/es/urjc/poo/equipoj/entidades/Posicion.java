@@ -34,7 +34,7 @@ public class Posicion {
 
     @Override
     public String toString() {
-        return (this.posicionX + "/" + this.posicionY);
+        return ("["+this.posicionX + "," + this.posicionY+"]");
     }
 
     @Override
