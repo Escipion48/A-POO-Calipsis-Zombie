@@ -49,6 +49,8 @@ public class Tablero {
         this.tablero = tablero;
     }
 
+    public Casilla getCasilla(int x, int y) { return this.tablero[x][y]; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

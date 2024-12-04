@@ -31,8 +31,8 @@ public class ZombieTest extends TestCase {
 
     public void testSetGetTipo() {
         Zombie z = new Zombie();
-        z.setTipo(TipoZombie.CAMINANTE);
-        assertEquals(TipoZombie.CAMINANTE, z.getTipo());
+        z.setTipo(TipoZombie.BERSERKER);
+        assertEquals(TipoZombie.BERSERKER, z.getTipo());
     }
 
 
@@ -55,46 +55,54 @@ public class ZombieTest extends TestCase {
         Posicion posicion= new Posicion(5,8);
         z.setPosicion(posicion);
         z.setIdentificador(8);
-        String str = "Zombie: 8 Posicion: [5,8] Tipo: CAMINANTE";
+        String str = "Zombie: 8 Posicion: [5,8] Tipo: NORMAL";
         assertEquals(str, z.toString());
 
     }
+    public void testCrear(){
+        Posicion posicion = new Posicion(5,8);
+        Abominacion ab = new Abominacion(TipoZombie.NORMAL,posicion);
+        assertEquals(3, ab.getAguante());
+
+        Corredor corredor = new Corredor(TipoZombie.NORMAL,posicion);
+        assertEquals(2, corredor.getActivaciones());
+        assertEquals(1, corredor.getAguante());
+        corredor.setActivaciones(5);
+        assertEquals(5, corredor.getActivaciones());
+    }
+
+
     public void testCrearZombie(){
         boolean iguales=false;
         Posicion p1= new Posicion(0,0);
         Posicion p2= new Posicion(1,1);
         Posicion p3= new Posicion(2,2);
 
-        Toxico t1 = new Toxico(TipoZombie.CAMINANTE,p1);
-        Toxico t2 = new Toxico(TipoZombie.CORREDOR,p2);
-        Normal n4 = new Normal(TipoZombie.CORREDOR,p3);
-        Toxico t3 = new Toxico(TipoZombie.ABOMINACION,p3);
+        Caminante c1= new Caminante(TipoZombie.NORMAL);
+        Caminante c2= new Caminante(TipoZombie.TOXICO);
+        Caminante c3= new Caminante(TipoZombie.BERSERKER);
 
-        Berserker b1 =new Berserker(TipoZombie.CAMINANTE,p1);
-        Berserker b2 = new Berserker(TipoZombie.CORREDOR,p2);
-        Berserker b3= new Berserker(TipoZombie.ABOMINACION,p3);
-        Normal n1 = new Normal(TipoZombie.CAMINANTE,p1);
-        Normal n2 = new Normal(TipoZombie.CORREDOR,p2);
-        Berserker b4 = new Berserker(TipoZombie.ABOMINACION,p3);
-        Toxico t4 = new Toxico(TipoZombie.ABOMINACION,p3);
-        Normal n3 =new Normal(TipoZombie.ABOMINACION,p3);
-        long id1=t1.getIdentificador();
-        long id2=t2.getIdentificador();
-        long id3=t3.getIdentificador();
-        long id4=b1.getIdentificador();
-        long id5=b2.getIdentificador();
-        long id6=b3.getIdentificador();
-        long id7=n1.getIdentificador();
-        long id8=n2.getIdentificador();
-        long id9=n3.getIdentificador();
-        long id10=b4.getIdentificador();
-        long id11=t4.getIdentificador();
-        long id12 = n4.getIdentificador();
+        Corredor co1 = new Corredor(TipoZombie.NORMAL);
+        Corredor co2 = new Corredor(TipoZombie.TOXICO);
+        Corredor co3 = new Corredor(TipoZombie.BERSERKER);
+
+        Abominacion ab1 = new Abominacion(TipoZombie.NORMAL);
+        Abominacion ab2 = new Abominacion(TipoZombie.TOXICO);
+        Abominacion ab3 = new Abominacion(TipoZombie.BERSERKER);
+        long id1=c1.getIdentificador();
+        long id2=c2.getIdentificador();
+        long id3=c3.getIdentificador();
+        long id4=co1.getIdentificador();
+        long id5=co2.getIdentificador();
+        long id6=co3.getIdentificador();
+        long id7=ab1.getIdentificador();
+        long id8=ab2.getIdentificador();
+        long id9=ab3.getIdentificador();
         if(id1 == id2 || id1 == id3 || id2 == id3 || id1 == id4 || id4 == id5 || id5 == id6){
             iguales=true;
         }
         System.out.println(id1+"\n"+ id2+"\n"+id3+"\n"+id4+"\n"+id5+"\n"+id6+"\n"+id7+"\n"
-                +id8+"\n"+id9+"\n"+id10+"\n"+id11+"\n"+id12);
+                +id8+"\n"+id9+"\n");
         assertEquals(false, iguales);
 
     }

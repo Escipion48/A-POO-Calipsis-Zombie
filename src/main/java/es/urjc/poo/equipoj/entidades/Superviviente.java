@@ -71,6 +71,7 @@ public class Superviviente implements EntidadActivable{
     public void setZombiesEliminados(ArrayList<Zombie> zombiesEliminados) {
         this.zombiesEliminados.addAll(zombiesEliminados);
     }
+    public void anadirZombieElimninado(Zombie zombie){ this.zombiesEliminados.add(zombie);}
 
     public void setAtaquesRecibidos(ArrayList<Zombie> ataquesRecibidos) {
         this.ataquesRecibidos.addAll(ataquesRecibidos);
@@ -187,5 +188,7 @@ public class Superviviente implements EntidadActivable{
     @Override
     public void atacar() {
     }
+
+
 
 }
