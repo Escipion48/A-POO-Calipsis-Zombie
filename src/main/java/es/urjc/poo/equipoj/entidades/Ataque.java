@@ -78,7 +78,7 @@ public class Ataque {
         return casillaDentroAlcance;
     }
 
-    private void resolverAtaque(int exitos,Superviviente superviviente, Tablero tablero, Juego juego) {
+    private void resolverAtaque(int exitos,Superviviente superviviente, Tablero tablero, Juego juego) {//No terminado
         Arma arma = seleccionarArma(superviviente);
         ArrayList<Casilla> casillas =obtenerCasillaDentroAlcance(superviviente,seleccionarArma(superviviente));
         int potencia = seleccionarArma(superviviente).getPotencia();
