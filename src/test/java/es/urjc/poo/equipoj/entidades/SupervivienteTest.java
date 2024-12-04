@@ -97,6 +97,12 @@ public class SupervivienteTest extends TestCase {
             assertEquals(ataquesRecibidos.get(i), listaZombie.get(i));
         }
     }
+    public void testSetGetPosicion(){
+        Posicion p1 = new Posicion(1,1);
+        Superviviente s1= new Superviviente();
+        s1.setPosicion(p1);
+        assertEquals(p1,s1.getPosicion());
+    }
 
     public void testTestEquals() {
         Superviviente s1 = new Superviviente();
@@ -124,5 +130,25 @@ public class SupervivienteTest extends TestCase {
                 "Zombies eliminados: \n" +
                 "Ataques recibidos: \n";
         assertEquals(str, s1.toString());
+    }
+
+    public void testActivarse() {
+    }
+
+    public void testMoverse() {
+    }
+
+    public void testAtacar() {
+        Superviviente s1 = new Superviviente();
+        Arma[]listaDeArmas=new Arma[2];
+        Arma a1 = new Arma();
+        Arma a2 = new Arma();
+        listaDeArmas[0]=a1;
+        listaDeArmas[1]=a2;
+        s1.setArmasActivas(listaDeArmas);
+        Arma[]armasA= s1.getArmasActivas();
+        System.out.println(armasA[0]);
+        System.out.println(armasA[1]);
+
     }
 }
