@@ -120,6 +120,10 @@ public class Superviviente implements EntidadActivable{
         return this.ataquesRecibidos;
     }
 
+    public Posicion getPosicion(){ return this.posicion; }
+
+    public void setPosicion(Posicion posicion) { this.posicion = posicion; }
+
 
     @Override
     public boolean equals(Object o){
@@ -182,6 +186,24 @@ public class Superviviente implements EntidadActivable{
 
     @Override
     public void atacar() {
-    //TODO: Implementar
+
+
     }
+
+
+    public ArrayList<Casilla> obtenerCasillaDentroAlcance(Arma arma) {
+        ArrayList<Casilla> casillaDentroAlcance= new ArrayList<>();
+        Posicion pCentro =this.getPosicion();
+            for(int i =pCentro.posicionX-arma.getAlcance(); i<pCentro.posicionX+arma.getAlcance();i++){
+                for(int j =pCentro.posicionY-arma.getAlcance(); j<pCentro.posicionY+arma.getAlcance();j++){
+                    if(i>=0 && j>=0 && i<=9 && j<=9){
+                        Posicion p1= new Posicion(i,j);
+                        Casilla casilla= new Casilla(p1);
+                        casillaDentroAlcance.add(casilla);
+                    }
+                }
+            }
+            return casillaDentroAlcance;
+    }
+
 }
