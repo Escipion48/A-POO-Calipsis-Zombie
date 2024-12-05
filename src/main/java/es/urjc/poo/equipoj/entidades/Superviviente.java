@@ -188,7 +188,6 @@ public class Superviviente implements EntidadActivable{
 
     @Override
     public void atacar() {
-
     }
 
 
