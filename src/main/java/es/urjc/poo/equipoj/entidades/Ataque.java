@@ -30,7 +30,9 @@ public class Ataque {
         return superviviente.getArmaActiva(n);
     }
     private Casilla selecionarCasilla(ArrayList<Casilla> casillas,Tablero tablero) {
-        System.out.println(casillas);
+        for(int i=0; i<casillas.size(); i++){
+            System.out.print("("+i+")"+casillas.get(i)+"  ");
+        }
         Scanner sc = new Scanner(System.in);
         System.out.println("Selecione una casilla: \n");
         int casilla= sc.nextInt();
