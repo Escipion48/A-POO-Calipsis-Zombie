@@ -31,7 +31,7 @@ public class Ataque {
     }
     private Casilla selecionarCasilla(ArrayList<Casilla> casillas,Tablero tablero) {
         for(int i=0; i<casillas.size(); i++){
-            System.out.print("("+i+")"+casillas.get(i)+"  ");
+            System.out.print("("+i+") "+casillas.get(i)+"  ");
         }
         Scanner sc = new Scanner(System.in);
         System.out.println("Selecione una casilla: \n");
