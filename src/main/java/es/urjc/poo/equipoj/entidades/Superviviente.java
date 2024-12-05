@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj.entidades;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Superviviente implements EntidadActivable{
 
@@ -184,4 +185,247 @@ public class Superviviente implements EntidadActivable{
     public void atacar() {
     //TODO: Implementar
     }
+
+    private Equipo buscarEquipo(){
+        Random random = new Random();
+        int tipoEquipo = random.nextInt(1); // 0 provision, 1 arma.
+        if(tipoEquipo == 0){
+            int comidaBebida = random.nextInt(1); //0 comida 1 bebida;
+            if(comidaBebida == 0){
+                return new Provision(nombreComidaAleatoria(),random.nextInt(500)+50,fechaAleatoria(),false);
+            }
+            else{
+                return new Provision(nombreBebidaAleatoria(),random.nextInt(150)+20,fechaAleatoria(),true);
+            }
+        }
+        else{
+            return armaAleatoria();
+        }
+    }
+
+    private int [] fechaAleatoria(){
+        int [] fecha = new int[3];
+        Random r = new Random();
+        fecha[0] = r.nextInt(30);
+        fecha[1] = r.nextInt(12);
+        fecha[2] = r.nextInt(100);
+        if(fecha[0]==0){
+            fecha[0]++;
+        }
+        if(fecha[1]==0){
+            fecha[1]++;
+        }
+        fecha[2]+= 2000;
+        return fecha;
+    }
+
+    private String nombreComidaAleatoria(){
+        Random r = new Random();
+        int selector = r.nextInt(20);
+        switch(selector){
+            case 0:
+                return ("Cocido Madrileño");
+
+
+            case 1:
+                return ("Albondigas");
+
+
+            case 2:
+                return ("Cecina");
+
+            case 3:
+                return ("Totilla de Patata");
+
+            case 4:
+                return ("Paella");
+
+            case 5:
+                return ("Patatas Bravas");
+            case 6:
+                return ("Croquetas");
+
+            case 7:
+                return ("Churros");
+
+            case 8:
+                return ("Pulpo a la Gallega");
+
+            case 9:
+                return ("Cucarachas");
+
+            case 10:
+                return ("Migas");
+
+            case 11:
+                return ("Fabada");
+
+            case 12:
+                return ("Cachopo");
+
+            case 13:
+                return ("torrijas");
+
+            case 14:
+                return ("Mejillones");
+
+            case 15:
+                return ("Pastel");
+
+            case 16:
+                return("Pan");
+
+            case 17:
+                return ("Canelones");
+
+            case 18:
+                return ("Cola de rata");
+
+            case 19:
+                return("Gusanos");
+        }
+        return ("ComidaDefault");
+    }
+
+    private String nombreBebidaAleatoria(){
+        Random r = new Random();
+        int selector = r.nextInt(20);
+        switch(selector){
+            case 0:
+                return ("Cerveza");
+
+            case 1:
+                return ("Lejia");
+
+            case 2:
+                return ("Batido de proteinas");
+
+            case 3:
+                return ("Toro rojo");
+
+            case 4:
+                return ("Whiskey");
+
+            case 5:
+                return ("Infusion");
+
+            case 6:
+                return ("Caldo extraño");
+
+
+            case 7:
+                return ("Sopa de lagarto");
+
+
+            case 8:
+                return ("Kola");
+
+
+            case 9:
+                return ("Bebida isotonica");
+
+
+            case 10:
+                return("Ron");
+
+
+            case 11:
+                return("Vodka");
+
+
+            case 12:
+                return("Agua mineral");
+
+
+            case 13:
+                return("Salsa de tomate");
+
+
+            case 14:
+                return("Pure de verduras");
+
+
+            case 15:
+                return("Leche");
+
+
+            case 16:
+                return("Horchata");
+
+
+            case 17:
+                return("Tinto de verano");
+
+
+            case 18:
+                return("Sidra");
+
+
+            case 19:
+                return("Zumo");
+
+        }
+        return ("BebidaDefault");
+    }
+
+    private Arma armaAleatoria(){
+        Random r = new Random();
+        int selector = r.nextInt(17);
+        switch(selector){
+            //Ordenados por alcance
+            case 0:
+                return new Arma("Cuchillo", 1, 0, 1, 1);
+
+            case 1:
+                return new Arma("Hacha", 2, 0, 1,2);
+
+            case 2:
+                return new Arma("Bate",1,0,2,1);
+
+            case 3:
+                return new Arma("Navaja",1,0,2,2);
+
+            case 4:
+                return new Arma("Puño americano",1,0,3,3);
+
+            case 5:
+                return new Arma("Pistola",1,2,3,4);
+
+            case 6:
+                return new Arma("Revolver",1,2,2,4);
+
+            case 7:
+                return new Arma("Subfusil",1,2,10,5);
+
+            case 8:
+                return new Arma("Granada",3,2,4,2);
+
+            case 9:
+                return new Arma("Motolotov",1,2,4,2);
+
+            case 10:
+                return new Arma("Rifle",1,4,1,4);
+
+            case 11:
+                return new Arma("Fusil de Asalto", 1, 4,3,4);
+
+            case 12:
+                return new Arma("Bazooka", 4, 4, 4, 5);
+
+            case 13:
+                return new Arma("Fusil antimaterial", 4, 4,1, 5);
+
+            case 14:
+                return new Arma ("Sniper", 1, 8,1,4);
+            //Armas especiales más adelante;
+            case 15:
+                return new Arma("Globo",0,0,1,1);
+
+            case 16:
+                return new Arma("Trompeta",0,8,1,1);
+
+        }
+        return new Arma();
+    }
+
 }

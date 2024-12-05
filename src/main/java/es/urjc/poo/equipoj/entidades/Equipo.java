@@ -1,5 +1,7 @@
 package es.urjc.poo.equipoj.entidades;
 
+import java.util.Random;
+
 public abstract class Equipo {
     private String nombre;
 
@@ -18,7 +20,5 @@ public abstract class Equipo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-
 
 }

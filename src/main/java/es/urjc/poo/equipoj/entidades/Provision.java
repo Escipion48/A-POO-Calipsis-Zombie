@@ -1,5 +1,7 @@
 package es.urjc.poo.equipoj.entidades;
 
+import java.util.Random;
+
 public class Provision extends Equipo{
     private int kcal;
     private int[] caducidad;
