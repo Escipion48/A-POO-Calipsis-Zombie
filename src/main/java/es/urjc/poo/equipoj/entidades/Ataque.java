@@ -1,9 +1,6 @@
 package es.urjc.poo.equipoj.entidades;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Ataque {
     int [] dados;
@@ -86,22 +83,33 @@ public class Ataque {
         lanzarDados(arma);
         int num_exitos = evaluarExito(arma);
         ArrayList<Zombie> CasillaZombie= new ArrayList<Zombie>();
+        ArrayList<Zombie> Eliminados = new ArrayList<Zombie>();
 
         for (Zombie zombie : juego.getZombies()) {
             if (casilla.getPosicion().equals(zombie.getPosicion())) {
                 CasillaZombie.add(zombie);
             }
         }
-        for (Zombie zombie : CasillaZombie) {
-            if(zombie == Berserker && zombie.getAguante()<=potencia){
-                CasillaZombie.remove(zombie);
+        Iterator<Zombie> iterator =CasillaZombie.iterator();
+        Zombie zombie = iterator.next();
+            if(zombie instanceof Berserker && zombie.getAguante()<=potencia && superviviente.getPosicion().equals(zombie.getPosicion())){
+                iterator.remove();
                 juego.getZombies().remove(zombie);
+                Eliminados.add(zombie);
                 superviviente.anadirZombieElimninado(zombie);
-
-            }else {
-
+                superviviente.anadirContadorZombiesEliminados1();
+            }else if(!(zombie instanceof Berserker) && zombie.getAguante()<=potencia) {
+                iterator.remove();
+                juego.getZombies().remove(zombie);
+                Eliminados.add(zombie);
+                superviviente.anadirZombieElimninado(zombie);
+                superviviente.anadirContadorZombiesEliminados1();
             }
-        }
+
+        StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a los Zombies: \n");
+            for (Zombie zombie1 : Eliminados) {
+                stringBuilder.append(zombie1.toString()).append("\n"); }
+            this.resultado = stringBuilder.toString();
 
     }
 
