@@ -1,6 +1,9 @@
 package es.urjc.poo.equipoj.entidades;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Superviviente implements EntidadActivable{
 
@@ -188,6 +191,114 @@ public class Superviviente implements EntidadActivable{
 
     @Override
     public void atacar() {
+      //  resolverAtaque(new Tablero(),new Juego());
+    }
+    private Arma seleccionarArma() {
+        System.out.println("Selecione un arma: \n"+this.getArmaActiva(0)+"\n"+this.getArmaActiva(1));
+        Scanner sc = new Scanner(System.in);
+        int n;
+        do{
+            n= sc.nextInt();
+            if(n==0){
+                System.out.println("Arma seleccionada: "+this.getArmaActiva(0));
+            } else if (n==1) {
+                System.out.println("Arma seleccionada: "+this.getArmaActiva(1));
+            }else{
+                System.out.println("Seleccione un arma:\n");}}
+        while(n!=0 && n!=1);
+        sc.close();
+        return this.getArmaActiva(n);
+    }
+    private Casilla selecionarCasilla(ArrayList<Casilla> casillas,Tablero tablero) {
+        for(int i=0; i<casillas.size(); i++){
+            System.out.print("("+i+") "+casillas.get(i)+"  ");
+        }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Selecione una casilla: \n");
+        int casilla= sc.nextInt();
+        sc.close();
+        Posicion p =casillas.get(casilla).getPosicion();
+        int x= p.getPosicionX();
+        int y= p.getPosicionY();
+        return tablero.getCasilla(x, y);
+    }
+
+    private int[] lanzarDados(Ataque ataque,Arma arma) {
+        int n = arma.getNumeroDados();
+        int[] nd= new int[n];
+        ataque.setDados(nd);
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            ataque.dados[i]=0;
+            ataque.dados[i] = random.nextInt(6) + 1;  }
+        return ataque.dados;
+    }
+
+    private int evaluarExito(Arma arma,Ataque ataque) {
+        int exitos=0;
+        int []dados= lanzarDados(ataque,arma);
+        for(int i=0 ; i<dados.length ; i++){
+            if(dados[i]>=arma.getNumeroDados()){
+                exitos++;
+            }
+        }
+        return exitos;
+    }
+
+    private ArrayList<Casilla> obtenerCasillaDentroAlcance(Arma arma) {
+        ArrayList<Casilla> casillaDentroAlcance= new ArrayList<>();
+        Posicion pCentro =this.getPosicion();
+        for(int i =pCentro.posicionX-arma.getAlcance(); i<pCentro.posicionX+arma.getAlcance();i++){
+            for(int j =pCentro.posicionY-arma.getAlcance(); j<pCentro.posicionY+arma.getAlcance();j++){
+                if(i>=0 && j>=0 && i<=9 && j<=9){
+                    Posicion p1= new Posicion(i,j);
+                    Casilla casilla= new Casilla(p1);
+                    casillaDentroAlcance.add(casilla);
+                }
+            }
+        }
+        return casillaDentroAlcance;
+    }
+
+    public void resolverAtaque( Tablero tablero, Juego juego) {//No terminado
+        Arma arma = seleccionarArma();
+        ArrayList<Casilla> casillas =obtenerCasillaDentroAlcance(arma);
+        int potencia = arma.getPotencia();
+        Casilla casilla = selecionarCasilla(casillas,tablero);
+        int n =arma.getNumeroDados();
+        int[] nd= new int[n];
+        Ataque ataque =new Ataque(nd,"");
+        lanzarDados(ataque,arma);
+        int num_exitos = evaluarExito(arma,ataque);
+        ArrayList<Zombie> CasillaZombie= new ArrayList<Zombie>();
+        ArrayList<Zombie> Eliminados = new ArrayList<Zombie>();
+
+        for (Zombie zombie : juego.getZombies()) {
+            if (casilla.getPosicion().equals(zombie.getPosicion())) {
+                CasillaZombie.add(zombie);
+            }
+        }
+        Iterator<Zombie> iterator =CasillaZombie.iterator();
+        Zombie zombie = iterator.next();
+        if(zombie instanceof Berserker && zombie.getAguante()<=potencia && this.getPosicion().equals(zombie.getPosicion())){
+            iterator.remove();
+            juego.getZombies().remove(zombie);
+            Eliminados.add(zombie);
+            this.anadirZombieElimninado(zombie);
+            this.anadirContadorZombiesEliminados1();
+        }else if(!(zombie instanceof Berserker) && zombie.getAguante()<=potencia) {
+            iterator.remove();
+            juego.getZombies().remove(zombie);
+            Eliminados.add(zombie);
+            this.anadirZombieElimninado(zombie);
+            this.anadirContadorZombiesEliminados1();
+        }
+
+        StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a los Zombies: \n");
+        for (Zombie zombie1 : Eliminados) {
+            stringBuilder.append(zombie1.toString()).append("\n"); }
+        ataque.setResultado(stringBuilder.toString());
+
     }
 
 
