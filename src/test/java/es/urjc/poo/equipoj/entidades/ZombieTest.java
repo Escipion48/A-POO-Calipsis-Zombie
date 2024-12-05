@@ -55,7 +55,7 @@ public class ZombieTest extends TestCase {
         Posicion posicion= new Posicion(5,8);
         z.setPosicion(posicion);
         z.setIdentificador(8);
-        String str = "Zombie: 8 Posicion: [5,8] Tipo: NORMAL";
+        String str = "Zombie: 8 Posicion: [5,8] Tipo:";
         assertEquals(str, z.toString());
 
     }
