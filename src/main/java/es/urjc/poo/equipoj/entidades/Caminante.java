@@ -3,7 +3,7 @@ package es.urjc.poo.equipoj.entidades;
 public class Caminante extends Zombie {
 
     public Caminante() {
-        super();
+        super(1,1);
     }
 
     public Caminante(TipoZombie tipo){
@@ -22,6 +22,6 @@ public class Caminante extends Zombie {
 
     @Override
     public String toString() {
-        return super.toString() + " Caminante";
+        return super.toString() + " Caminante "+getTipo();
     }
 }

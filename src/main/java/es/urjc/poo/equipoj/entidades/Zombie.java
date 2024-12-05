@@ -14,6 +14,10 @@ public class Zombie implements EntidadActivable {
         this(System.currentTimeMillis(),TipoZombie.NORMAL, new Posicion(), 1, 1);
         try { Thread.sleep(1);  } catch (InterruptedException e) { e.printStackTrace(); }
     }
+    public Zombie (int aguante, int activaciones){
+        this(System.currentTimeMillis(),TipoZombie.NORMAL, new Posicion(), aguante, activaciones);
+        this.activaciones = activaciones;
+    }
 
     public Zombie(TipoZombie tipo, Posicion posicion,int aguante, int activaciones) {
         this(System.currentTimeMillis(),tipo,posicion,aguante,activaciones);
@@ -97,7 +101,7 @@ public class Zombie implements EntidadActivable {
 
     @Override
     public String toString() {
-        return ("Zombie: "+this.getIdentificador()+" Posicion: "+this.getPosicion().toString()+" Tipo: "+this.getTipo());
+        return ("Zombie: "+this.getIdentificador()+" Posicion: "+this.getPosicion().toString()+ " Tipo:");
     }
 
     public void reaccionAtaque() {
@@ -116,7 +120,6 @@ public class Zombie implements EntidadActivable {
 
     @Override
     public void atacar() {
-    //TODO: Implementar
     }
 
 }

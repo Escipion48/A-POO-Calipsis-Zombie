@@ -69,6 +69,15 @@ public class ZombieTest extends TestCase {
         assertEquals(1, corredor.getAguante());
         corredor.setActivaciones(5);
         assertEquals(5, corredor.getActivaciones());
+
+        Abominacion abominacion = new Abominacion(TipoZombie.BERSERKER);
+        assertEquals(3, abominacion.getAguante());
+
+        Zombie zombie = new Zombie();
+        System.out.println(zombie.toString());
+        System.out.println(abominacion.toString());
+        System.out.println(corredor);
+        assertEquals(1, zombie.getAguante());
     }
 
 

@@ -3,7 +3,7 @@ package es.urjc.poo.equipoj.entidades;
 public class Corredor extends Zombie {
 
     public Corredor() {
-        super();
+        super(1,2);
     }
 
     public Corredor(TipoZombie tipo){
@@ -23,7 +23,7 @@ public class Corredor extends Zombie {
 
     @Override
     public String toString() {
-        return super.toString() + " Corredor";
+        return super.toString() + " Corredor "+getTipo();
     }
 
 

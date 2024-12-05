@@ -2,9 +2,8 @@ package es.urjc.poo.equipoj.entidades;
 
 public class Abominacion extends Zombie {
 
-
     public Abominacion() {
-        super();
+        super(3,1);
     }
 
     public Abominacion(TipoZombie tipo){
@@ -23,6 +22,6 @@ public class Abominacion extends Zombie {
 
     @Override
     public String toString() {
-        return super.toString() + " Abominacion";
+        return super.toString() + " Abominacion " +getTipo();
     }
 }
