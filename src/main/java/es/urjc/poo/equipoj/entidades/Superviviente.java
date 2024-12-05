@@ -260,7 +260,7 @@ public class Superviviente implements EntidadActivable{
         return casillaDentroAlcance;
     }
 
-    public void resolverAtaque( Tablero tablero, Juego juego) {//No terminado
+    private void resolverAtaque( Tablero tablero, Juego juego) {//No terminado
         Arma arma = seleccionarArma();
         ArrayList<Casilla> casillas =obtenerCasillaDentroAlcance(arma);
         int potencia = arma.getPotencia();
