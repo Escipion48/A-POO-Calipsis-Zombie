@@ -61,6 +61,10 @@ public class Superviviente implements EntidadActivable{
         this.inventario = inventario.clone();
     }
 
+    public void setInventario(Equipo inventario, int posicion) {
+        this.inventario[posicion] = inventario;
+    }
+
     public void setContadorZombiesEliminados(int contadorZombiesEliminados) {
         this.contadorZombiesEliminados = contadorZombiesEliminados;
     }
@@ -186,6 +190,41 @@ public class Superviviente implements EntidadActivable{
     //TODO: Implementar
     }
 
+
+
+
+    /**
+     * Esta funcion es la funcion pública que se encarga de buscar objetos en una casilla por parte del superviviente
+     * Valorara si la casilla ha sido buscada o no y si el inventario esta lleno o no antes de continuar, para evitar fallos
+     * Además el valor de exito de la busqueda dependera de la cantidad de objetos que tenemos en el inventario, a mayor
+     * cantidad de objetos menos probable será una busqueda en la que obtengamos un Equipo.
+     * @param casilla
+     * @return Si se ha realizado correctamente la busqueda se devolvera true y viceversa (Para controlar fallos)
+     */
+    public boolean bucar(Casilla casilla){
+        if(casilla.isExplorada()==true || this.calcularNumeroObjetosInventario()==5){
+            return false;
+        }
+        else{
+            casilla.setExplorada(true);
+             Random r = new Random();
+             int valorExito = r.nextInt(11);
+             if(valorExito-this.calcularNumeroObjetosInventario()>=5){
+                 this.setInventario(buscarEquipo(),this.calcularNumeroObjetosInventario());
+             }
+             else{
+                 //No hace nada, ya que el superviviente no ha encontrado nada.
+             }
+             return true;
+        }
+    }
+
+
+    /**Esta funcion la usaremos para retornar un equipo aleatorio, ya sea un arma o provision, para ahorrar codigo
+     * dentro de buscar. Como no se especifica en la practica las probabilidades las hemos creado como veiamos mas conveniente
+     * Utilizamos otros metodos privados, este metodo solo se encarga de seleccionar el tipo de equipo que devolvera de forma aleatoria
+     * @return Un equipo aleatorio arma o provision
+     */
     private Equipo buscarEquipo(){
         Random random = new Random();
         int tipoEquipo = random.nextInt(1); // 0 provision, 1 arma.
@@ -203,6 +242,11 @@ public class Superviviente implements EntidadActivable{
         }
     }
 
+    /**
+     * Esta funcion se encarga de crear una fecha aleatoria que usaremos para crear una provision aleatoria en
+     * buscar equipo.
+     * @return Una fecha aleatoria desde el año 2000 hasta el 2100
+     */
     private int [] fechaAleatoria(){
         int [] fecha = new int[3];
         Random r = new Random();
@@ -219,6 +263,10 @@ public class Superviviente implements EntidadActivable{
         return fecha;
     }
 
+    /**
+     * Esta funcion tiene un conjunto de nombres de comidas posibles que devolvera de manera aleatoria.
+     * @return String con un nombre de una comida
+     */
     private String nombreComidaAleatoria(){
         Random r = new Random();
         int selector = r.nextInt(20);
@@ -287,6 +335,11 @@ public class Superviviente implements EntidadActivable{
         return ("ComidaDefault");
     }
 
+
+    /**
+     * Esta funcion generara de manera aleatoria el nombre de una bebida
+     * @return Devuelve un String con el nombre de una bebida
+     */
     private String nombreBebidaAleatoria(){
         Random r = new Random();
         int selector = r.nextInt(20);
@@ -368,6 +421,11 @@ public class Superviviente implements EntidadActivable{
         return ("BebidaDefault");
     }
 
+
+    /**
+     * Esta funcion se encarga de crear un Arma aleatoria
+     * @return Un Arma
+     */
     private Arma armaAleatoria(){
         Random r = new Random();
         int selector = r.nextInt(17);
@@ -426,6 +484,20 @@ public class Superviviente implements EntidadActivable{
 
         }
         return new Arma();
+    }
+
+    /**
+     * Funcion auxiliar para calcular el numero de objetos que tenemos en el inventario
+     * @return Un entero con el numero de Objetos del inventario
+     */
+    private int calcularNumeroObjetosInventario(){
+        int contador = 0;
+        for(int i=0;i<5;i++){
+            if(this.getInventario(i)!=null){
+                contador++;
+            }
+        }
+        return contador;
     }
 
 }
