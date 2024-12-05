@@ -93,7 +93,7 @@ public class Ataque {
             }
         }
         for (Zombie zombie : CasillaZombie) {
-            if(zombie.getTipo() != TipoZombie.BERSERKER && zombie.getAguante()<=potencia){
+            if(zombie == Berserker && zombie.getAguante()<=potencia){
                 CasillaZombie.remove(zombie);
                 juego.getZombies().remove(zombie);
                 superviviente.anadirZombieElimninado(zombie);
