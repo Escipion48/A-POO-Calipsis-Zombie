@@ -31,8 +31,8 @@ public class ZombieTest extends TestCase {
 
     public void testSetGetTipo() {
         Zombie z = new Zombie();
-        z.setTipo(TipoZombie.BERSERKER);
-        assertEquals(TipoZombie.BERSERKER, z.getTipo());
+        z.setTipo(TipoZombie.ABOMINACION);
+        assertEquals(TipoZombie.ABOMINACION, z.getTipo());
     }
 
 
@@ -55,28 +55,28 @@ public class ZombieTest extends TestCase {
         Posicion posicion= new Posicion(5,8);
         z.setPosicion(posicion);
         z.setIdentificador(8);
-        String str = "Zombie: 8 Posicion: [5,8] Tipo:";
+        String str = "Zombie: 8 Posicion: [5,8] Tipo:CAMINANTE";
         assertEquals(str, z.toString());
 
     }
     public void testCrear(){
         Posicion posicion = new Posicion(5,8);
-        Abominacion ab = new Abominacion(TipoZombie.NORMAL,posicion);
-        assertEquals(3, ab.getAguante());
+        Toxico t1 = new Toxico(TipoZombie.CAMINANTE,posicion);
+        assertEquals(1, t1.getAguante());
 
-        Corredor corredor = new Corredor(TipoZombie.NORMAL,posicion);
-        assertEquals(2, corredor.getActivaciones());
-        assertEquals(1, corredor.getAguante());
-        corredor.setActivaciones(5);
-        assertEquals(5, corredor.getActivaciones());
+        Berserker berserker = new Berserker(TipoZombie.CORREDOR,posicion);
+        assertEquals(2, berserker.getActivaciones());
+        assertEquals(1, berserker.getAguante());
+        berserker.setActivaciones(5);
+        assertEquals(5, berserker.getActivaciones());
 
-        Abominacion abominacion = new Abominacion(TipoZombie.BERSERKER);
-        assertEquals(3, abominacion.getAguante());
+        Toxico t2 = new Toxico(TipoZombie.ABOMINACION);
+        assertEquals(3, t2.getAguante());
 
         Zombie zombie = new Zombie();
-        System.out.println(zombie.toString());
-        System.out.println(abominacion.toString());
-        System.out.println(corredor);
+        System.out.println(zombie);
+        System.out.println(t1);
+        /*System.out.println(t2);*/
         assertEquals(1, zombie.getAguante());
     }
 
@@ -87,17 +87,17 @@ public class ZombieTest extends TestCase {
         Posicion p2= new Posicion(1,1);
         Posicion p3= new Posicion(2,2);
 
-        Caminante c1= new Caminante(TipoZombie.NORMAL);
-        Caminante c2= new Caminante(TipoZombie.TOXICO);
-        Caminante c3= new Caminante(TipoZombie.BERSERKER);
+        Normal c1= new Normal(TipoZombie.CAMINANTE);
+        Normal c2= new Normal(TipoZombie.CORREDOR);
+        Normal c3= new Normal(TipoZombie.ABOMINACION);
 
-        Corredor co1 = new Corredor(TipoZombie.NORMAL);
-        Corredor co2 = new Corredor(TipoZombie.TOXICO);
-        Corredor co3 = new Corredor(TipoZombie.BERSERKER);
+        Toxico co1 = new Toxico(TipoZombie.CAMINANTE);
+        Toxico co2 = new Toxico(TipoZombie.CORREDOR);
+        Toxico co3 = new Toxico(TipoZombie.ABOMINACION);
 
-        Abominacion ab1 = new Abominacion(TipoZombie.NORMAL);
-        Abominacion ab2 = new Abominacion(TipoZombie.TOXICO);
-        Abominacion ab3 = new Abominacion(TipoZombie.BERSERKER);
+        Berserker ab1 = new Berserker(TipoZombie.CAMINANTE);
+        Berserker ab2 = new Berserker(TipoZombie.CORREDOR);
+        Berserker ab3 = new Berserker(TipoZombie.ABOMINACION);
         long id1=c1.getIdentificador();
         long id2=c2.getIdentificador();
         long id3=c3.getIdentificador();

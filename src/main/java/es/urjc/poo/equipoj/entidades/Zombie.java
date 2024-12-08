@@ -125,7 +125,25 @@ public class Zombie implements EntidadActivable {
 
     @Override
     public void atacar() {
-    //TODO: Implementar
+     if(this.activaciones>0){
+         if(mismaPosicionConAlgunSuperviviente(new Juego())!=null){
+            mismaPosicionConAlgunSuperviviente(new Juego()).anadirHeridas1();
+            this.activaciones--;
+         }
+     }
     }
+
+    private Superviviente mismaPosicionConAlgunSuperviviente(Juego juego){
+        Posicion[] posicion = new Posicion[4];
+        Superviviente [] listaSupervivientes = juego.getSupervivientes();
+        for(int i = 0; i < 4; i++) {
+            posicion[i] = listaSupervivientes[i].getPosicion();
+            if(this.getPosicion().equals(posicion[i])){
+                return listaSupervivientes[i];
+            }
+        }
+        return null;
+    }
+
 
 }

@@ -81,6 +81,8 @@ public class Superviviente implements EntidadActivable{
     }
     public void anadirContadorZombiesEliminados1(){this.contadorZombiesEliminados++;}
 
+    public void anadirHeridas1(){ this.heridas++;}
+
     public int getAcciones() {
         return this.acciones;
     }
@@ -191,8 +193,11 @@ public class Superviviente implements EntidadActivable{
 
     @Override
     public void atacar() {
-      //  resolverAtaque(new Tablero(),new Juego());
-    }
+        if(this.acciones>0){
+       resolverAtaque(new Tablero(),new Juego());
+        this.acciones--;}
+        else{System.out.println("No hay suficientes acciones\n");
+    }}
     private Arma seleccionarArma() {
         System.out.println("Selecione un arma: \n"+this.getArmaActiva(0)+"\n"+this.getArmaActiva(1));
         Scanner sc = new Scanner(System.in);
@@ -210,17 +215,18 @@ public class Superviviente implements EntidadActivable{
         return this.getArmaActiva(n);
     }
     private Casilla selecionarCasilla(ArrayList<Casilla> casillas,Tablero tablero) {
+        System.out.println("Selecione una casilla: \n");
         for(int i=0; i<casillas.size(); i++){
-            System.out.print("("+i+") "+casillas.get(i)+"  ");
+            System.out.print("("+i+") "+casillas.get(i)+"\n");
         }
         Scanner sc = new Scanner(System.in);
-        System.out.println("Selecione una casilla: \n");
         int casilla= sc.nextInt();
-        sc.close();
         Posicion p =casillas.get(casilla).getPosicion();
         int x= p.getPosicionX();
         int y= p.getPosicionY();
+        sc.close();
         return tablero.getCasilla(x, y);
+
     }
 
     private int[] lanzarDados(Ataque ataque,Arma arma) {
@@ -287,6 +293,9 @@ public class Superviviente implements EntidadActivable{
             this.anadirZombieElimninado(zombie);
             this.anadirContadorZombiesEliminados1();
         }else if(!(zombie instanceof Berserker) && zombie.getAguante()<=potencia) {
+            if(zombie instanceof Toxico && this.getPosicion().equals(zombie.getPosicion())){
+                this.anadirHeridas1();
+            }
             iterator.remove();
             juego.getZombies().remove(zombie);
             Eliminados.add(zombie);
@@ -298,6 +307,7 @@ public class Superviviente implements EntidadActivable{
         for (Zombie zombie1 : Eliminados) {
             stringBuilder.append(zombie1.toString()).append("\n"); }
         ataque.setResultado(stringBuilder.toString());
+        System.out.println(ataque.getResultado());
 
     }
 
