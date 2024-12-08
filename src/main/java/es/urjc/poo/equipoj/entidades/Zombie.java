@@ -130,6 +130,8 @@ public class Zombie implements EntidadActivable {
             mismaPosicionConAlgunSuperviviente(new Juego()).anadirHeridas1();
             this.activaciones--;
          }
+     } else{
+         System.out.println("No hay suficientes activaciones");
      }
     }
 
