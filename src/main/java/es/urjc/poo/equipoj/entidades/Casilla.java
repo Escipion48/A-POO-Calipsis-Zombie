@@ -37,10 +37,9 @@ public class Casilla {
     }
 
     @Override
-    public String toString() {
+    public String toString() { // explorada no hace falta decirlo (", explorada=" + explorada +)
         return "Casilla{" +
                 "posicion=" + posicion +
-                ", explorada=" + explorada +
                 '}';
     }
 
