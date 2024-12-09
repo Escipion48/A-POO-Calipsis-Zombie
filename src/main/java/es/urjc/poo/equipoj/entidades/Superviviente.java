@@ -201,7 +201,7 @@ public class Superviviente implements EntidadActivable{
      * @param casilla
      * @return Si se ha realizado correctamente la busqueda se devolvera true y viceversa (Para controlar fallos)
      */
-    public boolean bucar(Casilla casilla){
+    public boolean buscar(Casilla casilla){
         if(casilla.isExplorada()==true || this.calcularNumeroObjetosInventario()==5){
             return false;
         }
@@ -210,13 +210,31 @@ public class Superviviente implements EntidadActivable{
              Random r = new Random();
              int valorExito = r.nextInt(11);
              if(valorExito-this.calcularNumeroObjetosInventario()>=5){
-                 this.setInventario(buscarEquipo(),this.calcularNumeroObjetosInventario());
+                 this.setInventario(buscarObjeto(),this.calcularNumeroObjetosInventario());
              }
              else{
                  //No hace nada, ya que el superviviente no ha encontrado nada.
              }
              return true;
         }
+    }
+
+    /**Esta funcion se encarga de hacer que devuelva un 50/50 de posibilidades un arma o un equipo, utilizando los
+     * metodos programados posteriormente de buscarEquipo y armaAleatoria
+     *
+     * @return Un equipo aleatorio
+     */
+
+    private Equipo buscarObjeto(){
+        Random r = new Random();
+        int selector = r.nextInt(2);
+        if(selector==1){
+            return buscarEquipo();
+        }
+        else{
+            return armaAleatoria();
+        }
+
     }
 
 

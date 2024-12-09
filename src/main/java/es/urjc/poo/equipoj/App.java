@@ -70,5 +70,19 @@ public class App {
         System.out.println(a1.toString());
         System.out.println(ats.toString());
 
+
+
+        Superviviente s1 = new Superviviente();
+        Casilla busqueda1 = new Casilla();
+        Casilla busqueda2 = new Casilla(posicion);
+        Casilla busqueda3 = new Casilla(posicion4);
+        Casilla busqueda4 = new Casilla(posicion2);
+        Casilla busqueda5 = new Casilla(posicion3);
+        s1.buscar(busqueda1);
+        s1.buscar(busqueda2);
+        s1.buscar(busqueda3);
+        s1.buscar(busqueda4);
+        s1.buscar(busqueda5);
+        System.out.println(s1.toString());
     }
 }
