@@ -634,4 +634,39 @@ public class Superviviente implements EntidadActivable{
         int contador = this.devolverZombiesEnPosicion(this.convertirArrayEntidadesActivableAZombie(entidades),this.getPosicion()).size();
         return contador;
     }
+
+
+
+    // A continuacion dos metodos para devolver primero el superviviente con más heridas y el segundo con menos
+    // Podriamos seleccionar uno u otro para variar la dificultad del juego, pero de momento nos decantaremos por
+    // Usar el que tiene más heridas, es decir, los zombies preferiran a los supervivientes más heridos.
+
+    /**
+     * Metodo para saber cuál de dos supervivientes tiene más mordeduras, util para Zombies.
+     * @param superviviente
+     * @return
+     */
+    public Superviviente cualTieneMasMordeduras(Superviviente superviviente){
+        if(this.getHeridas()>superviviente.getHeridas()){
+            return this;
+        }
+        else{
+            return superviviente;
+        }
+    }
+
+
+    /**
+     * Metodo para saber cuál de dos supervivientes tiene menos mordeduras, util para Zombies
+     * @param superviviente
+     * @return
+     */
+    public Superviviente CualTieneMenosMordeduras(Superviviente superviviente){
+        if(this.getHeridas()<superviviente.getHeridas()){
+            return this;
+        }
+        else{
+            return superviviente;
+        }
+    }
 }
