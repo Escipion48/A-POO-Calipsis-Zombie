@@ -2,6 +2,7 @@ package es.urjc.poo.equipoj.entidades;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Superviviente implements EntidadActivable{
 
@@ -55,6 +56,10 @@ public class Superviviente implements EntidadActivable{
 
     public void setArmasActivas(Arma[] armasActivas) {
         this.armasActivas = armasActivas.clone();
+    }
+
+    public void setArmaActiva(Arma armaActiva, int posicion) {
+        this.armasActivas[posicion] = armaActiva;
     }
 
     public void setInventario(Equipo[] inventario) {
@@ -125,6 +130,13 @@ public class Superviviente implements EntidadActivable{
         return this.ataquesRecibidos;
     }
 
+    public Posicion getPosicion() {
+        return this.posicion;
+    }
+
+    public void setPosicion(Posicion posicion) {
+        this.posicion = posicion;
+    }
 
     @Override
     public boolean equals(Object o){
@@ -176,14 +188,82 @@ public class Superviviente implements EntidadActivable{
     }
 
     @Override
-    public void activarse() {
-    //TODO: Implementar
+    public void activarse(Tablero tablero, ArrayList<EntidadActivable> entidades) {
+    this.setAcciones(3);
+    Scanner kdc = new Scanner(System.in);
+    System.out.println("Introduzca la accion deseada: 0:Moverse");
+    int selector = kdc.nextInt(); //Más adelante hay que hacer que el selector dependa del valor introducido por la UI
+    do{
+        switch (selector){
+            case 0:  //Moverse
+                //Primero vemos los zombies que hay en la posicion del superviviente, para comprobar si puede moverse o no.
+                ArrayList<Zombie> zombiesEnPosicionActual = this.devolverZombiesEnPosicion(this.convertirArrayEntidadesActivableAZombie(entidades),this.getPosicion());
+                if(zombiesEnPosicionActual.size()<this.getAcciones()){
+                    this.moverse(entidades);
+                }
+                else{
+                    System.out.println("Demasiados zombies en la casilla actual como para moverse");
+                }
+                break;
+
+            case 1: //Buscar un objeto en una casilla
+                this.buscar(tablero.getCasilla(this.getPosicion())); //Hay que añadir casilla
+                break;
+
+            case 2: //Atacar
+
+                this.atacar();
+                break;
+
+            case 3: //Elegir un arma para ponerla como arma Activa
+
+                System.out.println("Introduzca posicion arma equipo:");
+                int posicionInventario = kdc.nextInt();
+                System.out.println("Introduzca posicion armaActiva:");
+                int posicionActiva = kdc.nextInt();
+                this.setArmaActiva(this.getArmaActiva(posicionInventario), posicionActiva);
+                break;
+
+            case 4:    //No hacer nada, numero de movimientos se pone en 0
+                this.setAcciones(0);
+                break;
+
+            case 5: //eliminar objeto del equipo
+
+                System.out.println("Introduzca posicion del inventario a eliminar:");
+                int posicionDelInventario = kdc.nextInt();
+                this.setInventario(null, posicionDelInventario);
+
+        }
+    }while(acciones>0);
     }
 
+
+    /**
+     * Como indica esta funcion, se encarga de mover a Superviviente, teniendo en cuenta
+     * la cantidad de acciones que tiene y la cantidad de zombies con las que comparte
+     * casilla, restando una accion extra por cada zombie.
+     */
     @Override
-    public void moverse() {
-    //TODO: Implementar
+    public void moverse(ArrayList<EntidadActivable> entidades){
+    //La parte del scanner se tiene que cambiar a interfaz Gráfica y mantener el bucle hasta que se elija una casilla adyacente //TODO
+        do{
+    Scanner kdc = new Scanner(System.in);
+    System.out.println("Introduzca la posicion X:");
+    int posicionX = kdc.nextInt();
+    System.out.println("Introduzca la posicion Y:");
+    int posicionY = kdc.nextInt();
+    //Con estos dos valores podemos ver el desplazamiento;
+    Posicion posicion = new Posicion(posicionX, posicionY);
+        } while(this.getPosicion().comprobarAdyacente(posicion)==false); //Bucle para asegurarnos que son posiciones adyacentes
+
+        //Una vez comprobado, restamos las acciones y cambiamos la posicion.
+
+        this.setAcciones(this.getAcciones() - this.calcularNumeroAccinesPorMoverse(entidades));
+        this.setPosicion(posicion);
+
     }
+
 
     @Override
     public void atacar() {
@@ -206,7 +286,8 @@ public class Superviviente implements EntidadActivable{
             return false;
         }
         else{
-            casilla.setExplorada(true);
+             casilla.setExplorada(true);
+             this.acciones-=1;
              Random r = new Random();
              int valorExito = r.nextInt(11);
              if(valorExito-this.calcularNumeroObjetosInventario()>=5){
@@ -355,7 +436,7 @@ public class Superviviente implements EntidadActivable{
 
 
     /**
-     * Esta funcion generara de manera aleatoria el nombre de una bebida
+     * Esta funcion generará de manera aleatoria el nombre de una bebida
      * @return Devuelve un String con el nombre de una bebida
      */
     private String nombreBebidaAleatoria(){
@@ -505,8 +586,8 @@ public class Superviviente implements EntidadActivable{
     }
 
     /**
-     * Funcion auxiliar para calcular el numero de objetos que tenemos en el inventario
-     * @return Un entero con el numero de Objetos del inventario
+     * Funcion auxiliar para calcular el número de objetos que tenemos en el inventario
+     * @return Un entero con el número de Objetos del inventario
      */
     private int calcularNumeroObjetosInventario(){
         int contador = 0;
@@ -518,4 +599,39 @@ public class Superviviente implements EntidadActivable{
         return contador;
     }
 
+
+    /**
+     * Esta funcion se encarga de retornar la lista de zombies de una posicion determinada, util para moverse y para atacar
+     * @param zombies Lista con todos los zombies del juego
+     * @param posicion Posicion en la que queremos buscar los zombies
+     * @return Devolvera una lista con todos los zombies de una posición
+     */
+    private ArrayList<Zombie> devolverZombiesEnPosicion(ArrayList<Zombie> zombies, Posicion posicion){
+
+        ArrayList<Zombie> zombiesEnPosicion = new ArrayList<>();
+
+        for(Zombie zombie: zombies){
+            if(zombie.getPosicion().equals(posicion)){
+                zombiesEnPosicion.add(zombie);
+            }
+        }
+
+        return zombiesEnPosicion;
+    }
+
+
+    private ArrayList<Zombie> convertirArrayEntidadesActivableAZombie(ArrayList<EntidadActivable> entidades){
+        ArrayList<Zombie> zombies = new ArrayList<>();
+        for(EntidadActivable entidad: entidades){
+            if(entidad instanceof Zombie){
+                zombies.add((Zombie)entidad);
+            }
+        }
+        return zombies;
+    }
+
+    private int calcularNumeroAccinesPorMoverse(ArrayList<EntidadActivable> entidades){
+        int contador = this.devolverZombiesEnPosicion(this.convertirArrayEntidadesActivableAZombie(entidades),this.getPosicion()).size();
+        return contador;
+    }
 }

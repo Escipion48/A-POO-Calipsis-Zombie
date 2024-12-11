@@ -45,6 +45,10 @@ public class Tablero {
         return tablero;
     }
 
+    public Casilla getCasilla(Posicion posicion) {
+        return this.tablero[posicion.getPosicionX()][posicion.getPosicionY()];
+    }
+
     public void setTablero(Casilla[][] tablero) {
         this.tablero = tablero;
     }

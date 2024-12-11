@@ -6,7 +6,7 @@ public class Juego {
     private Tablero tablero;
     private Superviviente [] supervivientes;
     private ArrayList<Zombie> zombies;
-
+    private Ataques ataques;
 
     //Constructor prueba, no definitivo
     public Juego() {
@@ -21,6 +21,7 @@ public class Juego {
         this.zombies.add(0, new Zombie());
         this.zombies.add(1, new Zombie());
         this.zombies.add(2, new Zombie());
+        this.ataques = new Ataques();
 
     }
 
@@ -30,6 +31,7 @@ public class Juego {
         this.supervivientes = supervivientes;
         this.zombies = new ArrayList<Zombie>();
         this.zombies.addAll(zombies);
+        this.ataques = new Ataques();
     }
 
     public Superviviente[] getSupervivientes() {
@@ -54,6 +56,23 @@ public class Juego {
 
     public void setTablero(Tablero tablero) {
         this.tablero = tablero;
+    }
+
+    public Ataques getAtaques() {
+        return ataques;
+    }
+
+    public Ataque getAtaque(int pos) {
+        return ataques.getAtaque(pos);
+    }
+
+
+    public void setAtaques(Ataques ataques) {
+        this.ataques = ataques;
+    }
+
+    public void setAtaque(Ataque ataque, int pos) {
+        this.ataques.setAtaque(pos, ataque);
     }
 
     public ArrayList<Zombie> getZombies() {

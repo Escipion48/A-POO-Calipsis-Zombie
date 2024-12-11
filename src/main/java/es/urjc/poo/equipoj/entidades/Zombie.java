@@ -1,5 +1,6 @@
 package es.urjc.poo.equipoj.entidades;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Zombie implements EntidadActivable {
@@ -110,12 +111,12 @@ public class Zombie implements EntidadActivable {
     }
 
     @Override
-    public void activarse() {
+    public void activarse(Tablero tablero, ArrayList<EntidadActivable> entidades) {
     //TODO: Implementar
     }
 
     @Override
-    public void moverse() {
+    public void moverse(ArrayList<EntidadActivable> entidades) {
     //TODO: Implementar
     }
 
