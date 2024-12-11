@@ -10,7 +10,7 @@ public class TableroGUI extends JPanel {
     private JButton aceptarButton;
 
     public TableroGUI() {
-        setLayout(new BorderLayout()); // Usamos BorderLayout en el panel principal
+        setLayout(new BorderLayout()); //  BorderLayout en el panel principal
         initUI();
     }
 
@@ -20,8 +20,11 @@ public class TableroGUI extends JPanel {
         x = new JSpinner(modelX);
         y = new JSpinner(modelY);
 
-        // Cambiar el tamaño de los JSpinner
-        Dimension spinnerSize = new Dimension(60, 30); // Ancho y alto deseados
+        /**
+         * @param x e y  son un spinners que no pueden bajar de 1 asi no hay numeros negativos*/
+
+        // Cambiar el tamaño de los JSpinner que no sirve de mucho en verdad, no cambia
+        Dimension spinnerSize = new Dimension(60, 30);//ancho y alto
         x.setPreferredSize(spinnerSize);
         y.setPreferredSize(spinnerSize);
 
@@ -34,14 +37,14 @@ public class TableroGUI extends JPanel {
         panelTablero.add(l1);
         panelTablero.add(x);
         panelTablero.add(y);
-        panelTablero.add(new JLabel()); // Espaciador
-        panelTablero.add(new JLabel()); // Espaciador
+        panelTablero.add(new JLabel()); // Para acomodar el diseño
+        panelTablero.add(new JLabel()); // igual
         panelTablero.add(aceptarButton);
 
         // Añadir el panel inicial al centro
         add(panelTablero, BorderLayout.CENTER);
 
-        // Evento para el botón "Aceptar"
+        // Al pulsar el boton aceptar, se guarda los valores de x e y para crear la tabla con fors
         aceptarButton.addActionListener(e -> {
             int valorX = (int) x.getValue();
             int valorY = (int) y.getValue();
@@ -58,7 +61,7 @@ public class TableroGUI extends JPanel {
         JPanel tableroReal = new JPanel();
         tableroReal.setLayout(new GridLayout(filas, columnas, 2, 2)); // Espaciado entre celdas
 
-        // Rellenar el tablero con botones o paneles
+        // Rellenar el tablero con botones
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 JButton celda = new JButton();

@@ -18,7 +18,7 @@ public class EntradaGUI extends JFrame {
 
     private void initUI() {
         panelInicio = new JPanel();
-        panelInicio.setLayout(new GridLayout(3, 1));
+        panelInicio.setLayout(new GridLayout(3, 1));//filas y columnas
         panelInicio.setBackground(Color.WHITE);
         panelInicio.setBorder(new EmptyBorder(20, 20, 20, 20)); // Añadir márgenes
 
@@ -34,18 +34,18 @@ public class EntradaGUI extends JFrame {
 
         nuevoJuego.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TableroGUI tableroGUI1 = new TableroGUI(); // Asegúrate de que esta clase sea un JPanel
+                TableroGUI tableroGUI1 = new TableroGUI(); // Para mostrar el tableroGUI
                 ShowPanel(tableroGUI1);
             }
         });
 
-        cargarJuego.addActionListener(new ActionListener() {
+        cargarJuego.addActionListener(new ActionListener() { //cargar juego que este
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
-        pruebas.addActionListener(new ActionListener() {
+        pruebas.addActionListener(new ActionListener() {//  las pruebas
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -55,7 +55,7 @@ public class EntradaGUI extends JFrame {
 
     private void ShowPanel(JPanel p) {
         getContentPane().removeAll(); // Limpiar todos los componentes anteriores
-        getContentPane().setLayout(new BorderLayout()); // Asegurar un layout válido
+        getContentPane().setLayout(new BorderLayout()); // este divide la pantalla en sectores como norte sur este oeste centro
         getContentPane().add(p, BorderLayout.CENTER); // Agregar el panel nuevo en el centro
         getContentPane().revalidate();
         getContentPane().repaint();
@@ -68,8 +68,8 @@ public class EntradaGUI extends JFrame {
                 EntradaGUI frame = new EntradaGUI();
                 frame.setTitle("Example");
                 frame.setSize(600, 400);
-                frame.setLocationRelativeTo(null);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setLocationRelativeTo(null); // ponerlo en el centro de la pantalla
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// para que se cierre
                 frame.setVisible(true);
             }
         });
