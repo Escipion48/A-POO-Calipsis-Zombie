@@ -287,11 +287,11 @@ public class Superviviente implements EntidadActivable{
         }
         else{
              casilla.setExplorada(true);
-             this.acciones-=1;
+             this.setAcciones(this.getAcciones() - 1);
              Random r = new Random();
              int valorExito = r.nextInt(11);
              if(valorExito-this.calcularNumeroObjetosInventario()>=5){
-                 this.setInventario(buscarObjeto(),this.calcularNumeroObjetosInventario());
+                 this.setInventario(crearEquipoAleatorio(),this.calcularNumeroObjetosInventario());
              }
              else{
                  //No hace nada, ya que el superviviente no ha encontrado nada.
@@ -301,19 +301,18 @@ public class Superviviente implements EntidadActivable{
     }
 
     /**Esta funcion se encarga de hacer que devuelva un 50/50 de posibilidades un arma o un equipo, utilizando los
-     * metodos programados posteriormente de buscarEquipo y armaAleatoria
+     * metodos programados posteriormente de buscarEquipo y armaAleatoria, sin embargo no lo utilizamos, en buscar
      *
      * @return Un equipo aleatorio
      */
-
     private Equipo buscarObjeto(){
         Random r = new Random();
         int selector = r.nextInt(2);
         if(selector==1){
-            return buscarEquipo();
+            return crearEquipoAleatorio();
         }
         else{
-            return armaAleatoria();
+            return crearArmaAleatoria();
         }
 
     }
@@ -324,20 +323,20 @@ public class Superviviente implements EntidadActivable{
      * Utilizamos otros metodos privados, este metodo solo se encarga de seleccionar el tipo de equipo que devolvera de forma aleatoria
      * @return Un equipo aleatorio arma o provision
      */
-    private Equipo buscarEquipo(){
+    private Equipo crearEquipoAleatorio(){
         Random random = new Random();
-        int tipoEquipo = random.nextInt(1); // 0 provision, 1 arma.
+        int tipoEquipo = random.nextInt(2); // 0 provision, 1 arma.
         if(tipoEquipo == 0){
-            int comidaBebida = random.nextInt(1); //0 comida 1 bebida;
+            int comidaBebida = random.nextInt(2); //0 comida 1 bebida;
             if(comidaBebida == 0){
-                return new Provision(nombreComidaAleatoria(),random.nextInt(500)+50,fechaAleatoria(),false);
+                return new Provision(crearNombreComidaAleatoria(),random.nextInt(500)+50, crearFechaAleatoria(),false);
             }
             else{
-                return new Provision(nombreBebidaAleatoria(),random.nextInt(150)+20,fechaAleatoria(),true);
+                return new Provision(crearNombreBebidaAleatoria(),random.nextInt(150)+20, crearFechaAleatoria(),true);
             }
         }
         else{
-            return armaAleatoria();
+            return crearArmaAleatoria();
         }
     }
 
@@ -346,7 +345,7 @@ public class Superviviente implements EntidadActivable{
      * buscar equipo.
      * @return Una fecha aleatoria desde el año 2000 hasta el 2100
      */
-    private int [] fechaAleatoria(){
+    private int [] crearFechaAleatoria(){
         int [] fecha = new int[3];
         Random r = new Random();
         fecha[0] = r.nextInt(30);
@@ -366,7 +365,7 @@ public class Superviviente implements EntidadActivable{
      * Esta funcion tiene un conjunto de nombres de comidas posibles que devolvera de manera aleatoria.
      * @return String con un nombre de una comida
      */
-    private String nombreComidaAleatoria(){
+    private String crearNombreComidaAleatoria(){
         Random r = new Random();
         int selector = r.nextInt(20);
         switch(selector){
@@ -439,7 +438,7 @@ public class Superviviente implements EntidadActivable{
      * Esta funcion generará de manera aleatoria el nombre de una bebida
      * @return Devuelve un String con el nombre de una bebida
      */
-    private String nombreBebidaAleatoria(){
+    private String crearNombreBebidaAleatoria(){
         Random r = new Random();
         int selector = r.nextInt(20);
         switch(selector){
@@ -525,7 +524,7 @@ public class Superviviente implements EntidadActivable{
      * Esta funcion se encarga de crear un Arma aleatoria
      * @return Un Arma
      */
-    private Arma armaAleatoria(){
+    private Arma crearArmaAleatoria(){
         Random r = new Random();
         int selector = r.nextInt(17);
         switch(selector){
