@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj.entidades;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Juego {
     private Tablero tablero;
@@ -103,5 +104,42 @@ public class Juego {
             builder.append(zombies.get(i).toString());
         }
         return builder.toString();
+    }
+
+    /**
+     * Este metodo privado se utilizará en el juego para generar Zombies aleatorios en posiciones aleatorias del juego.
+     * @return Un zombie cualquiera según las probabilidades indicadas dentro del metodo.
+     */
+    private Zombie generarZombie(){
+        Random random = new Random();
+        //Generamos una posicion aleatoria con las dimensiones del tablero como valores máximos posibles.
+        Posicion posicionAleatoria = new Posicion(random.nextInt(this.getTablero().getDimensiones().getPosicionX()),random.nextInt(this.getTablero().getDimensiones().getPosicionY()));
+
+        //Elegimos el tipo del zombie con un 60% de probabilidad de que sea caminante, 30% Corredor y 10% Abominacion
+        int tipoZombie = random.nextInt(10);
+        TipoZombie tipoZombieEnum;
+        if(tipoZombie < 6) {
+            tipoZombieEnum = TipoZombie.values()[0];
+        }
+        else if(tipoZombie < 9) {
+            tipoZombieEnum = TipoZombie.values()[1];
+        }
+        else{
+            tipoZombieEnum = TipoZombie.values()[2];
+        }
+
+
+        //Elegimos de forma equiprobable si es normal, berserker o tóxico
+        int selector = random.nextInt(3);
+        switch(selector){
+            case 0:
+                return new Normal(tipoZombieEnum,posicionAleatoria);
+            case 1:
+                return new Berserker(tipoZombieEnum,posicionAleatoria);
+            case 2:
+                return new Toxico(tipoZombieEnum,posicionAleatoria);
+            default:
+                return null; // No deberia de llegar aqui, ya que el random va de 0 a 2, en cualquier caso retorna un null
+        }
     }
 }
