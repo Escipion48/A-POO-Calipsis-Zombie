@@ -101,9 +101,9 @@ public class Juego {
         }
         builder.append("Con los zombies:\n");
         for(int i = 0; i<this.zombies.size(); i++) {
-            builder.append(zombies.get(i).toString());
+            builder.append(zombies.get(i).toString()+"\n");
         }
-        builder.append("\nAtaques:\n");
+        builder.append("Ataques:\n");
         builder.append(ataques.toString());
         return builder.toString();
     }

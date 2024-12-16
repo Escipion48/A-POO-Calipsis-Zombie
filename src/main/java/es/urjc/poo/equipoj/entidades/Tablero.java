@@ -67,9 +67,8 @@ public class Tablero {
         builder.append("\nCasillas:\n");
         for(int i = 0; i <= this.getDimensiones().posicionX; i++){
             for(int j = 0; j <= this.getDimensiones().posicionY; j++){
-                builder.append(tablero[i][j].toString()+"\t");
+                builder.append(tablero[i][j].toString()+"\n");
             }
-            builder.append("\n");
         }
         return builder.toString();
     }
