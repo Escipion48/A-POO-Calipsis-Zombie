@@ -84,5 +84,9 @@ public class App {
         s1.buscar(busqueda4);
         s1.buscar(busqueda5);
         System.out.println(s1.toString());
+
+        Juego juego = new Juego();
+        IO io = new IO();
+        io.escribir(juego.toString(), "Prueba");
     }
 }
