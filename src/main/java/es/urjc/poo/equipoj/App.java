@@ -88,5 +88,8 @@ public class App {
         Juego juego = new Juego();
         IO io = new IO();
         io.escribir(juego.toString(), "Prueba");
+
+        Posicion pruebaPosicionLectura1 = io.posicionFromString("posicion=0/0");
+        System.out.println(pruebaPosicionLectura1.toString());
     }
 }

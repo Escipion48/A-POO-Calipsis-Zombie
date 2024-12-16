@@ -20,7 +20,7 @@ public class Tablero {
         this.tablero = new Casilla[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                tablero[i][j] = new Casilla();
+                tablero[i][j] = new Casilla(new Posicion(i, j),false);
             }
         }
     }

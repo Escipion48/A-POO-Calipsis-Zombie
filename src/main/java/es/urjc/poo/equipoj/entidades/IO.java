@@ -21,4 +21,10 @@ public class IO {
 
 
     //}
+    
+    
+    public Posicion posicionFromString(String texto) {
+        String [] valores = texto.replace("posicion=", "").split("/");
+        return new Posicion(Integer.parseInt(valores[0]), Integer.parseInt(valores[1]));
+    }
 }
