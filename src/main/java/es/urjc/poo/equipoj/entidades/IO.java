@@ -15,4 +15,8 @@ public class IO {
             System.out.println("Error en el guardado" + e.getMessage());
         }
     }
+
+    //public Juego leer(String ruta){
+
+    //}
 }

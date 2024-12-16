@@ -19,9 +19,9 @@ public class Juego {
         this.supervivientes[2]= new Superviviente("Superviviente3");
         this.supervivientes[3]= new Superviviente("Superviviente4");
         this.zombies = new ArrayList<>();
-        this.zombies.add(0, new Zombie());
-        this.zombies.add(1, new Zombie());
-        this.zombies.add(2, new Zombie());
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
         this.ataques = new Ataques();
 
     }
@@ -103,6 +103,8 @@ public class Juego {
         for(int i = 0; i<this.zombies.size(); i++) {
             builder.append(zombies.get(i).toString());
         }
+        builder.append("\nAtaques:\n");
+        builder.append(ataques.toString());
         return builder.toString();
     }
 
