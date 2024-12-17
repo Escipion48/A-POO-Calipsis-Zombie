@@ -16,6 +16,10 @@ public class Toxico extends Zombie {
     }
 
 
+    public Toxico(long identificador, TipoZombie tipo, Posicion posicion) {
+        super(identificador, tipo, posicion);
+    }
+
     //Constructor principal
     public Toxico(TipoZombie tipo, Posicion posicion) {
         super(tipo,posicion);

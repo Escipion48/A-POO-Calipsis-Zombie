@@ -14,6 +14,10 @@ public class Berserker extends Zombie {
         super(identificador, tipo, new Posicion());
     }
 
+    public Berserker(long identificador, TipoZombie tipo, Posicion posicion) {
+        super(identificador, tipo, posicion);
+    }
+
 
     //constructor principal
     public Berserker(TipoZombie tipo, Posicion posicion) {

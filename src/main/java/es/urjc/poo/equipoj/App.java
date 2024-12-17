@@ -91,5 +91,11 @@ public class App {
 
         Posicion pruebaPosicionLectura1 = io.posicionFromString("posicion=0/0");
         System.out.println(pruebaPosicionLectura1.toString());
+
+        Casilla casillaPruebaLectura1 = io.casillaFromString("Casilla{posicion=5/1, explorada=false}");
+        System.out.println(casillaPruebaLectura1.toString());
+
+        Zombie z1 = io.zombieFromString("Zombie: 1734429076027 posicion=2/2 Tipo:CORREDOR Berserker");
+        System.out.println(z1.toString());
     }
 }

@@ -103,7 +103,7 @@ public class Zombie implements EntidadActivable {
 
     @Override
     public String toString() {
-        return ("Zombie: "+this.getIdentificador()+" Posicion: "+this.getPosicion().toString()+" Tipo:"+this.getTipo());
+        return ("Zombie: "+this.getIdentificador()+" posicion="+this.getPosicion().toString()+" Tipo:"+this.getTipo());
     }
 
     public void reaccionAtaque() {
