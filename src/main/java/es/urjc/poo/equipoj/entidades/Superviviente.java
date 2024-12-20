@@ -701,7 +701,6 @@ public class Superviviente implements EntidadActivable{
                 iterator.remove();
                 convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
                 Eliminados.add(zombie);
-                this.anadirZombieElimninado(zombie);
                 this.contadorZombiesEliminados++;
                 num_exitos--;
             } else if (!(zombie instanceof Berserker) && zombie.getAguante() <= potencia) {
@@ -711,7 +710,6 @@ public class Superviviente implements EntidadActivable{
                 iterator.remove();
                 convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
                 Eliminados.add(zombie);
-                this.anadirZombieElimninado(zombie);
                 this.contadorZombiesEliminados++;
                 num_exitos--;
             }
