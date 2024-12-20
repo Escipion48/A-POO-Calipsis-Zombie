@@ -47,6 +47,14 @@ public class Provision extends Equipo{
         return this.tipo;
     }
 
+    public boolean caducado(){
+        int anio = this.caducidad[2];
+        if(anio>=2025){
+            return false;
+        }
+        return false;
+    }
+
     @Override
     public String toString(){
         String nombreTipo;

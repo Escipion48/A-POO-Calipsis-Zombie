@@ -107,7 +107,4 @@ public class EntradaGUI extends JFrame {//kk
         getContentPane().revalidate();
         getContentPane().repaint();
     }
-
-
-
 }

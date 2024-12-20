@@ -120,6 +120,12 @@ public class Juego {
         //Generamos una posicion aleatoria con las dimensiones del tablero como valores máximos posibles.
         Posicion posicionAleatoria = new Posicion(random.nextInt(this.getTablero().getDimensiones().getPosicionX())+1,random.nextInt(this.getTablero().getDimensiones().getPosicionY())+1);
 
+        try{
+            Thread.sleep(1);
+        }catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
         //Elegimos el tipo del zombie con un 60% de probabilidad de que sea caminante, 30% Corredor y 10% Abominacion
         int tipoZombie = random.nextInt(10);
         TipoZombie tipoZombieEnum;
@@ -151,5 +157,15 @@ public class Juego {
     public void anadirZombie(){
         Zombie z = generarZombie();
         this.zombies.add(z);
+    }
+
+    public void reiniciar(){
+        this.setSupervivientes(new Superviviente[]{});
+        this.setAtaques(new Ataques());
+        this.setTablero(new Tablero());
+        this.zombies.clear();
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
     }
 }
