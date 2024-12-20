@@ -657,20 +657,6 @@ public class Superviviente implements EntidadActivable{
         }
     }
 
-    public void eliminarItemInventario(Equipo equipo) {
-
-        for (int i = 0; i < this.getInventario().length; i++) {
-            if (this.getInventario()[i] != null && this.getInventario()[i].equals(equipo)) {
-                System.out.println("Ítem encontrado en posición: " + i);
-                this.getInventario()[i] = null; // Eliminar ítem
-                return;
-            }
-        }
-    }
-
-
-
-
     private int[] lanzarDados(Ataque ataque,Arma arma) {
         int n = arma.getNumeroDados();
         int[] nd= new int[n];
