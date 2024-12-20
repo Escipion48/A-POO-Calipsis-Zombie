@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class PanelPersonaje extends JPanel {
     final Juego juego;
@@ -456,23 +457,27 @@ public class PanelPersonaje extends JPanel {
         JScrollPane jScrollPane = new JScrollPane(panelTexto);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        try{for(Ataque ataque : juego.getAtaques().getAtaques()){
-            panelTexto.setText(panelTexto.getText()+ataque.toString());
-        }}catch(NullPointerException e){
+        try{
+            StringBuilder stringBuilder = new StringBuilder("Se ha realizado: ");
+            for(Ataque ataque : juego.getAtaques().getAtaques()){
+                stringBuilder.append(ataque).append("\n");
+        }panelTexto.setText(stringBuilder.toString());
+        }catch(NullPointerException e){
             panelTexto.setText("No se ha realizado ningun ataque\n");
         }
 
         panelTextoAtaques.add(jScrollPane, BorderLayout.CENTER);
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e -> dialogo.dispose());
+        dialogo.add(panelTextoAtaques, BorderLayout.CENTER);
         dialogo.add(aceptar, BorderLayout.SOUTH);
 
         dialogo.setVisible(true);
-        dialogo.dispose();
 
     }
 
     private void JDialogAtaqueZombiesRecibidos(Superviviente superviviente) {
+        // Crear ventana modal
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         String titulo = "Zombies que han atacado a " + superviviente.getNombre();
         JDialog dialogo = new JDialog(parentWindow, titulo, Dialog.ModalityType.APPLICATION_MODAL);
@@ -480,27 +485,33 @@ public class PanelPersonaje extends JPanel {
         dialogo.setLocationRelativeTo(this);
         dialogo.setLayout(new BorderLayout(10, 10));
 
+        // Crear panel de texto
         JTextPane panelTextoDeAtaqueZombiesRecibidos = new JTextPane();
         panelTextoDeAtaqueZombiesRecibidos.setEditable(false);
 
-
+        // Construir el texto del panel
         if (superviviente.getAtaquesRecibidos().isEmpty()) {
-            panelTextoDeAtaqueZombiesRecibidos.setText("No se ha recibido ningun ataque\n");
+            panelTextoDeAtaqueZombiesRecibidos.setText("No se ha recibido ningún ataque\n");
         } else {
+            StringBuilder texto = new StringBuilder();
             for (Zombie z : superviviente.getAtaquesRecibidos()) {
-                panelTextoDeAtaqueZombiesRecibidos.setText(z.toString());
+                texto.append(z.toString()).append("\n");
             }
+            panelTextoDeAtaqueZombiesRecibidos.setText(texto.toString());
         }
 
+        // Botón de aceptar para cerrar el diálogo
         JButton aceptar = new JButton("Aceptar");
-        aceptar.addActionListener(e -> {
-            dialogo.dispose();
-        });
+        aceptar.addActionListener(e -> dialogo.dispose());
 
-        dialogo.add(panelTextoDeAtaqueZombiesRecibidos, BorderLayout.CENTER);
+        // Añadir componentes al diálogo
+        dialogo.add(new JScrollPane(panelTextoDeAtaqueZombiesRecibidos), BorderLayout.CENTER);
         dialogo.add(aceptar, BorderLayout.SOUTH);
+
+        // Hacer visible el diálogo
         dialogo.setVisible(true);
     }
+
 
     private void JDialogTurnoSuperviviente() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
@@ -609,26 +620,42 @@ public class PanelPersonaje extends JPanel {
                 return;
             }
 
-            superviviente.eliminarItemInventario(Item[0]);
+            // Eliminar ítem del inventario
+            for (int i = 0; i < superviviente.getInventario().length; i++) {
+                if (superviviente.getInventario()[i] != null && superviviente.getInventario()[i].equals(Item[0])) {
+                    System.out.println("Ítem encontrado en posición: " + i);
+                    superviviente.setInventario(null,i);// Eliminar ítem
+                    break;
+                }
+            }
 
-            // Si es un arma, verificar si está en armas activas y eliminarla de ser necesario
+            System.out.println("Ítem eliminado: " + superviviente);
+
+            // Verificar si es un arma activa
             if (Item[0] instanceof Arma) {
                 Arma armaItem = (Arma) Item[0];
                 for (int i = 0; i < superviviente.getArmasActivas().length; i++) {
                     if (superviviente.getArmaActiva(i) != null && superviviente.getArmaActiva(i).equals(armaItem)) {
                         superviviente.setArmaActiva(null, i);
+                        System.out.println("Arma activa eliminada: " + superviviente);
+                        break;
                     }
                 }
             }
 
+            // Actualizar la UI
             actualizarSupervivientesUI();
+            System.out.println("UI actualizada.");
+
+            // Mostrar mensaje de éxito y cerrar diálogo
+            JOptionPane.showMessageDialog(dialogo, "Ítem eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dialogo.dispose();
         });
 
         JButton cancelar = new JButton("Cancelar");
         cancelar.addActionListener(e -> dialogo.dispose());
 
-        dialogo.add(new JScrollPane(contenidoDelInventario), BorderLayout.CENTER);
+        dialogo.add(contenidoDelInventario, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel();
         panelBotones.add(aceptar);
@@ -639,14 +666,15 @@ public class PanelPersonaje extends JPanel {
     }
 
     private void TurnoZombie(){
+        ArrayList<EntidadActivable> entidades = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
         for(Zombie z: juego.getZombies()){
             z.activarse();
             do{
-                AtaqueZombie(z);
+                ataqueZombie(z);
                 if(z.getActivaciones()==0){
                     break;
                 }
-                z.moverse(juego.getEntidades());
+                z.moverse(entidades);
             }while(z.getActivaciones() > 0);
         }
         juego.anadirZombie();
@@ -819,10 +847,10 @@ public class PanelPersonaje extends JPanel {
             }
 
             Posicion posicion = new Posicion(x, y);
-            if (superviviente.getPosicion().comprobarAdyacente(posicion) && (superviviente.getAcciones() - superviviente.calcularNumeroAccinesPorMoverse(juego.getEntidades())>0)){
-                superviviente.moverse(juego.getEntidades());
+            ArrayList<EntidadActivable> entidades = new ArrayList<>(juego.getZombies());
+            if (superviviente.getPosicion().comprobarAdyacente(posicion) && (superviviente.getAcciones() - superviviente.calcularNumeroAccinesPorMoverse(entidades)>0)){
+                superviviente.moverse(entidades);
                 superviviente.setPosicion(posicion);
-                superviviente.menosUnaAccion();
                 actualizarSupervivientesUI();
                 dialogo.dispose();
             } else if (!superviviente.getPosicion().comprobarAdyacente(posicion)) {
@@ -929,6 +957,7 @@ public class PanelPersonaje extends JPanel {
     private void mostrarPanelCoordenadas(JDialog dialogo, Arma arma, Superviviente superviviente) {
         JPanel panelCoordenadas = new JPanel(new GridLayout(4, 2, 10, 10));
         panelCoordenadas.setBorder(BorderFactory.createTitledBorder("Seleccionar Casilla Objetivo"));
+        panelCoordenadas.setBorder(new EmptyBorder(10,10,10,10));
 
         JLabel l1 = new JLabel("Introduzca coordenadas:");
         JLabel l2 = new JLabel(arma.toString());
@@ -962,9 +991,25 @@ public class PanelPersonaje extends JPanel {
                     return;
                 }
                 else {
-                    ArrayList<Zombie> zombiesEliminados =superviviente.resolverAtaque(arma, posicionObjetivo, juego.getEntidades());
+
+                    int n = arma.getNumeroDados();
+                    int[] nd = new int[n];
+                    Ataque ataque = new Ataque(nd, "");
+
+                    ArrayList<EntidadActivable> entidades = new ArrayList<>(juego.getZombies());
+                    ArrayList<Zombie> zombiesEliminados =superviviente.resolverAtaque(arma, posicionObjetivo, entidades,ataque);
+                    //Guardar el ataque resultado
+                    StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a los Zombies: \n");
+                    for (Zombie zombie1 : zombiesEliminados) {
+                        stringBuilder.append(zombie1.toString()).append("\n");
+                    }
+                    ataque.setResultado(stringBuilder.toString());
+                    juego.getAtaques().setAtaque(ataque);
+
                     ArrayList<EntidadActivable> entidadesZombie = new ArrayList<>(zombiesEliminados);
                     superviviente.atacar(entidadesZombie);
+
+                    juego.getZombies().removeAll(zombiesEliminados);
                     superviviente.menosUnaAccion();
                     }
                 dialogo.dispose();
@@ -987,20 +1032,35 @@ public class PanelPersonaje extends JPanel {
         dialogo.repaint();
     }
 
-    private void AtaqueZombie(Zombie zombie){
-        ArrayList<Superviviente> supervivientes = zombie.pasarEntidadesASupervivientes(juego.getEntidades());
-        if(!zombie.getSupervivienteEnMismaCasilla(supervivientes).isEmpty()){
-            EntidadActivable[]supervivientes1 = new Superviviente[1];
-                supervivientes1[0]= zombie.getSupervivienteAlQueDirigirse(supervivientes);
-                ArrayList<EntidadActivable> Objetivo = new ArrayList<>(Arrays.asList(supervivientes1));
-            zombie.atacar(Objetivo);
-            ArrayList<Superviviente> Ob = zombie.pasarEntidadesASupervivientes(Objetivo);
-            for(Superviviente superviviente: juego.getSupervivientes()){
-                if(superviviente.equals(Ob.get(0))){
-                    superviviente.anadirHeridas1();
+    private void ataqueZombie(Zombie zombie) {
+
+        ArrayList<Superviviente> supervivientes = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
+        // Comprobar si hay supervivientes en la misma casilla que el zombie
+        if (!zombie.getSupervivienteEnMismaCasilla(supervivientes).isEmpty()) {
+            // Determinar el objetivo al que el zombie se dirigirá
+            Superviviente objetivo = zombie.getSupervivienteAlQueDirigirse(supervivientes);
+            if (objetivo != null) {
+
+                ArrayList<EntidadActivable> objetivoList = new ArrayList<>();
+                objetivoList.add(objetivo);
+
+                // El zombie ataca al objetivo
+                zombie.atacar(objetivoList);
+
+                // Convertir las entidades activables a supervivientes
+                ArrayList<Superviviente> supervivientesHeridos = zombie.pasarEntidadesASupervivientes(objetivoList);
+
+                // Actualizar las heridas del superviviente herido
+                for (Superviviente superviviente : juego.getSupervivientes()) {
+                    if (superviviente.equals(supervivientesHeridos.get(0))) {
+                        superviviente.anadirHeridas1();
+                        superviviente.anadirAtaqueRecibido(zombie);
+                    }
                 }
+                // Reducir una acción al zombie
+                zombie.menosUnaAccion();
             }
-            zombie.menosUnaAccion();
         }
     }
+
 }

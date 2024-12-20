@@ -156,12 +156,10 @@ public class Zombie implements EntidadActivable {
 
     @Override
     public void atacar(ArrayList<EntidadActivable> entidad) {
-        System.out.println("Lista de entidades recibida: " + entidad);
         ArrayList<Superviviente> supervivientes = pasarEntidadesASupervivientes(entidad);
-
         if (!supervivientes.isEmpty()) {
             supervivientes.get(0).anadirHeridas1();
-            System.out.println("Herida añadida al primer superviviente");
+            System.out.println("Herida añadida al primer superviviente"+supervivientes);
         } else {
             System.out.println("No hay supervivientes para atacar.");
         }

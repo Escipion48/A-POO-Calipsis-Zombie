@@ -34,7 +34,7 @@ public class Ataques {
     public String toString() {
         StringBuilder str = new StringBuilder();
         for(Ataque ataque : ataques) {
-            str.append(ataque.toString()+"\n");
+            str.append(ataque.toString()).append("\n");
         }
         return str.toString();
     }

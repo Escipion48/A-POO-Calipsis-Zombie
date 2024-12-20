@@ -240,14 +240,13 @@ public class Superviviente implements EntidadActivable{
 
 
     /**
-     * Como indica esta funcion, se encarga de mover a Superviviente, teniendo en cuenta
+     * Como indica esta funcion, se encarga de actualizar las acciones de Superviviente, teniendo en cuenta
      * la cantidad de acciones que tiene y la cantidad de zombies con las que comparte
-     * casilla, restando una accion extra por cada zombie.
+     * casilla, restando una accion extra por cada zombie mas 1 de la accion propia de moverse.
      */
     @Override
     public void moverse(ArrayList<EntidadActivable> entidades){
-        this.setAcciones(this.getAcciones() - this.calcularNumeroAccinesPorMoverse(entidades));
-        this.setPosicion(posicion);
+        this.setAcciones(this.getAcciones() - (this.calcularNumeroAccinesPorMoverse(entidades)+1));
 
     }
 
@@ -255,10 +254,8 @@ public class Superviviente implements EntidadActivable{
     @Override
     public void atacar(ArrayList<EntidadActivable> entidad ) {
         ArrayList<Zombie> zombieEliminado = this.convertirArrayEntidadesActivableAZombie(entidad);
-        for (Zombie zombie : zombieEliminado) {
-            this.contadorZombiesEliminados++;
-            this.zombiesEliminados.add(zombie);
-        }
+        this.zombiesEliminados.addAll(zombieEliminado);
+        System.out.println(this.zombiesEliminados);
     }
 
 
@@ -661,12 +658,16 @@ public class Superviviente implements EntidadActivable{
     }
 
     public void eliminarItemInventario(Equipo equipo) {
-        for(int i = 0 ; i<this.getInventario().length; i++){
-            if(this.getInventario(i).equals(equipo)){
-                this.getInventario()[i] = null;
+
+        for (int i = 0; i < this.getInventario().length; i++) {
+            if (this.getInventario()[i] != null && this.getInventario()[i].equals(equipo)) {
+                System.out.println("Ítem encontrado en posición: " + i);
+                this.getInventario()[i] = null; // Eliminar ítem
+                return;
             }
         }
     }
+
 
 
 
@@ -692,24 +693,21 @@ public class Superviviente implements EntidadActivable{
     }
 
 
-    public ArrayList<Zombie>  resolverAtaque(Arma arma, Posicion p, ArrayList<EntidadActivable> entidades) {
+    public ArrayList<Zombie>  resolverAtaque(Arma arma, Posicion p, ArrayList<EntidadActivable> entidades,Ataque ataque) {
         int potencia = arma.getPotencia();
-        int n = arma.getNumeroDados();
-        int[] nd = new int[n];
-        Ataque ataque = new Ataque(nd, "");
-        nd =lanzarDados(ataque, arma);
+        int[] nd= lanzarDados(ataque,arma);
         int num_exitos = evaluarExito(arma, nd);
 
-        ArrayList<Zombie> CasillaZombie = new ArrayList<>();
+        ArrayList<Zombie> CasillaConZombie = new ArrayList<>();
         ArrayList<Zombie> Eliminados = new ArrayList<>();
 
         for (Zombie zombie : convertirArrayEntidadesActivableAZombie(entidades)) {
             if (p.equals(zombie.getPosicion())) {
-                CasillaZombie.add(zombie);
+                CasillaConZombie.add(zombie);
             }
         }
 
-        Iterator<Zombie> iterator = CasillaZombie.iterator();
+        Iterator<Zombie> iterator = CasillaConZombie.iterator();
 
         while (iterator.hasNext() && num_exitos>0) {
             Zombie zombie = iterator.next();
@@ -718,7 +716,7 @@ public class Superviviente implements EntidadActivable{
                 convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
                 Eliminados.add(zombie);
                 this.anadirZombieElimninado(zombie);
-                this.anadirContadorZombiesEliminados1();
+                this.contadorZombiesEliminados++;
                 num_exitos--;
             } else if (!(zombie instanceof Berserker) && zombie.getAguante() <= potencia) {
                 if (zombie instanceof Toxico && this.getPosicion().equals(zombie.getPosicion())) {
@@ -728,16 +726,11 @@ public class Superviviente implements EntidadActivable{
                 convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
                 Eliminados.add(zombie);
                 this.anadirZombieElimninado(zombie);
-                this.anadirContadorZombiesEliminados1();
+                this.contadorZombiesEliminados++;
                 num_exitos--;
             }
         }
 
-        StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a los Zombies: \n");
-        for (Zombie zombie1 : Eliminados) {
-            stringBuilder.append(zombie1.toString()).append("\n");
-        }
-        ataque.setResultado(stringBuilder.toString());
         return Eliminados;
     }
 
@@ -750,11 +743,12 @@ public class Superviviente implements EntidadActivable{
         this.zombiesEliminados.add(zombie);
     }
 
-    private void anadirContadorZombiesEliminados1() {
-        this.contadorZombiesEliminados++;
-    }
 
     public void menosUnaAccion() {
         this.acciones--;
+    }
+
+    public void anadirAtaqueRecibido(Zombie z){
+        this.ataquesRecibidos.add(z);
     }
 }

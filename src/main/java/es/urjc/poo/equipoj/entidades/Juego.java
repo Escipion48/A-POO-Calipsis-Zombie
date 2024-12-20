@@ -8,7 +8,6 @@ public class Juego {
     private Tablero tablero;
     private Superviviente [] supervivientes;
     private ArrayList<Zombie> zombies;
-    private ArrayList<EntidadActivable> entidades;
     private Ataques ataques;
 
     //Constructor prueba, no definitivo
@@ -25,23 +24,17 @@ public class Juego {
         this.zombies.add(generarZombie());
         this.zombies.add(generarZombie());
         this.ataques = new Ataques();
-        this.entidades = new ArrayList<>();
-        ArrayList<Superviviente>supervivientesLista = new ArrayList<>(Arrays.asList(supervivientes));
-        this.entidades.addAll(supervivientesLista);
-        this.entidades.addAll(zombies);
 
 
     }
 
-    public Juego(Tablero tablero, Superviviente[] supervivientes, ArrayList<Zombie> zombies, ArrayList<EntidadActivable> entidades) {
+    public Juego(Tablero tablero, Superviviente[] supervivientes, ArrayList<Zombie> zombies) {
         this.tablero = tablero;
         this.supervivientes = new Superviviente[supervivientes.length];
         this.supervivientes = supervivientes;
         this.zombies = new ArrayList<Zombie>();
         this.zombies.addAll(zombies);
         this.ataques = new Ataques();
-        this.entidades = new ArrayList<>();
-        this.entidades.addAll(entidades);
     }
 
     public Superviviente[] getSupervivientes() {
@@ -82,16 +75,13 @@ public class Juego {
     }
 
     public void setAtaque(Ataque ataque) {
-        this.ataques.setAtaque( ataque);
+        this.ataques.setAtaque(ataque);
     }
 
     public ArrayList<Zombie> getZombies() {
         return zombies;
     }
 
-    public ArrayList<EntidadActivable> getEntidades() {return entidades;}
-
-    public void setEntidades(ArrayList<EntidadActivable> entidades) {this.entidades = entidades;}
 
     public Zombie getZombie(int pos) {
         return zombies.get(pos);
@@ -160,7 +150,6 @@ public class Juego {
 
     public void anadirZombie(){
         Zombie z = generarZombie();
-        this.entidades.add(z);
         this.zombies.add(z);
     }
 }
