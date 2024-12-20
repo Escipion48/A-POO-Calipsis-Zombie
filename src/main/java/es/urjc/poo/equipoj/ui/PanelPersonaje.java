@@ -346,7 +346,7 @@ public class PanelPersonaje extends JPanel {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         String titulo = "Armas activas de " + superviviente.getNombre();
         JDialog dialogo = new JDialog(parentWindow, titulo, Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setSize(400, 300);
+        dialogo.setSize(600, 300);
         dialogo.setLocationRelativeTo(parentWindow);
         dialogo.setLayout(new BorderLayout(10, 10));
 
@@ -444,7 +444,7 @@ public class PanelPersonaje extends JPanel {
         JDialog dialogo = new JDialog(parentWindow,"Ataques Realizados",JDialog.ModalityType.APPLICATION_MODAL );
         dialogo.setLayout(new BorderLayout(10, 10));
         dialogo.setBackground(Color.white);
-        dialogo.setSize(400, 300);
+        dialogo.setSize(500, 300);
         dialogo.setLocationRelativeTo(null);
 
         JPanel panelTextoAtaques = new JPanel();
@@ -456,7 +456,7 @@ public class PanelPersonaje extends JPanel {
         panelTexto.setEditable(false);
         JScrollPane jScrollPane = new JScrollPane(panelTexto);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         try{
             StringBuilder stringBuilder = new StringBuilder("Se ha realizado: ");
             for(Ataque ataque : juego.getAtaques().getAtaques()){
@@ -999,7 +999,7 @@ public class PanelPersonaje extends JPanel {
                     ArrayList<EntidadActivable> entidades = new ArrayList<>(juego.getZombies());
                     ArrayList<Zombie> zombiesEliminados =superviviente.resolverAtaque(arma, posicionObjetivo, entidades,ataque);
                     //Guardar el ataque resultado
-                    StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a los Zombies: \n");
+                    StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a \n");
                     for (Zombie zombie1 : zombiesEliminados) {
                         stringBuilder.append(zombie1.toString()).append("\n");
                     }
