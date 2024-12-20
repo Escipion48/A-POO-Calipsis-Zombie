@@ -26,6 +26,8 @@ public class PanelPersonaje extends JPanel {
         initUI();
     }
 
+    /**
+     * initUI tiene los botones principales y llama a CrearSupervivientes*/
     private void initUI() {
         //iniciar panel general
         setLayout(new BorderLayout(10, 10));
@@ -60,7 +62,7 @@ public class PanelPersonaje extends JPanel {
         // Botón empezar
          empezar = new JButton("Empezar Ronda");
         empezar.addActionListener(e -> {
-            panelDeTexto.setText(panelDeTexto.getText() + "Empezando la 1º ronda...");
+            panelDeTexto.setText(panelDeTexto.getText() + "Empezando la 1º ronda...\n");
             JDialogTurnoSuperviviente();
             TurnoZombie();
             remove(empezar);
@@ -72,8 +74,7 @@ public class PanelPersonaje extends JPanel {
 
 
         siguienteRonda.addActionListener(e->{
-            panelDeTexto.setText(panelDeTexto.getText() + "Empezando la siguiente ronda...");
-
+            panelDeTexto.setText(panelDeTexto.getText() + "Empezando la siguiente ronda...\n");
             JDialogTurnoSuperviviente();
             TurnoZombie();
         });
@@ -84,7 +85,86 @@ public class PanelPersonaje extends JPanel {
         add(panelSupervivienteEntero, BorderLayout.CENTER);
     }
 
+    /**
+     * JDialogoCrearPersonaje es un JDialog en la que se crea supervivientes al introducir los nombres
+     * y llama a actualizarSupervivienteUI para crear los botenes de informacion*/
+    private void JDialogoCrearPersonaje() {
+        // Obtener la ventana padre (JFrame o JDialog)
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
+        // Crear el JDialog
+        JDialog dialogo = new JDialog(parentWindow, "Crear Personaje", Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(400, 300);
+        dialogo.setLocationRelativeTo(parentWindow);
+        dialogo.setLayout(new BorderLayout(10, 10));
+
+        // Panel de contenido del diálogo
+        JPanel panelContenido = new JPanel(new GridLayout(5, 2, 10, 10));
+        panelContenido.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        JLabel l1 = new JLabel("Nombre del personaje 1:");
+        JTextField c1 = new JTextField();
+        JLabel l2 = new JLabel("Nombre del personaje 2:");
+        JTextField c2 = new JTextField();
+        JLabel l3 = new JLabel("Nombre del personaje 3:");
+        JTextField c3 = new JTextField();
+        JLabel l4 = new JLabel("Nombre del personaje 4:");
+        JTextField c4 = new JTextField();
+
+        panelContenido.add(l1);
+        panelContenido.add(c1);
+        panelContenido.add(l2);
+        panelContenido.add(c2);
+        panelContenido.add(l3);
+        panelContenido.add(c3);
+        panelContenido.add(l4);
+        panelContenido.add(c4);
+
+        // Botón de confirmación
+        JButton botonConfirmar = new JButton("Confirmar");
+        botonConfirmar.addActionListener(e -> {
+            String nombre1 = c1.getText();
+            String nombre2 = c2.getText();
+            String nombre3 = c3.getText();
+            String nombre4 = c4.getText();
+
+            if (nombre1.isEmpty() || nombre2.isEmpty() || nombre3.isEmpty() || nombre4.isEmpty()) {
+                JOptionPane.showMessageDialog(dialogo, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Asignar los nombres a los supervivientes
+                juego.getSuperviviente(0).setNombre(nombre1);
+                juego.getSuperviviente(1).setNombre(nombre2);
+                juego.getSuperviviente(2).setNombre(nombre3);
+                juego.getSuperviviente(3).setNombre(nombre4);
+                // Actualizar la interfaz con los nuevos nombres
+
+
+                panelSupervivienteEntero.remove(crearSuperviviente); // Quitar el botón de creación
+                actualizarSupervivientesUI(); // Reconstruir la interfaz
+                add(empezar, BorderLayout.SOUTH);
+
+                revalidate();
+                repaint();
+
+                for (Superviviente s : juego.getSupervivientes()) {
+                    panelDeTexto.setText(panelDeTexto.getText() + "Se ha creado un superviviente: " + s.getNombre() + "\n");
+                }
+
+            }
+            dialogo.dispose();
+        });
+
+        // Añadir los componentes al dialogo
+        dialogo.add(panelContenido, BorderLayout.CENTER);
+        dialogo.add(botonConfirmar, BorderLayout.SOUTH);
+
+        // Mostrar el dialogo
+        dialogo.setVisible(true);
+    }
+
+    /**
+     * actualizarUI es una funcion que va actualizando toda la información de los botones
+     * está en cada JDialog que modifique la información*/
     private void actualizarSupervivientesUI() {
         // Borrar todo y guardar una nueva distribucion
         panelSupervivienteEntero.removeAll();
@@ -235,81 +315,8 @@ public class PanelPersonaje extends JPanel {
         repaint();
     }
 
-
-    private void JDialogoCrearPersonaje() {
-        // Obtener la ventana padre (JFrame o JDialog)
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-
-        // Crear el JDialog
-        JDialog dialogo = new JDialog(parentWindow, "Crear Personaje", Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setSize(400, 300);
-        dialogo.setLocationRelativeTo(parentWindow);
-        dialogo.setLayout(new BorderLayout(10, 10));
-
-        // Panel de contenido del diálogo
-        JPanel panelContenido = new JPanel(new GridLayout(5, 2, 10, 10));
-        panelContenido.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-        JLabel l1 = new JLabel("Nombre del personaje 1:");
-        JTextField c1 = new JTextField();
-        JLabel l2 = new JLabel("Nombre del personaje 2:");
-        JTextField c2 = new JTextField();
-        JLabel l3 = new JLabel("Nombre del personaje 3:");
-        JTextField c3 = new JTextField();
-        JLabel l4 = new JLabel("Nombre del personaje 4:");
-        JTextField c4 = new JTextField();
-
-        panelContenido.add(l1);
-        panelContenido.add(c1);
-        panelContenido.add(l2);
-        panelContenido.add(c2);
-        panelContenido.add(l3);
-        panelContenido.add(c3);
-        panelContenido.add(l4);
-        panelContenido.add(c4);
-
-        // Botón de confirmación
-        JButton botonConfirmar = new JButton("Confirmar");
-        botonConfirmar.addActionListener(e -> {
-            String nombre1 = c1.getText();
-            String nombre2 = c2.getText();
-            String nombre3 = c3.getText();
-            String nombre4 = c4.getText();
-
-            if (nombre1.isEmpty() || nombre2.isEmpty() || nombre3.isEmpty() || nombre4.isEmpty()) {
-                JOptionPane.showMessageDialog(dialogo, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                // Asignar los nombres a los supervivientes
-                juego.getSuperviviente(0).setNombre(nombre1);
-                juego.getSuperviviente(1).setNombre(nombre2);
-                juego.getSuperviviente(2).setNombre(nombre3);
-                juego.getSuperviviente(3).setNombre(nombre4);
-                // Actualizar la interfaz con los nuevos nombres
-
-
-                panelSupervivienteEntero.remove(crearSuperviviente); // Quitar el botón de creación
-                actualizarSupervivientesUI(); // Reconstruir la interfaz
-                add(empezar, BorderLayout.SOUTH);
-
-                revalidate();
-                repaint();
-
-                for (Superviviente s : juego.getSupervivientes()) {
-                    panelDeTexto.setText(panelDeTexto.getText() + "Se ha creado un superviviente: " + s.getNombre() + "\n");
-                }
-
-            }
-            dialogo.dispose();
-        });
-
-        // Añadir los componentes al diálogo
-        dialogo.add(panelContenido, BorderLayout.CENTER);
-        dialogo.add(botonConfirmar, BorderLayout.SOUTH);
-
-        // Mostrar el diálogo
-        dialogo.setVisible(true);
-    }
-
+    /**
+     * JDialogVerInventario permite ver el equipo que tiene el superviviente en el inventario*/
     private void JDialogVerInventario(Superviviente superviviente) {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         //Poner el titulo del JDialog
@@ -342,6 +349,8 @@ public class PanelPersonaje extends JPanel {
         dialogo.setVisible(true);
     }
 
+    /**
+     * JDialogVerArmasActivas permite ver las armas activas que tiene el superviviente*/
     private void JDialogVerArmasActivas(Superviviente superviviente) {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         String titulo = "Armas activas de " + superviviente.getNombre();
@@ -372,6 +381,8 @@ public class PanelPersonaje extends JPanel {
 
     }
 
+    /**
+     * JDialogVerZombiesEliminados es una lista de los zombies eliminados*/
     private void JDialogVerZombiesEliminados(Superviviente superviviente) {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -404,6 +415,8 @@ public class PanelPersonaje extends JPanel {
         dialogo.setVisible(true);
     }
 
+    /**
+     * JDialogVerPosicionZombies permite ver la posicion de los zombies*/
     private void JDialogVerPosicionZombies() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -437,7 +450,8 @@ public class PanelPersonaje extends JPanel {
         dialogo.add(aceptar, BorderLayout.SOUTH);
         dialogo.setVisible(true);
     }
-
+    /**
+     * JDialogAtaquesHechos recopila los ataques hechos*/
     private void JDialogAtaquesHechos(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -476,6 +490,8 @@ public class PanelPersonaje extends JPanel {
 
     }
 
+    /**
+     * JDialogAtaqueZombiesRecibidos muestra que zombies nos a atacado*/
     private void JDialogAtaqueZombiesRecibidos(Superviviente superviviente) {
         // Crear ventana modal
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
@@ -512,7 +528,15 @@ public class PanelPersonaje extends JPanel {
         dialogo.setVisible(true);
     }
 
-
+    /**
+     * JDialogPosicion permite ver la posicion en la que está el superviviente*/
+    private void JDialogPosicion(Superviviente superviviente){
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        String mensaje = "La posicion de "+ superviviente.getNombre() +" es "+ superviviente.getPosicion();
+        JOptionPane.showMessageDialog(parentWindow,mensaje,"Posicion",JOptionPane.INFORMATION_MESSAGE);
+    }
+    /**
+     * JDialogTurnosuperviviente es un JDialog que contiene botones que son las acciones que puede realizar los supervivientes*/
     private void JDialogTurnoSuperviviente() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -586,10 +610,15 @@ public class PanelPersonaje extends JPanel {
 
     }
 
+    /**
+     * NoHacerNada es una accion del superviviente que pone todas sus acciones a 0 en esta ronda*/
     private void NoHacerNada(Superviviente superviviente) {
          superviviente.setAcciones(0);
     }
 
+    /**
+     * JDialogEliminarItemDelInventario es una accion del superviviente, se selecciona un Equipo del inventario y se elimina
+     * al darle aceptar*/
     private void JDialogEliminarItemDelInventerio(Superviviente superviviente) {
         final Equipo[] Item = new Equipo[1];
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
@@ -665,21 +694,8 @@ public class PanelPersonaje extends JPanel {
         dialogo.setVisible(true);
     }
 
-    private void TurnoZombie(){
-        ArrayList<EntidadActivable> entidades = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
-        for(Zombie z: juego.getZombies()){
-            z.activarse();
-            do{
-                ataqueZombie(z);
-                if(z.getActivaciones()==0){
-                    break;
-                }
-                z.moverse(entidades);
-            }while(z.getActivaciones() > 0);
-        }
-        juego.anadirZombie();
-    }
-
+    /**
+     * JDialogCombiarArmaActiva accion del superviviente para poner un arma del inventario como arma activa*/
     private void JDialogCambiarArmaActiva(Superviviente superviviente) {
         final Arma[] armaActivaSeleccionada = new Arma[1];
         final Arma[] armaInventarioSeleccionada = new Arma[1];
@@ -805,7 +821,8 @@ public class PanelPersonaje extends JPanel {
         dialogo.setVisible(true);
     }
 
-
+    /**
+     * JDialogMoverse es una accion del superviviente que le permite moverse a otra posicion adyacente*/
     private void JDialogMoverse(Superviviente superviviente) {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -868,6 +885,8 @@ public class PanelPersonaje extends JPanel {
         dialogo.setVisible(true);
     }
 
+    /**
+     * JDialogResultadoBuscar muestra el resultado de buscar*/
     private void JDialogResultadoBuscar(Superviviente superviviente){
         //Comprueba de que si la casilla ya se a buscado y si hay o no Equipo
         int numeroObjetoInventerio = superviviente.calcularNumeroObjetosInventario();
@@ -880,28 +899,30 @@ public class PanelPersonaje extends JPanel {
         }
     }
 
+    /**
+     * JDialgoBuscarFalse se muestra si ya se a buscado en esa casilla o si tiene el inventario lleno */
     private void JDialogBuscarFalse(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JOptionPane.showMessageDialog(parentWindow,"Ya se ha bucado en esta casilla y/o tiene el inventario lleno","ERRPR",JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * JDilogbuscarNada se muestra si se a podido buscar pero no se a encontrado noda*/
     private void JDialogBuscarNada(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
         JOptionPane.showMessageDialog(parentWindow,"No se ha encontrado nada","Buscar",JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * JDialogBuscarTrue muestra el equipo encontrado*/
     private void JDialogBuscarTrue(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JOptionPane.showMessageDialog(parentWindow,"Se ha encontrado :"+ superviviente.getInventario(superviviente.calcularNumeroObjetosInventario()-1),"Objeto encontrado",JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void JDialogPosicion(Superviviente superviviente){
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        String mensaje = "La posicion de "+ superviviente.getNombre() +" es "+ superviviente.getPosicion();
-        JOptionPane.showMessageDialog(parentWindow,mensaje,"Posicion",JOptionPane.INFORMATION_MESSAGE);
-    }
-
+    /**
+     * JDialogAtacar es una accion en la que se selecciona un arma activa, y llama a mostrarPanelCoordenadas */
     private void JDialogAtacar(Superviviente superviviente) {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -954,6 +975,8 @@ public class PanelPersonaje extends JPanel {
         dialogo.setVisible(true);
     }
 
+    /**
+     * mostrarPanelCoordenadas es un panel en el que se introduce las coordenadas para atacar y se crea los ataques*/
     private void mostrarPanelCoordenadas(JDialog dialogo, Arma arma, Superviviente superviviente) {
         JPanel panelCoordenadas = new JPanel(new GridLayout(4, 2, 10, 10));
         panelCoordenadas.setBorder(BorderFactory.createTitledBorder("Seleccionar Casilla Objetivo"));
@@ -1031,7 +1054,26 @@ public class PanelPersonaje extends JPanel {
         dialogo.revalidate();
         dialogo.repaint();
     }
+    /**
+     * Turno de los Zombies, si en la pposicion en la que están hay supervivientes, atacan, si no hay, se mueven y
+     * al terminar se genera un zombie*/
+    private void TurnoZombie(){
+        ArrayList<EntidadActivable> entidades = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
+        for(Zombie z: juego.getZombies()){
+            z.activarse();
+            do{
+                ataqueZombie(z);
+                if(z.getActivaciones()==0){
+                    break;
+                }
+                z.moverse(entidades);
+            }while(z.getActivaciones() > 0);
+        }
+        juego.anadirZombie();
+    }
 
+    /**
+     * ataqueZombie añade una herida al superviviente al que ataca*/
     private void ataqueZombie(Zombie zombie) {
 
         ArrayList<Superviviente> supervivientes = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
