@@ -255,6 +255,7 @@ public class Superviviente implements EntidadActivable{
     public void atacar(ArrayList<EntidadActivable> entidad ) {
         ArrayList<Zombie> zombieEliminado = this.convertirArrayEntidadesActivableAZombie(entidad);
         this.zombiesEliminados.addAll(zombieEliminado);
+        this.acciones--;
         System.out.println(this.zombiesEliminados);
     }
 
@@ -705,7 +706,7 @@ public class Superviviente implements EntidadActivable{
                 num_exitos--;
             } else if (!(zombie instanceof Berserker) && zombie.getAguante() <= potencia) {
                 if (zombie instanceof Toxico && this.getPosicion().equals(zombie.getPosicion())) {
-                    this.anadirHeridas1();
+                    this.heridas++;
                 }
                 iterator.remove();
                 convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
@@ -719,20 +720,43 @@ public class Superviviente implements EntidadActivable{
     }
 
 
-    public void anadirHeridas1() {
-        this.heridas++;
-    }
-
-    private void anadirZombieElimninado(Zombie zombie) {
-        this.zombiesEliminados.add(zombie);
-    }
-
-
-    public void menosUnaAccion() {
-        this.acciones--;
-    }
 
     public void anadirAtaqueRecibido(Zombie z){
         this.ataquesRecibidos.add(z);
+    }
+
+    public void cambiarArmaActiva(Arma arma){
+        for(int i = 0 ; i<this.getArmasActivas().length; i++){
+            if(this.armasActivas[i].equals(arma)){
+                this.setArmaActiva(arma,i);
+                this.acciones--;
+                break;
+
+            }
+        }
+    }
+
+    public void cambiarArmaActiva2(Arma arma , int i){
+        this.setArmaActiva(arma,i);
+        this.acciones--;
+    }
+
+    public void eliminarItemInventario(Equipo equipo){
+        for(int i = 0 ; i<this.getInventario().length;i++){
+            if(this.inventario[i].equals(equipo)){
+                this.inventario[i]=null;
+                this.acciones--;
+                break;
+            }
+        }
+    }
+
+    public void eliminarArmaActiva(Arma arma){
+        for(int i =0 ; i<this.getArmasActivas().length; i++){
+            if(this.armasActivas[i].equals(arma)){
+                this.armasActivas[i]= null;
+                break;
+            }
+        }
     }
 }

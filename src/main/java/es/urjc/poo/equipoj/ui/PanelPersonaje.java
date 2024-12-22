@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class PanelPersonaje extends JPanel {
+public class PanelPersonaje extends JPanel{
     final Juego juego;
     private JPanel panelSupervivienteEntero;
     private JTextPane panelDeTexto;
@@ -20,7 +20,7 @@ public class PanelPersonaje extends JPanel {
     private JButton empezar;
     private JButton posicionZombies;
 
-    public PanelPersonaje(JTextPane panelDeTexto, Juego juego) {
+    public PanelPersonaje(JTextPane panelDeTexto, Juego juego){
         this.panelDeTexto = panelDeTexto;
         this.juego = juego;
         initUI();
@@ -29,7 +29,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * initUI tiene los botones principales y llama a CrearSupervivientes
      */
-    private void initUI() {
+    private void initUI(){
         //iniciar panel general
         setLayout(new BorderLayout(10, 10));
         setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -43,7 +43,7 @@ public class PanelPersonaje extends JPanel {
 
         // Inicializamos el array de supervivientes
         Superviviente[] superviviente = new Superviviente[4];
-        for (int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++){
             superviviente[i] = new Superviviente();
         }
         juego.setSupervivientes(superviviente);
@@ -62,7 +62,7 @@ public class PanelPersonaje extends JPanel {
 
         // Botón empezar
         empezar = new JButton("Empezar Ronda");
-        empezar.addActionListener(e -> {
+        empezar.addActionListener(e->{
             panelDeTexto.setText(panelDeTexto.getText() + "Empezando la 1º ronda...\n");
             JDialogTurnoSuperviviente();
             TurnoZombie();
@@ -74,7 +74,7 @@ public class PanelPersonaje extends JPanel {
         });
 
 
-        siguienteRonda.addActionListener(e -> {
+        siguienteRonda.addActionListener(e->{
             panelDeTexto.setText(panelDeTexto.getText() + "Empezando la siguiente ronda...\n");
             JDialogTurnoSuperviviente();
             TurnoZombie();
@@ -91,7 +91,7 @@ public class PanelPersonaje extends JPanel {
      * JDialogoCrearPersonaje es un JDialog en la que se crea supervivientes al introducir los nombres
      * y llama a actualizarSupervivienteUI para crear los botenes de informacion
      */
-    private void JDialogoCrearPersonaje() {
+    private void JDialogoCrearPersonaje(){
         // Obtener la ventana padre (JFrame o JDialog)
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -131,9 +131,9 @@ public class PanelPersonaje extends JPanel {
             String nombre3 = c3.getText();
             String nombre4 = c4.getText();
 
-            if (nombre1.isEmpty() || nombre2.isEmpty() || nombre3.isEmpty() || nombre4.isEmpty()) {
+            if (nombre1.isEmpty() || nombre2.isEmpty() || nombre3.isEmpty() || nombre4.isEmpty()){
                 JOptionPane.showMessageDialog(dialogo, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
+            }else{
                 // Asignar los nombres a los supervivientes
                 juego.getSuperviviente(0).setNombre(nombre1);
                 juego.getSuperviviente(1).setNombre(nombre2);
@@ -143,13 +143,13 @@ public class PanelPersonaje extends JPanel {
 
 
                 panelSupervivienteEntero.remove(crearSuperviviente); // Quitar el botón de creación
-                actualizarSupervivientesUI(); // Reconstruir la interfaz
+                panelBotonesDeInformacion(); // Reconstruir la interfaz
                 add(empezar, BorderLayout.SOUTH);
 
                 revalidate();
                 repaint();
 
-                for (Superviviente s : juego.getSupervivientes()) {
+                for(Superviviente s : juego.getSupervivientes()){
                     panelDeTexto.setText(panelDeTexto.getText() + "Se ha creado un superviviente: " + s.getNombre() + "\n");
                 }
 
@@ -169,8 +169,8 @@ public class PanelPersonaje extends JPanel {
      * actualizarUI es una funcion que va actualizando toda la información de los botones
      * está en cada JDialog que modifique la información
      */
-    private void actualizarSupervivientesUI() {
-        // Borrar todo y guardar una nueva distribucion
+    private void panelBotonesDeInformacion(){
+
         panelSupervivienteEntero.removeAll();
         panelSupervivienteEntero.setLayout(new BorderLayout(10, 10));
 
@@ -313,7 +313,6 @@ public class PanelPersonaje extends JPanel {
         panelSupervivienteEntero.add(panelArriba, BorderLayout.NORTH);
         panelSupervivienteEntero.add(panelSuperviviente, BorderLayout.CENTER);
 
-
         // Actualizar la interfaz gráfica
         revalidate();
         repaint();
@@ -322,9 +321,8 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogVerInventario permite ver el equipo que tiene el superviviente en el inventario
      */
-    private void JDialogVerInventario(Superviviente superviviente) {
+    private void JDialogVerInventario(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        //Poner el titulo del JDialog
         String titulo = "Inventario de " + superviviente.getNombre();
 
         //Crear el JDialog
@@ -338,10 +336,10 @@ public class PanelPersonaje extends JPanel {
         contenidoDelInventario.setBorder(new EmptyBorder(10, 10, 10, 10));
         contenidoDelInventario.setLayout(new GridLayout(5, 1, 10, 10));
         contenidoDelInventario.setBackground(Color.WHITE);
-        for (Equipo e : superviviente.getInventario()) {
-            try {
+        for(Equipo e : superviviente.getInventario()){
+            try{
                 contenidoDelInventario.add(new JLabel(e.toString()));
-            } catch (Exception exception) {
+            }catch (Exception exception){
                 contenidoDelInventario.add(new JLabel("Espacio vacio"));
             }
         }
@@ -357,7 +355,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogVerArmasActivas permite ver las armas activas que tiene el superviviente
      */
-    private void JDialogVerArmasActivas(Superviviente superviviente) {
+    private void JDialogVerArmasActivas(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         String titulo = "Armas activas de " + superviviente.getNombre();
         JDialog dialogo = new JDialog(parentWindow, titulo, Dialog.ModalityType.APPLICATION_MODAL);
@@ -370,10 +368,10 @@ public class PanelPersonaje extends JPanel {
         contenidoDeArmasActivas.setLayout(new GridLayout(2, 1, 10, 10));
         contenidoDeArmasActivas.setBackground(Color.WHITE);
 
-        for (Arma a : superviviente.getArmasActivas()) {
-            try {
+        for(Arma a : superviviente.getArmasActivas()){
+            try{
                 contenidoDeArmasActivas.add(new JLabel(a.toString()));
-            } catch (Exception exception) {
+            }catch (Exception exception){
                 contenidoDeArmasActivas.add(new JLabel("Espacio vacio"));
             }
         }
@@ -390,7 +388,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogVerZombiesEliminados es una lista de los zombies eliminados
      */
-    private void JDialogVerZombiesEliminados(Superviviente superviviente) {
+    private void JDialogVerZombiesEliminados(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
         String titulo = "Zombies eliminados por " + superviviente.getNombre();
@@ -407,10 +405,10 @@ public class PanelPersonaje extends JPanel {
         jScrollPane.setVerticalScrollBarPolicy(jScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane.setHorizontalScrollBarPolicy(jScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        if (superviviente.getZombiesEliminados().isEmpty()) {
+        if(superviviente.getZombiesEliminados().isEmpty()){
             panelDeTextoDeZombiesEliminados.setText("No se ha eliminado a ningún zombie\n");
         }
-        for (Zombie z : superviviente.getZombiesEliminados()) {
+        for(Zombie z : superviviente.getZombiesEliminados()){
             panelDeTextoDeZombiesEliminados.setText(panelDeTextoDeZombiesEliminados.getText() + z.toString() + "\n");
         }
         JButton aceptar = new JButton("Aceptar");
@@ -425,7 +423,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogVerPosicionZombies permite ver la posicion de los zombies
      */
-    private void JDialogVerPosicionZombies() {
+    private void JDialogVerPosicionZombies(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
         String titulo = "Posición de Zombies";
@@ -445,7 +443,7 @@ public class PanelPersonaje extends JPanel {
 
         // Usar StringBuilder para construir el texto
         StringBuilder textoZombies = new StringBuilder();
-        for (Zombie z : juego.getZombies()) {
+        for(Zombie z : juego.getZombies()){
             textoZombies.append(z.toString()).append("\n");
         }
         panelDeTextoPosicionZombie.setText(textoZombies.toString());
@@ -462,7 +460,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogAtaquesHechos recopila los ataques hechos
      */
-    private void JDialogAtaquesHechos() {
+    private void JDialogAtaquesHechos(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
         JDialog dialogo = new JDialog(parentWindow, "Ataques Realizados", JDialog.ModalityType.APPLICATION_MODAL);
@@ -481,13 +479,13 @@ public class PanelPersonaje extends JPanel {
         JScrollPane jScrollPane = new JScrollPane(panelTexto);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        try {
+        try{
             StringBuilder stringBuilder = new StringBuilder("Se ha realizado: ");
-            for (Ataque ataque : juego.getAtaques().getAtaques()) {
+            for(Ataque ataque : juego.getAtaques().getAtaques()){
                 stringBuilder.append(ataque).append("\n");
             }
             panelTexto.setText(stringBuilder.toString());
-        } catch (NullPointerException e) {
+        }catch(NullPointerException e){
             panelTexto.setText("No se ha realizado ningun ataque\n");
         }
 
@@ -504,7 +502,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogAtaqueZombiesRecibidos muestra que zombies nos a atacado
      */
-    private void JDialogAtaqueZombiesRecibidos(Superviviente superviviente) {
+    private void JDialogAtaqueZombiesRecibidos(Superviviente superviviente){
         // Crear ventana modal
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         String titulo = "Zombies que han atacado a " + superviviente.getNombre();
@@ -518,32 +516,30 @@ public class PanelPersonaje extends JPanel {
         panelTextoDeAtaqueZombiesRecibidos.setEditable(false);
 
         // Construir el texto del panel
-        if (superviviente.getAtaquesRecibidos().isEmpty()) {
+        if(superviviente.getAtaquesRecibidos().isEmpty()){
             panelTextoDeAtaqueZombiesRecibidos.setText("No se ha recibido ningún ataque\n");
-        } else {
+        }else{
             StringBuilder texto = new StringBuilder();
-            for (Zombie z : superviviente.getAtaquesRecibidos()) {
+            for (Zombie z : superviviente.getAtaquesRecibidos()){
                 texto.append(z.toString()).append("\n");
             }
             panelTextoDeAtaqueZombiesRecibidos.setText(texto.toString());
         }
 
-        // Botón de aceptar para cerrar el diálogo
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e -> dialogo.dispose());
 
-        // Añadir componentes al diálogo
+
         dialogo.add(new JScrollPane(panelTextoDeAtaqueZombiesRecibidos), BorderLayout.CENTER);
         dialogo.add(aceptar, BorderLayout.SOUTH);
 
-        // Hacer visible el diálogo
         dialogo.setVisible(true);
     }
 
     /**
      * JDialogPosicion permite ver la posicion en la que está el superviviente
      */
-    private void JDialogPosicion(Superviviente superviviente) {
+    private void JDialogPosicion(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         String mensaje = "La posicion de " + superviviente.getNombre() + " es " + superviviente.getPosicion();
         JOptionPane.showMessageDialog(parentWindow, mensaje, "Posicion", JOptionPane.INFORMATION_MESSAGE);
@@ -552,12 +548,12 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogTurnosuperviviente es un JDialog que contiene botones que son las acciones que puede realizar los supervivientes
      */
-    private void JDialogTurnoSuperviviente() {
+    private void JDialogTurnoSuperviviente(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
-        for (Superviviente superviviente : juego.getSupervivientes()) {
+        for (Superviviente superviviente : juego.getSupervivientes()){
             superviviente.setAcciones(3);
-            while (superviviente.getAcciones() > 0) {
+            while (superviviente.getAcciones() > 0){
                 String titulo = "Tueno de " + superviviente.getNombre();
 
                 JDialog dialogo = new JDialog(parentWindow, titulo, Dialog.ModalityType.APPLICATION_MODAL);
@@ -637,7 +633,7 @@ public class PanelPersonaje extends JPanel {
      * JDialogEliminarItemDelInventario es una accion del superviviente, se selecciona un Equipo del inventario y se elimina
      * al darle aceptar
      */
-    private void JDialogEliminarItemDelInventerio(Superviviente superviviente) {
+    private void JDialogEliminarItemDelInventerio(Superviviente superviviente){
         final Equipo[] Item = new Equipo[1];
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         String titulo = "Eliminar item del inventario de " + superviviente.getNombre();
@@ -651,8 +647,8 @@ public class PanelPersonaje extends JPanel {
         contenidoDelInventario.setBorder(new EmptyBorder(10, 10, 10, 10));
         ButtonGroup itemInventario = new ButtonGroup();
 
-        for (Equipo item : superviviente.getInventario()) {
-            if (item != null) { // Crear botón solo si el ítem no es null
+        for(Equipo item : superviviente.getInventario()){
+            if(item != null){ // Crear botón solo si el ítem no es null
                 JRadioButton botonItem = new JRadioButton(item.getNombre());
                 itemInventario.add(botonItem);
                 contenidoDelInventario.add(botonItem);
@@ -662,37 +658,21 @@ public class PanelPersonaje extends JPanel {
 
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e -> {
-            if (Item[0] == null) {
+            if(Item[0] == null){
                 JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un ítem para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             // Eliminar ítem del inventario
-            for (int i = 0; i < superviviente.getInventario().length; i++) {
-                if (superviviente.getInventario()[i] != null && superviviente.getInventario()[i].equals(Item[0])) {
-                    System.out.println("Ítem encontrado en posición: " + i);
-                    superviviente.setInventario(null, i);// Eliminar ítem
-                    break;
-                }
-            }
+            Equipo equipo = Item[0];
+            superviviente.eliminarItemInventario(equipo);
 
-            System.out.println("Ítem eliminado: " + superviviente);
 
             // Verificar si es un arma activa
-            if (Item[0] instanceof Arma) {
+            if(Item[0] instanceof Arma){
                 Arma armaItem = (Arma) Item[0];
-                for (int i = 0; i < superviviente.getArmasActivas().length; i++) {
-                    if (superviviente.getArmaActiva(i) != null && superviviente.getArmaActiva(i).equals(armaItem)) {
-                        superviviente.setArmaActiva(null, i);
-                        System.out.println("Arma activa eliminada: " + superviviente);
-                        break;
-                    }
-                }
+                superviviente.eliminarArmaActiva(armaItem);
             }
-
-            // Actualizar la UI
-            actualizarSupervivientesUI();
-            System.out.println("UI actualizada.");
 
             // Mostrar mensaje de éxito y cerrar diálogo
             JOptionPane.showMessageDialog(dialogo, "Ítem eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -715,7 +695,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogCombiarArmaActiva accion del superviviente para poner un arma del inventario como arma activa
      */
-    private void JDialogCambiarArmaActiva(Superviviente superviviente) {
+    private void JDialogCambiarArmaActiva(Superviviente superviviente){
         final Arma[] armaActivaSeleccionada = new Arma[1];
         final Arma[] armaInventarioSeleccionada = new Arma[1];
 
@@ -736,9 +716,9 @@ public class PanelPersonaje extends JPanel {
         panelArmasActivas.setBorder(BorderFactory.createTitledBorder("Armas Activas"));
         ButtonGroup grupoArmasActivas = new ButtonGroup();
 
-        for (int i = 0; i < superviviente.getArmasActivas().length; i++) {
+        for(int i = 0; i < superviviente.getArmasActivas().length; i++){
             Arma arma = superviviente.getArmaActiva(i);
-            if (arma != null) {//solo crea botones si no son nulos
+            if (arma != null){//solo crea botones si no son nulos
                 JRadioButton botonArma = new JRadioButton(arma.getNombre());
                 botonArma.addActionListener(e -> armaActivaSeleccionada[0] = arma);
                 grupoArmasActivas.add(botonArma);
@@ -752,8 +732,8 @@ public class PanelPersonaje extends JPanel {
         panelInventario.setBorder(BorderFactory.createTitledBorder("Inventario"));
         ButtonGroup grupoInventario = new ButtonGroup();
 
-        for (int j = 0; j < superviviente.getInventario().length; j++) {
-            if (superviviente.getInventario(j) instanceof Arma) {
+        for(int j = 0; j < superviviente.getInventario().length; j++){
+            if (superviviente.getInventario(j) instanceof Arma){
                 Arma arma = (Arma) superviviente.getInventario(j);
                 JRadioButton botonArma = new JRadioButton(arma.getNombre());
                 botonArma.addActionListener(e -> armaInventarioSeleccionada[0] = arma);
@@ -771,61 +751,46 @@ public class PanelPersonaje extends JPanel {
             // Verificar las condiciones de selección según el estado actual
             int ArmasActivas = grupoArmasActivas.getButtonCount();
 
-            if (ArmasActivas == 2) {
-                if (armaActivaSeleccionada[0] == null) {
+            if(ArmasActivas == 2){
+                if(armaActivaSeleccionada[0] == null){
                     JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma activa.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (armaInventarioSeleccionada[0] == null) {
+                if(armaInventarioSeleccionada[0] == null){
                     JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma del inventario.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 // Cambiar el arma activa seleccionada
-                for (int i = 0; i < superviviente.getArmasActivas().length; i++) {
-                    if (superviviente.getArmaActiva(i) != null && superviviente.getArmaActiva(i).equals(armaActivaSeleccionada[0])) {
-                        superviviente.setArmaActiva(armaInventarioSeleccionada[0], i);
-                        superviviente.menosUnaAccion();
-                        break;
-                    }
-                }
-            } else if (ArmasActivas == 1) {
-                if (armaActivaSeleccionada[0] == null) {
-                    for (int i = 0; i < superviviente.getArmasActivas().length; i++) {
-                        if (superviviente.getArmaActiva(i) == null) {
-                            if (armaInventarioSeleccionada[0] == null) {
+                superviviente.cambiarArmaActiva(armaActivaSeleccionada[0]);
+            } else if (ArmasActivas == 1){
+                if (armaActivaSeleccionada[0] == null){
+                    for (int i = 0; i < superviviente.getArmasActivas().length; i++){
+                        if (superviviente.getArmaActiva(i) == null){
+                            if (armaInventarioSeleccionada[0] == null){
                                 JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma del inventario.", "Error", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
-                            superviviente.setArmaActiva(armaInventarioSeleccionada[0], i);
-                            superviviente.menosUnaAccion();
+                            superviviente.cambiarArmaActiva2(armaInventarioSeleccionada[0],i);
                             break;
                         }
                     }
-                } else {
-                    for (int i = 0; i < superviviente.getArmasActivas().length; i++) {
-                        if (superviviente.getArmaActiva(i) != null && superviviente.getArmaActiva(i).equals(armaActivaSeleccionada[0])) {
-                            superviviente.setArmaActiva(armaInventarioSeleccionada[0], i);
-                            superviviente.menosUnaAccion();
-                            break;
-                        }
-                    }
+                }else{
+                    superviviente.cambiarArmaActiva(armaInventarioSeleccionada[0]);
                 }
-            } else {
+            }else{
                 // No hay armas activas
-                if (armaInventarioSeleccionada[0] == null) {
+                if (armaInventarioSeleccionada[0] == null){
                     JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma del inventario.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                for (int i = 0; i < superviviente.getArmasActivas().length; i++) {
-                    if (superviviente.getArmaActiva(i) == null) {
-                        superviviente.setArmaActiva(armaInventarioSeleccionada[0], i);
-                        superviviente.menosUnaAccion();
+                for (int i = 0; i < superviviente.getArmasActivas().length; i++){
+                    if (superviviente.getArmaActiva(i) == null){
+                        superviviente.cambiarArmaActiva2(armaInventarioSeleccionada[0],i);
                         break;
                     }
                 }
             }
 
-            actualizarSupervivientesUI();
             dialogo.dispose();
         });
 
@@ -843,7 +808,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogMoverse es una accion del superviviente que le permite moverse a otra posicion adyacente
      */
-    private void JDialogMoverse(Superviviente superviviente) {
+    private void JDialogMoverse(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
 
@@ -873,27 +838,26 @@ public class PanelPersonaje extends JPanel {
 
 
         JButton aceptar = new JButton("Aceptar");
-        aceptar.addActionListener(e -> {
+        aceptar.addActionListener(e-> {
             int x, y;
             try {
                 x = Integer.parseInt(jt1.getText());
                 y = Integer.parseInt(jt2.getText());
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex){
                 JOptionPane.showMessageDialog(dialogo, "Por favor, introduce números válidos para las coordenadas.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             Posicion posicion = new Posicion(x, y);
             ArrayList<EntidadActivable> entidades = new ArrayList<>(juego.getZombies());
-            if (superviviente.getPosicion().comprobarAdyacente(posicion) && (superviviente.getAcciones() - superviviente.calcularNumeroAccinesPorMoverse(entidades) > 0)) {
+            if(superviviente.getPosicion().comprobarAdyacente(posicion) && (superviviente.getAcciones() - superviviente.calcularNumeroAccinesPorMoverse(entidades) > 0)){
                 superviviente.moverse(entidades);
                 superviviente.setPosicion(posicion);
-                actualizarSupervivientesUI();
                 dialogo.dispose();
-            } else if (!superviviente.getPosicion().comprobarAdyacente(posicion)) {
+            } else if (!superviviente.getPosicion().comprobarAdyacente(posicion)){
                 JOptionPane.showMessageDialog(dialogo, "La posición no es adyacente...", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
-                for (Zombie z : juego.getZombies()) {
+                for(Zombie z : juego.getZombies()){
                     System.out.println(z);
                 }
                 JOptionPane.showMessageDialog(dialogo, "Hay demasiados Zombies para moverse y/o falta de acciones.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -911,13 +875,13 @@ public class PanelPersonaje extends JPanel {
     private void JDialogResultadoBuscar(Superviviente superviviente) {
         //Comprueba de que si la casilla ya se a buscado y si hay o no Equipo
         int numeroObjetoInventerio = superviviente.calcularNumeroObjetosInventario();
-        if (superviviente.buscar(juego.getTablero().getCasilla(superviviente.getPosicion()))) {
-            if (numeroObjetoInventerio < superviviente.calcularNumeroObjetosInventario()) {
+        if(superviviente.buscar(juego.getTablero().getCasilla(superviviente.getPosicion()))){
+            if (numeroObjetoInventerio < superviviente.calcularNumeroObjetosInventario()){
                 JDialogBuscarTrue(superviviente);
-            } else {
+            } else{
                 JDialogBuscarNada();
             }
-        } else {
+        } else{
             JDialogBuscarFalse();
         }
     }
@@ -925,7 +889,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialgoBuscarFalse se muestra si ya se a buscado en esa casilla o si tiene el inventario lleno
      */
-    private void JDialogBuscarFalse() {
+    private void JDialogBuscarFalse(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JOptionPane.showMessageDialog(parentWindow, "Ya se ha bucado en esta casilla y/o tiene el inventario lleno", "ERRPR", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -933,7 +897,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDilogbuscarNada se muestra si se a podido buscar pero no se a encontrado noda
      */
-    private void JDialogBuscarNada() {
+    private void JDialogBuscarNada(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
         JOptionPane.showMessageDialog(parentWindow, "No se ha encontrado nada", "Buscar", JOptionPane.INFORMATION_MESSAGE);
@@ -942,7 +906,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogBuscarTrue muestra el equipo encontrado
      */
-    private void JDialogBuscarTrue(Superviviente superviviente) {
+    private void JDialogBuscarTrue(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JOptionPane.showMessageDialog(parentWindow, "Se ha encontrado :" + superviviente.getInventario(superviviente.calcularNumeroObjetosInventario() - 1), "Objeto encontrado", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -950,11 +914,11 @@ public class PanelPersonaje extends JPanel {
     /**
      * JDialogAtacar es una accion en la que se selecciona un arma activa, y llama a mostrarPanelCoordenadas
      */
-    private void JDialogAtacar(Superviviente superviviente) {
+    private void JDialogAtacar(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
         JDialog dialogo = new JDialog(parentWindow, "Atacar", Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setSize(400, 300);
+        dialogo.setSize(900, 300);
         dialogo.setLayout(new BorderLayout(10, 10));
         dialogo.setLocationRelativeTo(null);
 
@@ -965,7 +929,7 @@ public class PanelPersonaje extends JPanel {
         ButtonGroup armasActivas = new ButtonGroup();
         final Arma[] armaSeleccionada = new Arma[1];
 
-        for (Arma a : superviviente.getArmasActivas()) {
+        for (Arma a : superviviente.getArmasActivas()){
             if (a != null) {
                 JRadioButton botonArma = new JRadioButton(a.getNombre());
                 armasActivas.add(botonArma);
@@ -981,8 +945,8 @@ public class PanelPersonaje extends JPanel {
         JButton aceptar = new JButton("Aceptar");
         JButton cancelar = new JButton("Cancelar");
 
-        aceptar.addActionListener(e -> {
-            if (armaSeleccionada[0] == null) {
+        aceptar.addActionListener(e-> {
+            if (armaSeleccionada[0] == null){
                 JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma para atacar.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -1005,7 +969,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * mostrarPanelCoordenadas es un panel en el que se introduce las coordenadas para atacar y se crea los ataques
      */
-    private void mostrarPanelCoordenadas(JDialog dialogo, Arma arma, Superviviente superviviente) {
+    private void mostrarPanelCoordenadas(JDialog dialogo, Arma arma, Superviviente superviviente){
         JPanel panelCoordenadas = new JPanel(new GridLayout(4, 2, 10, 10));
         panelCoordenadas.setBorder(BorderFactory.createTitledBorder("Seleccionar Casilla Objetivo"));
         panelCoordenadas.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -1037,10 +1001,10 @@ public class PanelPersonaje extends JPanel {
 
                 Posicion posicionObjetivo = new Posicion(x, y);
 
-                if (!posicionObjetivo.comprobarDentroDeDistancia(superviviente.getPosicion(), arma.getAlcance())) {
+                if(!posicionObjetivo.comprobarDentroDeDistancia(superviviente.getPosicion(), arma.getAlcance())){
                     JOptionPane.showMessageDialog(dialogo, "El objetivo no está dentro del alcance del arma.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
-                } else {
+                } else{
 
                     int n = arma.getNumeroDados();
                     int[] nd = new int[n];
@@ -1050,7 +1014,7 @@ public class PanelPersonaje extends JPanel {
                     ArrayList<Zombie> zombiesEliminados = superviviente.resolverAtaque(arma, posicionObjetivo, entidades, ataque);
                     //Guardar el ataque resultado
                     StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a \n");
-                    for (Zombie zombie1 : zombiesEliminados) {
+                    for (Zombie zombie1 : zombiesEliminados){
                         stringBuilder.append(zombie1.toString()).append("\n");
                     }
                     ataque.setResultado(stringBuilder.toString());
@@ -1060,10 +1024,11 @@ public class PanelPersonaje extends JPanel {
                     superviviente.atacar(entidadesZombie);
 
                     juego.getZombies().removeAll(zombiesEliminados);
-                    superviviente.menosUnaAccion();
+                    JOptionPane.showMessageDialog(dialogo,"Se a eliminado "+zombiesEliminados.size()+" zombies","Ataque resultado",JOptionPane.INFORMATION_MESSAGE);
+
                 }
                 dialogo.dispose();
-            } catch (NumberFormatException ex) {
+            }catch(NumberFormatException ex){
                 JOptionPane.showMessageDialog(dialogo, "Las coordenadas deben ser números válidos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -1086,9 +1051,9 @@ public class PanelPersonaje extends JPanel {
      * Turno de los Zombies, si en la pposicion en la que están hay supervivientes, atacan, si no hay, se mueven y
      * al terminar se genera un zombie
      */
-    private void TurnoZombie() {
+    private void TurnoZombie(){
         ArrayList<EntidadActivable> entidades = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
-        for (Zombie z : juego.getZombies()) {
+        for (Zombie z : juego.getZombies()){
             z.activarse();
             do {
                 ataqueZombie(z);
@@ -1096,7 +1061,7 @@ public class PanelPersonaje extends JPanel {
                     break;
                 }
                 z.moverse(entidades);
-            } while (z.getActivaciones() > 0);
+            } while(z.getActivaciones() > 0);
         }
         juego.anadirZombie();
     }
@@ -1104,7 +1069,7 @@ public class PanelPersonaje extends JPanel {
     /**
      * ataqueZombie añade una herida al superviviente al que ataca
      */
-    private void ataqueZombie(Zombie zombie) {
+    private void ataqueZombie(Zombie zombie){
 
         ArrayList<Superviviente> supervivientes = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
         // Comprobar si hay supervivientes en la misma casilla que el zombie
@@ -1112,48 +1077,30 @@ public class PanelPersonaje extends JPanel {
             // Determinar el objetivo al que el zombie se dirigirá
             Superviviente objetivo = zombie.getSupervivienteAlQueDirigirse(supervivientes);
             if (objetivo != null) {
-
                 ArrayList<EntidadActivable> objetivoList = new ArrayList<>();
                 objetivoList.add(objetivo);
-
-                // El zombie ataca al objetivo
+                //El zombie ataca
                 zombie.atacar(objetivoList);
-
-                // Convertir las entidades activables a supervivientes
-                ArrayList<Superviviente> supervivientesHeridos = zombie.pasarEntidadesASupervivientes(objetivoList);
-
-                // Actualizar las heridas del superviviente herido
-                for (Superviviente superviviente : juego.getSupervivientes()) {
-                    if (superviviente.equals(supervivientesHeridos.get(0))) {
-                        superviviente.anadirHeridas1();
-                        superviviente.anadirAtaqueRecibido(zombie);
-                    }
-                }
-                // Reducir una acción al zombie
-                zombie.menosUnaAccion();
             }
         }
     }
 
 
-    private void Derrota() {
+    private void Derrota(){
         boolean derrota = false;
 
-        // Verificar si algún superviviente tiene heridas >= 2
-        for (Superviviente superviviente : juego.getSupervivientes()) {
+        for(Superviviente superviviente : juego.getSupervivientes()){
             if (superviviente.getHeridas() >= 2) {
                 derrota = true;
                 break;
             }
         }
 
-        // Si hay derrota, mostrar mensaje y detener el juego
-        if (derrota) {
+        if (derrota){
             removeAll(); // Limpiar el panel
             panelDeTexto.setText("");
             setLayout(new BorderLayout());
 
-            // Etiqueta para el mensaje de derrota
             JLabel l1 = new JLabel("DERROTA", SwingConstants.CENTER);
             l1.setFont(new Font("Arial", Font.BOLD, 50));
             l1.setForeground(Color.RED);
@@ -1163,7 +1110,7 @@ public class PanelPersonaje extends JPanel {
     }}
 
 
-    private void Victoria() {
+    private void Victoria(){
         boolean posicionCorrecta= true;
         boolean victoria = false;
         Superviviente s1 = juego.getSuperviviente(0);
@@ -1173,8 +1120,8 @@ public class PanelPersonaje extends JPanel {
 
         Posicion posicionFinal = new Posicion(9,9);
 
-        for (Superviviente superviviente : juego.getSupervivientes()) {
-            if (!superviviente.getPosicion().equals(posicionFinal)) {
+        for (Superviviente superviviente : juego.getSupervivientes()){
+            if (!superviviente.getPosicion().equals(posicionFinal)){
                 posicionCorrecta= false;
                 break;
             }
@@ -1184,7 +1131,7 @@ public class PanelPersonaje extends JPanel {
         }
 
 
-        if (victoria) {
+        if (victoria){
             removeAll();
             panelDeTexto.setText("");
             setLayout(new BorderLayout());
@@ -1198,18 +1145,19 @@ public class PanelPersonaje extends JPanel {
 
     private boolean comprobarCaducidad(Superviviente superviviente){
         boolean fechaCorrecta = true;
-        for(Equipo e :superviviente.getInventario() ){
+        for (Equipo e :superviviente.getInventario()){
             if(!(e instanceof Provision)){
                 fechaCorrecta = false;
                 return fechaCorrecta;
-            }else{
+            } else {
                 if(((Provision) e).caducado()){
                     fechaCorrecta = false;
                     return fechaCorrecta;
                 }
             }
-        }return fechaCorrecta;
+        } return fechaCorrecta;
     }
+
     private void setReiniciar(){
 
             // Botón para reiniciar el juego

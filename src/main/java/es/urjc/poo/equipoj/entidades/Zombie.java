@@ -107,21 +107,19 @@ public class Zombie implements EntidadActivable {
     }
 
     public void reaccionAtaque() {
-        //TODO: Implementar
+        //Esto ya esta en ataque de superviviente
     }
 
 
     //De momento solo esta la logica general de activarse, falta moverse y atacar.
     @Override
     public void activarse() {
-
         this.recuperarActivaciones();
 
     }
 
     @Override
     public void moverse(ArrayList<EntidadActivable> entidades) {
-    //TODO: Implementar
 
         //Creamos las coordenadas con la posicion actual del zombie con las que operaremos.
         int posicionX = this.getPosicion().getPosicionX();
@@ -158,10 +156,12 @@ public class Zombie implements EntidadActivable {
     public void atacar(ArrayList<EntidadActivable> entidad) {
         ArrayList<Superviviente> supervivientes = pasarEntidadesASupervivientes(entidad);
         if (!supervivientes.isEmpty()) {
-            supervivientes.get(0).anadirHeridas1();
-            System.out.println("Herida añadida al primer superviviente"+supervivientes);
-        } else {
-            System.out.println("No hay supervivientes para atacar.");
+            Superviviente supervivienteObjetivo = supervivientes.get(0);
+            int numeroDeHeridas = supervivienteObjetivo.getHeridas()+1;
+            supervivienteObjetivo.setHeridas(numeroDeHeridas);
+            supervivienteObjetivo.anadirAtaqueRecibido(this);
+            System.out.println(supervivienteObjetivo.getNombre()+ " a sido atacado por : "+ this);
+            this.activaciones--;
         }
     }
 
@@ -246,9 +246,6 @@ public class Zombie implements EntidadActivable {
         }while(supervivienteObjetivo == null);
 
         return supervivienteObjetivo;
-    }
-    public void menosUnaAccion(){
-        this.activaciones--;
     }
 
 
