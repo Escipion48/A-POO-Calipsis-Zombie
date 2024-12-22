@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj;
 
 import es.urjc.poo.equipoj.entidades.*;
+import es.urjc.poo.equipoj.io.IO;
 
 import java.util.ArrayList;
 
@@ -97,5 +98,21 @@ public class App {
 
         Zombie z1 = io.zombieFromString("Zombie: 1734429076027 posicion=2/2 Tipo:CORREDOR Berserker");
         System.out.println(z1.toString());
+
+
+
+        System.out.println("\n\n\n\n\n");
+        Juego j1 = new Juego();
+        j1.getSuperviviente(0).setInventario(arma,0);
+        j1.getSuperviviente(0).setInventario(new Provision(),1);
+        System.out.println(j1.toString());
+        io.escribirJSON(j1,"Prueba");
+
+
+        System.out.println(j1.getSuperviviente(0).getInventario(0).getClass().getSimpleName());
+        System.out.println(j1.getSuperviviente(0).getInventario(0).getNombre());
+        System.out.println("\n\n\nPrueba de carga:\n");
+        Juego juego2 = io.leerJSON("Prueba");
+        System.out.println(juego2.toString());
     }
 }

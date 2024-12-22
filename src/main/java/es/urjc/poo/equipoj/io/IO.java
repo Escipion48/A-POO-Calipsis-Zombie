@@ -1,6 +1,10 @@
-package es.urjc.poo.equipoj.entidades;
+package es.urjc.poo.equipoj.io;
 
-import java.io.BufferedReader;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import es.urjc.poo.equipoj.entidades.*;
+
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -69,5 +73,38 @@ public class IO {
             return TipoZombie.ABOMINACION;
         }
         return null; //Retornara un nulo si ha habido un error de lectura
+    }
+
+
+
+
+
+
+
+
+    ///Cargado y guardado con JSON ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void escribirJSON(Juego juego, String ruta) {
+
+
+    Gson gson = new GsonBuilder().registerTypeAdapter(Zombie.class, new ZombieTypeAdapter()).registerTypeAdapter(Equipo.class, new EquipoTypeAdapter()).create();
+    try(FileWriter fileWriter = new FileWriter("Save"+ruta+".json")){
+        gson.toJson(juego,fileWriter);
+        System.out.println("Guardado exitoso");
+    }
+    catch(IOException e){
+        System.out.println("Error en el escribirJSON" + e.getMessage());
+    }
+    }
+
+
+    public Juego leerJSON(String ruta) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Zombie.class, new ZombieTypeAdapter()).registerTypeAdapter(Equipo.class, new EquipoTypeAdapter()).create();
+        try(FileReader fileReader = new FileReader("Save"+ruta+".json")){
+            return gson.fromJson(fileReader,Juego.class);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
