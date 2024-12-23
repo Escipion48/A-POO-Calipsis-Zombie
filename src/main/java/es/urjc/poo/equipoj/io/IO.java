@@ -84,6 +84,9 @@ public class IO {
 
     ///Cargado y guardado con JSON ////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    //Utilizo TypeAdapter que están programados ya que gson no es capaz de diferenciar entre las herencias de base, es decir,
+    // necesita que se programen aparte para que sea capaz de leer y escribir los datos correctamente
     public void escribirJSON(Juego juego, String ruta) {
 
 
