@@ -18,7 +18,6 @@ public class PanelPersonajePrueba extends JPanel{
     private JButton guardar;
     private JButton terminar;
     private JButton empezar;
-    private JButton posicionZombies;
 
     public PanelPersonajePrueba(JTextPane panelDeTexto, Juego juego){
         this.panelDeTexto = panelDeTexto;
@@ -186,10 +185,10 @@ public class PanelPersonajePrueba extends JPanel{
         JPanel panelSuperviviente4 = new JPanel();
 
         //Poner la distribucion de los paneles
-        panelSuperviviente1.setLayout(new GridLayout(6, 1, 10, 10));
-        panelSuperviviente2.setLayout(new GridLayout(6, 1, 10, 10));
-        panelSuperviviente3.setLayout(new GridLayout(6, 1, 10, 10));
-        panelSuperviviente4.setLayout(new GridLayout(6, 1, 10, 10));
+        panelSuperviviente1.setLayout(new GridLayout(7, 1, 10, 10));
+        panelSuperviviente2.setLayout(new GridLayout(7, 1, 10, 10));
+        panelSuperviviente3.setLayout(new GridLayout(7, 1, 10, 10));
+        panelSuperviviente4.setLayout(new GridLayout(7, 1, 10, 10));
 
         //Ponerlos de color blanco
         panelSuperviviente1.setBackground(Color.WHITE);
@@ -299,16 +298,39 @@ public class PanelPersonajePrueba extends JPanel{
         panelSuperviviente3.add(posicion3);
         panelSuperviviente4.add(posicion4);
 
+        //Crear botones para crear Equipo
+        JButton crear1 = new JButton("Crear");
+        JButton crear2 = new JButton("Crear");
+        JButton crear3 = new JButton("Crear");
+        JButton crear4 = new JButton("Crear");
+
+        //
+        crear1.addActionListener(e->JDialogCrear(juego.getSuperviviente(0)));
+        crear2.addActionListener(e->JDialogCrear(juego.getSuperviviente(1)));
+        crear3.addActionListener(e->JDialogCrear(juego.getSuperviviente(2)));
+        crear4.addActionListener(e->JDialogCrear(juego.getSuperviviente(3)));
+
+        //
+        panelSuperviviente1.add(crear1);
+        panelSuperviviente1.add(crear2);
+        panelSuperviviente1.add(crear3);
+        panelSuperviviente1.add(crear4);
+
+
         //Boton de la posicion de los zombies
-        posicionZombies = new JButton("Posicion Zombies");
+        JButton posicionZombies = new JButton("Posicion Zombies");
         JButton ataques = new JButton("Ataques");
-        ataques.addActionListener(e -> JDialogAtaquesHechos());
+        JButton crearZombie = new JButton("Crear Zombie");
         posicionZombies.addActionListener(e -> JDialogVerPosicionZombies());
+        ataques.addActionListener(e -> JDialogAtaquesHechos());
+        crearZombie.addActionListener(e->JDialogCrearZombie());
+
 
         JPanel panelArriba = new JPanel();
-        panelArriba.setLayout(new GridLayout(1, 2, 10, 10));
+        panelArriba.setLayout(new GridLayout(1, 3, 10, 10));
         panelArriba.add(posicionZombies);
         panelArriba.add(ataques);
+        panelArriba.add(crearZombie);
 
         panelSupervivienteEntero.add(panelArriba, BorderLayout.NORTH);
         panelSupervivienteEntero.add(panelSuperviviente, BorderLayout.CENTER);
@@ -1083,6 +1105,193 @@ public class PanelPersonajePrueba extends JPanel{
                 zombie.atacar(objetivoList);
             }
         }
+    }
+
+    private void JDialogCrear(Superviviente superviviente){
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+
+        JDialog dialogo = new JDialog(parentWindow,"Crear",Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setLayout(new BorderLayout(10,10));
+        dialogo.setSize(400,300);
+        dialogo.setBackground(Color.WHITE);
+
+        JPanel panelCrear = new JPanel();
+        panelCrear.setBorder(new EmptyBorder(10,10,10,10));
+        panelCrear.setLayout(new GridLayout(1,2,10,10));
+        panelCrear.setBackground(Color.WHITE);
+
+        JButton crearArma = new JButton("Crear Arma");
+        JButton crearProvision = new JButton("Crear Provision");
+
+        crearArma.addActionListener(e->crearArma(superviviente,dialogo));
+        crearProvision.addActionListener(e->crearProvision(superviviente,dialogo));
+
+        panelCrear.add(crearArma);
+        panelCrear.add(crearProvision);
+
+        dialogo.add(panelCrear, BorderLayout.CENTER);
+        dialogo.setVisible(true);
+
+    }
+
+    private void crearArma(Superviviente superviviente,JDialog dialogo){
+        int numero = superviviente.calcularNumeroObjetosInventario();
+        if(numero==5){
+            JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        JPanel panelCrearArma = new JPanel();
+        panelCrearArma.setBorder(new EmptyBorder(10,10,10,10));
+        panelCrearArma.setBorder(BorderFactory.createTitledBorder("Crear Arma"));
+        panelCrearArma.setLayout(new GridLayout(5,2,10,10));
+        panelCrearArma.setBackground(Color.WHITE);
+
+        JLabel nombre = new JLabel("Nombre");
+        JLabel alcance = new JLabel("Alcance");
+        JLabel potencia = new JLabel("Potencia");
+        JLabel valorExito = new JLabel("Valor Exito");
+        JLabel numeroDados = new JLabel("Numero Dados");
+
+        JTextField nombreTexto = new JTextField();
+        JTextField alcanceTexto = new JTextField();
+        JTextField potenciaTexto = new JTextField();
+        JTextField valorExitoTexto = new JTextField();
+        JTextField numeroDadosTexto = new JTextField();
+
+        panelCrearArma.add(nombre);
+        panelCrearArma.add(nombreTexto);
+        panelCrearArma.add(alcance);
+        panelCrearArma.add(alcanceTexto);
+        panelCrearArma.add(potencia);
+        panelCrearArma.add(potenciaTexto);
+        panelCrearArma.add(valorExito);
+        panelCrearArma.add(valorExitoTexto);
+        panelCrearArma.add(numeroDados);
+        panelCrearArma.add(numeroDadosTexto);
+
+        JButton aceptar = new JButton("Aceptar");
+        aceptar.addActionListener(e->{
+            try{
+                String nombreArma = nombre.getText();
+                int alcanceArma = Integer.parseInt(alcance.getText());
+                int potenciaArma = Integer.parseInt(potencia.getText());
+                int valorExitoArma = Integer.parseInt(valorExito.getText());
+                int numeroDadosArma = Integer.parseInt(numeroDados.getText());
+                Arma arma = new Arma (nombreArma,potenciaArma,alcanceArma,valorExitoArma,numeroDadosArma);
+                int posicionInventario = superviviente.calcularNumeroObjetosInventario()-1;
+                superviviente.setInventario(arma,posicionInventario);
+            } catch (NumberFormatException ex){
+                JOptionPane.showMessageDialog(dialogo, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JButton cancelar = new JButton("Cancelar");
+        cancelar.addActionListener(i->dialogo.dispose());
+
+        JPanel panelBotones = new JPanel();
+        panelBotones.add(aceptar);
+        panelBotones.add(cancelar);
+        dialogo.getContentPane().removeAll();
+        dialogo.add(panelCrearArma, BorderLayout.CENTER);
+        dialogo.add(panelBotones, BorderLayout.SOUTH);
+        dialogo.revalidate();
+        dialogo.repaint();
+
+    }
+
+    private void crearProvision(Superviviente superviviente,JDialog dialogo){
+        int numero = superviviente.calcularNumeroObjetosInventario();
+        if(numero==5){
+            JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        JPanel panelCrearProvision = new JPanel();
+        panelCrearProvision.setBorder(new EmptyBorder(10,10,10,10));
+        panelCrearProvision.setBorder(BorderFactory.createTitledBorder("Crear Provision"));
+        panelCrearProvision.setLayout(new GridLayout(5,2,10,10));
+        panelCrearProvision.setBackground(Color.WHITE);
+
+        JLabel nombre = new JLabel("Nombre");
+        JLabel kcal = new JLabel("Kcal");
+        JLabel caducidadD = new JLabel("Dia");
+        JLabel caducidadM = new JLabel("Mes");
+        JLabel caducidadA = new JLabel("Año");
+        JLabel tipo = new JLabel("Tipo");
+
+        JTextField nombreTexto = new JTextField();
+        JTextField kcalTexto = new JTextField();
+        JTextField DTexto = new JTextField();
+        JTextField MTexto = new JTextField();
+        JTextField ATexto = new JTextField();
+        JTextField TipoTexto = new JTextField();
+
+        panelCrearProvision.add(nombre);
+        panelCrearProvision.add(nombreTexto);
+        panelCrearProvision.add(kcal);
+        panelCrearProvision.add(kcalTexto);
+        panelCrearProvision.add(caducidadD);
+        panelCrearProvision.add(DTexto);
+        panelCrearProvision.add(caducidadM);
+        panelCrearProvision.add(MTexto);
+        panelCrearProvision.add(caducidadA);
+        panelCrearProvision.add(ATexto);
+        panelCrearProvision.add(tipo);
+        panelCrearProvision.add(TipoTexto);
+
+        JButton aceptar = new JButton("Aceptar");
+        aceptar.addActionListener(e->{
+            try{
+                String nombreProvision = nombre.getText();
+                int kcalT = Integer.parseInt(kcalTexto.getText());
+                int dia = Integer.parseInt(DTexto.getText());
+                int mes = Integer.parseInt(MTexto.getText());
+                int ano = Integer.parseInt(ATexto.getText());
+                int tipoI = Integer.parseInt(tipo.getText());
+                int[]fecha = new int[3];
+                fecha[0]= dia;
+                fecha[1]= mes;
+                fecha[2]= ano;
+
+                if((dia<=30) && (mes <=12 )&& (tipoI >=0 && tipoI <=1)){
+                    boolean tipoB= false;
+                    if(tipoI == 1){
+                        tipoB= true;
+                    }
+                    Provision provision = new Provision(nombreProvision,kcalT,fecha,tipoB);
+                    int posicionInventario = superviviente.calcularNumeroObjetosInventario()-1;
+                    superviviente.setInventario(provision,posicionInventario);
+                }
+            } catch (NumberFormatException ex){
+                JOptionPane.showMessageDialog(dialogo, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JButton cancelar = new JButton("Cancelar");
+        cancelar.addActionListener(i->dialogo.dispose());
+
+        JPanel panelBotones = new JPanel();
+        panelBotones.add(aceptar);
+        panelBotones.add(cancelar);
+        dialogo.getContentPane().removeAll();
+        dialogo.add(panelCrearProvision, BorderLayout.CENTER);
+        dialogo.add(panelBotones, BorderLayout.SOUTH);
+        dialogo.revalidate();
+        dialogo.repaint();
+    }
+
+    private void JDialogCrearZombie(){
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+
+        JDialog dialogo = new JDialog(parentWindow,"Crear Zombie",Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(400,300);
+        dialogo.setBackground(Color.WHITE);
+        dialogo.setLayout(new BorderLayout(10,10));
+        dialogo.setLocationRelativeTo(null);
+
+        JPanel panelCrearZombie = new JPanel();
+        panelCrearZombie.setLayout(new GridLayout(1,2,10,10));
+        panelCrearZombie.setBorder(new EmptyBorder(10,10,10,10));
+        panelCrearZombie.setBackground(Color.WHITE);
+
+
     }
 
 
