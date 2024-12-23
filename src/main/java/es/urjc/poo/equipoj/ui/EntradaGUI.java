@@ -14,7 +14,7 @@ public class EntradaGUI extends JFrame {//kk
     private JButton cargarJuego;
     private JButton pruebas;
     private JScrollPane jScrollPane;
-    private TableroGUI tableroGUI;
+    private TableroPrueba tableroGUI;
     private TableroDefault tableroDefault;
     private PanelPersonaje panelPersonaje;
     private PanelPersonajePrueba panelPersonajePrueba;// Referencia a TableroGUI
@@ -72,23 +72,11 @@ public class EntradaGUI extends JFrame {//kk
 
         // Acción para el boton de pruebas
         pruebas.addActionListener(e ->{
-            tableroGUI = new TableroGUI(); // CrearTableroGUI
-            ShowPanel(tableroGUI); // Cambiar al panel de TableroGUI
-
-            // Aquí podrías comprobar el tablero después de que el usuario lo configure
-            tableroGUI.getAceptarButton().addActionListener(ev -> {
-                Tablero tablero = tableroGUI.getTablero(); // Obtener el tablero configurado
-                if (tablero != null) {
-                   panelDeTexto.setText("Tablero configurado correctamente.");
-                    Juego juego = new Juego();
-                    juego.setTablero(tablero);
-                    panelPersonajePrueba = new PanelPersonajePrueba(panelDeTexto);
-                    panelPrincipal.add(panelPersonajePrueba);
-                    juego.setSupervivientes(panelPersonajePrueba.getSupervivientes());
-                } else {
-                    panelDeTexto.setText("El tablero no está configurado.");
-                }
-            });
+            juego=new Juego();
+            tableroGUI= new TableroPrueba(panelDeTexto, juego);
+            ShowPanel(tableroGUI);
+            PanelPersonaje panelPersonaje=new PanelPersonaje(panelDeTexto, juego);
+            panelPrincipal.add(panelPersonaje);
         });
 
 
