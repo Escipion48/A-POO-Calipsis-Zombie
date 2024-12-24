@@ -52,7 +52,7 @@ public class Provision extends Equipo{
         if(anio>=2025){
             return false;
         }
-        return false;
+        return true;
     }
 
     @Override

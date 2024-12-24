@@ -73,6 +73,7 @@ public class TableroPrueba extends JPanel {
                         objetivo.setBackground(Color.red);
                         celdaPulsado = "Celda seleccionada: Casilla objetivo[" + finalI + "," + finalJ + "]";
                         escribirEnTexto(celdaPulsado);
+                        escribirEntidadesEnCasilla(this.getPosicionObjetivo());
                     });}else {
 
                     JButton celda = new JButton("[" + i + "," + j + "]");
@@ -109,7 +110,7 @@ public class TableroPrueba extends JPanel {
 
     private void escribirEnTexto(String mensaje) {
         // Añade el mensaje al JTextPane
-        panelDeTexto.setText(panelDeTexto.getText() + mensaje);
+        panelDeTexto.setText(panelDeTexto.getText() + mensaje+"\n");
     }
 
     private void escribirEntidadesEnCasilla(Posicion posicion){

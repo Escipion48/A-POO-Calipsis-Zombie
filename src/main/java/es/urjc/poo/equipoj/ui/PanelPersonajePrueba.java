@@ -78,9 +78,10 @@ public class PanelPersonajePrueba extends JPanel{
         siguienteRonda.addActionListener(e->{
             panelDeTexto.setText(panelDeTexto.getText() + "Empezando la siguiente ronda...\n");
             JDialogTurnoSuperviviente();
+            Victoria();
             TurnoZombie();
             Derrota();
-            Victoria();
+
         });
 
 
@@ -1431,6 +1432,7 @@ public class PanelPersonajePrueba extends JPanel{
 
 
         if (victoria){
+            System.out.println("Victoria");
             removeAll();
             panelDeTexto.setText("");
             setLayout(new BorderLayout());
@@ -1440,15 +1442,15 @@ public class PanelPersonajePrueba extends JPanel{
             l1.setForeground(Color.RED);
             add(l1, BorderLayout.CENTER);
             setReiniciar();
-        }}
+        }
+    else {
+    System.out.println("no hay victoria");}
+    }
 
     private boolean comprobarCaducidad(Superviviente superviviente){
         boolean fechaCorrecta = true;
         for (Equipo e :superviviente.getInventario()){
-            if(!(e instanceof Provision)){
-                fechaCorrecta = false;
-                return fechaCorrecta;
-            } else {
+            if(e instanceof Provision){
                 if(((Provision) e).caducado()){
                     fechaCorrecta = false;
                     return fechaCorrecta;

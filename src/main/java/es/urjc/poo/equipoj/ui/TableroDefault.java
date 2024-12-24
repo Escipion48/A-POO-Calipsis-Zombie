@@ -60,8 +60,10 @@ public class TableroDefault extends JPanel {
 
                         // Cambiar el color del botón actual y actualizar el texto
                         objetivo.setBackground(Color.red);
+                        Posicion posicionObj = new Posicion(finalI, finalJ);
                         celdaPulsado = "Celda seleccionada: Casilla objeetivo[" + finalI + "," + finalJ + "]";
                         escribirEnTexto(celdaPulsado);
+                        escribirEntidadesEnCasilla(posicionObj);
                 });}else {
 
                 JButton celda = new JButton("    [" + i + "," + j + "]");
