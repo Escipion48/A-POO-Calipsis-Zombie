@@ -30,7 +30,7 @@ public class TableroPrueba extends JPanel {
         JDialogTamano();
         setLayout(new BorderLayout(10, 10));
         panelTableroDefault = new JPanel();
-        panelTableroDefault.setLayout(new GridLayout(10, 10, 2, 2));
+        panelTableroDefault.setLayout(new GridLayout((int) x.getValue(), (int) y.getValue(), 2, 2));
         panelTableroDefault.setBackground(Color.WHITE);
 
         objetivo = new JButton();
@@ -46,6 +46,7 @@ public class TableroPrueba extends JPanel {
         int pObjX = (int) objX.getValue();
         int pObjY = (int) objY.getValue();
         Posicion pObj = new Posicion(px, py);
+
         Casilla [][] casillas = new Casilla[px][py];
         for (int i = 0; i < px; i++) {
             for (int j = 0; j < py; j++) {
@@ -183,4 +184,9 @@ public class TableroPrueba extends JPanel {
             dialogo.dispose();
         });
         dialogo.setVisible(true);
-}}
+}
+public Posicion getPosicionObjetivo(){
+        return new Posicion((int) objX.getValue(),(int) objY.getValue());
+}
+
+}

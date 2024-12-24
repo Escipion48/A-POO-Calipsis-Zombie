@@ -75,8 +75,9 @@ public class EntradaGUI extends JFrame {//kk
             juego=new Juego();
             tableroGUI= new TableroPrueba(panelDeTexto, juego);
             ShowPanel(tableroGUI);
-            PanelPersonaje panelPersonaje=new PanelPersonaje(panelDeTexto, juego);
-            panelPrincipal.add(panelPersonaje);
+            Posicion posicionObjetivo = tableroGUI.getPosicionObjetivo();
+            PanelPersonajePrueba panelPersonajePrueba=new PanelPersonajePrueba(panelDeTexto, juego,posicionObjetivo);
+            panelPrincipal.add(panelPersonajePrueba);
         });
 
 

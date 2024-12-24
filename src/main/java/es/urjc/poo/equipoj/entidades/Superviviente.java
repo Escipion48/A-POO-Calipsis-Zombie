@@ -727,7 +727,7 @@ public class Superviviente implements EntidadActivable{
 
     public void cambiarArmaActiva(Arma arma){
         for(int i = 0 ; i<this.getArmasActivas().length; i++){
-            if(this.armasActivas[i].equals(arma)){
+            if(this.armasActivas[i] !=null && this.armasActivas[i].equals(arma)){
                 this.setArmaActiva(arma,i);
                 this.acciones--;
                 break;
