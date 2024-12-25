@@ -774,7 +774,7 @@ public class PanelPersonajePrueba extends JPanel{
         // Panel de botones
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e -> {
-            // Verificar las condiciones de selección según el estado actual
+            // numero de armas activas
             int ArmasActivas = grupoArmasActivas.getButtonCount();
 
             if(ArmasActivas == 2){
