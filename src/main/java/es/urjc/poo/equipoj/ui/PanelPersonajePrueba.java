@@ -78,11 +78,10 @@ public class PanelPersonajePrueba extends JPanel{
         siguienteRonda.addActionListener(e->{
             panelDeTexto.setText(panelDeTexto.getText() + "Empezando la siguiente ronda...\n");
             JDialogTurnoSuperviviente();
-            Victoria();
             TurnoZombie();
-            Derrota();
-
         });
+
+        terminar.addActionListener(e->Terminar());
 
 
         // Agregar componentes
@@ -639,6 +638,8 @@ public class PanelPersonajePrueba extends JPanel{
                 mensaje.setHorizontalAlignment(SwingConstants.CENTER);
                 dialogo.add(mensaje, BorderLayout.NORTH);
 
+                Victoria();
+
                 dialogo.setVisible(true);
 
 
@@ -1090,6 +1091,7 @@ public class PanelPersonajePrueba extends JPanel{
             } while(z.getActivaciones() > 0);
         }
         juego.anadirZombie();
+        Derrota();
     }
 
     /**
@@ -1392,13 +1394,13 @@ public class PanelPersonajePrueba extends JPanel{
         boolean derrota = false;
 
         for(Superviviente superviviente : juego.getSupervivientes()){
-            if (superviviente.getHeridas() >= 2) {
+            if(superviviente.getHeridas() >= 2){
                 derrota = true;
                 break;
             }
         }
 
-        if (derrota){
+        if(derrota){
             removeAll(); // Limpiar el panel
             panelDeTexto.setText("");
             setLayout(new BorderLayout());
@@ -1407,31 +1409,28 @@ public class PanelPersonajePrueba extends JPanel{
             l1.setFont(new Font("Arial", Font.BOLD, 50));
             l1.setForeground(Color.RED);
             add(l1, BorderLayout.CENTER);
+            revalidate();
+            repaint();
             setReiniciar();
 
         }}
 
 
-    private void Victoria(){// no funcuina
-        boolean posicionCorrecta= true;
-        boolean victoria = false;
-        Superviviente s1 = juego.getSuperviviente(0);
-        Superviviente s2 = juego.getSuperviviente(1);
-        Superviviente s3 = juego.getSuperviviente(2);
-        Superviviente s4 = juego.getSuperviviente(3);
+    private void Victoria(){
+        boolean victoria = true;
 
-        for (Superviviente superviviente : juego.getSupervivientes()){
-            if (!superviviente.getPosicion().equals(posicionObjetivo)){
-                posicionCorrecta= false;
+        for(Superviviente superviviente : juego.getSupervivientes()){
+            if(!(superviviente.getPosicion().equals(posicionObjetivo))){
+                victoria = false;
+                break;
+            }
+            if(!comprobarCaducidad(superviviente)){
+                victoria = false;
                 break;
             }
         }
-        if(posicionCorrecta&&comprobarCaducidad(s1)&&comprobarCaducidad(s2)&&comprobarCaducidad(s3)&&comprobarCaducidad(s4)){
-            victoria = true;
-        }
 
-
-        if (victoria){
+        if(victoria){
             System.out.println("Victoria");
             removeAll();
             panelDeTexto.setText("");
@@ -1441,23 +1440,37 @@ public class PanelPersonajePrueba extends JPanel{
             l1.setFont(new Font("Arial", Font.BOLD, 50));
             l1.setForeground(Color.RED);
             add(l1, BorderLayout.CENTER);
+            revalidate();
+            repaint();
             setReiniciar();
         }
-    else {
-    System.out.println("no hay victoria");}
+    }
+
+    private void Terminar(){
+        removeAll();
+        setLayout(new BorderLayout());
+        panelDeTexto.setText("");
+        JPanel terminar = new JPanel();
+        terminar.setLayout(new GridLayout());
+        JLabel lterminar = new JLabel("Terminar",SwingConstants.CENTER);
+        lterminar.setFont(new Font("Arial", Font.BOLD, 50));
+        terminar.add(lterminar);
+        add(terminar, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 
     private boolean comprobarCaducidad(Superviviente superviviente){
-        boolean fechaCorrecta = true;
-        for (Equipo e :superviviente.getInventario()){
+        for(Equipo e : superviviente.getInventario()){
             if(e instanceof Provision){
-                if(((Provision) e).caducado()){
-                    fechaCorrecta = false;
-                    return fechaCorrecta;
+                if(!((Provision) e).caducado()){
+                    return true;
                 }
             }
-        } return fechaCorrecta;
+        }
+        return false;
     }
+
 
     private void setReiniciar(){
 

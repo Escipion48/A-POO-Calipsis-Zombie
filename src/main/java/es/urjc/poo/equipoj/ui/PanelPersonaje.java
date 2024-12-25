@@ -78,9 +78,10 @@ public class PanelPersonaje extends JPanel{
             panelDeTexto.setText(panelDeTexto.getText() + "Empezando la siguiente ronda...\n");
             JDialogTurnoSuperviviente();
             TurnoZombie();
-            Derrota();
-            Victoria();
         });
+
+
+        terminar.addActionListener(e-> Terminar());
 
 
         // Agregar componentes
@@ -614,6 +615,8 @@ public class PanelPersonaje extends JPanel{
                 mensaje.setHorizontalAlignment(SwingConstants.CENTER);
                 dialogo.add(mensaje, BorderLayout.NORTH);
 
+                Victoria();
+
                 dialogo.setVisible(true);
 
 
@@ -1064,6 +1067,7 @@ public class PanelPersonaje extends JPanel{
             } while(z.getActivaciones() > 0);
         }
         juego.anadirZombie();
+        Derrota();
     }
 
     /**
@@ -1105,33 +1109,31 @@ public class PanelPersonaje extends JPanel{
             l1.setFont(new Font("Arial", Font.BOLD, 50));
             l1.setForeground(Color.RED);
             add(l1, BorderLayout.CENTER);
+            revalidate();
+            repaint();
             setReiniciar();
 
     }}
 
 
     private void Victoria(){
-        boolean posicionCorrecta= true;
-        boolean victoria = false;
-        Superviviente s1 = juego.getSuperviviente(0);
-        Superviviente s2 = juego.getSuperviviente(1);
-        Superviviente s3 = juego.getSuperviviente(2);
-        Superviviente s4 = juego.getSuperviviente(3);
+        boolean victoria = true;
 
         Posicion posicionFinal = new Posicion(9,9);
 
-        for (Superviviente superviviente : juego.getSupervivientes()){
-            if (!superviviente.getPosicion().equals(posicionFinal)){
-                posicionCorrecta= false;
+        for(Superviviente superviviente : juego.getSupervivientes()){
+            if(!(superviviente.getPosicion().equals(posicionFinal))){
+                victoria = false;
+                break;
+            }
+            if(!comprobarCaducidad(superviviente)){
+                victoria = false;
                 break;
             }
         }
-        if(posicionCorrecta&&comprobarCaducidad(s1)&&comprobarCaducidad(s2)&&comprobarCaducidad(s3)&&comprobarCaducidad(s4)){
-            victoria = true;
-        }
 
-
-        if (victoria){
+        if(victoria){
+            System.out.println("Victoria");
             removeAll();
             panelDeTexto.setText("");
             setLayout(new BorderLayout());
@@ -1140,8 +1142,24 @@ public class PanelPersonaje extends JPanel{
             l1.setFont(new Font("Arial", Font.BOLD, 50));
             l1.setForeground(Color.RED);
             add(l1, BorderLayout.CENTER);
+            revalidate();
+            repaint();
             setReiniciar();
         }}
+
+    private void Terminar(){
+        removeAll();
+        setLayout(new BorderLayout());
+        panelDeTexto.setText("");
+        JPanel terminar = new JPanel();
+        terminar.setLayout(new GridLayout());
+        JLabel lterminar = new JLabel("Terminar",SwingConstants.CENTER);
+        lterminar.setFont(new Font("Arial", Font.BOLD, 50));
+        terminar.add(lterminar);
+        add(terminar, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+    }
 
     private boolean comprobarCaducidad(Superviviente superviviente){
         boolean fechaCorrecta = true;
