@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
+import es.urjc.poo.equipoj.io.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -82,6 +83,8 @@ public class PanelPersonajePrueba extends JPanel{
         });
 
         terminar.addActionListener(e->Terminar());
+
+        guardar.addActionListener(e->Guardar());
 
 
         // Agregar componentes
@@ -880,6 +883,7 @@ public class PanelPersonajePrueba extends JPanel{
             if(superviviente.getPosicion().comprobarAdyacente(posicion) && (superviviente.getAcciones() - superviviente.calcularNumeroAccinesPorMoverse(entidades) > 0)){
                 superviviente.moverse(entidades);
                 superviviente.setPosicion(posicion);
+                panelDeTexto.setText(panelDeTexto.getText()+"\n"+superviviente.getNombre()+" se ha movido a "+ superviviente.getPosicion());
                 dialogo.dispose();
             } else if (!superviviente.getPosicion().comprobarAdyacente(posicion)){
                 JOptionPane.showMessageDialog(dialogo, "La posición no es adyacente...", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -945,7 +949,7 @@ public class PanelPersonajePrueba extends JPanel{
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
         JDialog dialogo = new JDialog(parentWindow, "Atacar", Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setSize(900, 300);
+        dialogo.setSize(1000, 300);
         dialogo.setLayout(new BorderLayout(10, 10));
         dialogo.setLocationRelativeTo(null);
 
@@ -1043,9 +1047,17 @@ public class PanelPersonajePrueba extends JPanel{
                     StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a \n");
                     for (Zombie zombie1 : zombiesEliminados){
                         stringBuilder.append(zombie1.toString()).append("\n");
+                        for(Superviviente superviviente1 : juego.getSupervivientes()){
+                            if(zombie1 instanceof Toxico && zombie1.getPosicion().equals(superviviente1.getPosicion())){
+                                superviviente1.anadirAtaqueRecibido(zombie1);
+                                superviviente1.anadirHerida();
+                                panelDeTexto.setText(panelDeTexto.getText()+"\n"+superviviente1.getNombre()+" ha sido salpicado por un zombie toxico");
+                            }
+                        }
                     }
                     ataque.setResultado(stringBuilder.toString());
                     juego.getAtaques().setAtaque(ataque);
+                    panelDeTexto.setText(panelDeTexto.getText()+"\n"+stringBuilder);
 
                     ArrayList<EntidadActivable> entidadesZombie = new ArrayList<>(zombiesEliminados);
                     superviviente.atacar(entidadesZombie);
@@ -1109,6 +1121,7 @@ public class PanelPersonajePrueba extends JPanel{
                 objetivoList.add(objetivo);
                 //El zombie ataca
                 zombie.atacar(objetivoList);
+                panelDeTexto.setText(panelDeTexto.getText()+"\n"+objetivo.getNombre()+" ha recibido un ataque");
             }
         }
     }
@@ -1392,21 +1405,23 @@ public class PanelPersonajePrueba extends JPanel{
 
     private void Derrota(){
         boolean derrota = false;
+        Superviviente s1 = new Superviviente();
 
         for(Superviviente superviviente : juego.getSupervivientes()){
-            if(superviviente.getHeridas() >= 2){
+            if (superviviente.getHeridas() >= 2) {
+                s1=superviviente;
                 derrota = true;
                 break;
             }
         }
 
-        if(derrota){
+        if (derrota){
             removeAll(); // Limpiar el panel
             panelDeTexto.setText("");
             setLayout(new BorderLayout());
 
-            JLabel l1 = new JLabel("DERROTA", SwingConstants.CENTER);
-            l1.setFont(new Font("Arial", Font.BOLD, 50));
+            JLabel l1 = new JLabel("DERROTA "+s1.getNombre()+" ha muerto", SwingConstants.CENTER);
+            l1.setFont(new Font("Arial", Font.BOLD, 30));
             l1.setForeground(Color.RED);
             add(l1, BorderLayout.CENTER);
             revalidate();
@@ -1458,6 +1473,54 @@ public class PanelPersonajePrueba extends JPanel{
         add(terminar, BorderLayout.CENTER);
         revalidate();
         repaint();
+    }
+
+    private void Guardar(){
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        JDialog dialogo = new JDialog(parentWindow,"Guardar",Dialog.ModalityType.APPLICATION_MODAL);
+
+        dialogo.setLayout(new BorderLayout(10,10));
+        dialogo.setSize(400,300);
+        dialogo.setBackground(Color.WHITE);
+        dialogo.setLocationRelativeTo(null);
+
+        JPanel panelGuardar = new JPanel();
+        panelGuardar.setLayout(new GridLayout(1,2,10,10));
+        panelGuardar.setBackground(Color.WHITE);
+        panelGuardar.setBorder(new EmptyBorder(10,10,10,10));
+        JLabel l1 = new JLabel("Introduzca la ruta");
+        JTextField textField = new JTextField();
+
+        panelGuardar.add(l1);
+        panelGuardar.add(textField);
+
+
+        dialogo.add(panelGuardar,BorderLayout.CENTER);
+
+        JButton aceptar = new JButton("Aceptar");
+        aceptar.addActionListener(e->{
+            try{
+                if(textField.getText()!=null){
+                    IO io = new IO();
+                    io.escribirJSON(juego,textField.getText());
+                    JOptionPane.showMessageDialog(this,"Se ha guardado correctamente","Partida Guardada",JOptionPane.INFORMATION_MESSAGE);
+                    dialogo.dispose();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,"No se ha guardado correctamente","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JButton cancelar = new JButton("Cancelar");
+        cancelar.addActionListener(e->{dialogo.dispose();});
+        JPanel panelBotones = new JPanel();
+        panelBotones.setBackground(Color.WHITE);
+        panelBotones.setLayout(new GridLayout(1,2,10,10));
+        panelBotones.add(aceptar);
+        panelBotones.add(cancelar);
+
+        dialogo.add(panelBotones, BorderLayout.SOUTH);
+        dialogo.setVisible(true);
     }
 
     private boolean comprobarCaducidad(Superviviente superviviente){

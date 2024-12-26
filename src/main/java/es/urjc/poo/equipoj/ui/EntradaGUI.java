@@ -1,10 +1,12 @@
 package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
+import es.urjc.poo.equipoj.io.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
 
 public class EntradaGUI extends JFrame {//kk
     Juego juego;
@@ -14,10 +16,8 @@ public class EntradaGUI extends JFrame {//kk
     private JButton cargarJuego;
     private JButton pruebas;
     private JScrollPane jScrollPane;
-    private TableroPrueba tableroGUI;
-    private TableroDefault tableroDefault;
-    private PanelPersonaje panelPersonaje;
-    private PanelPersonajePrueba panelPersonajePrueba;// Referencia a TableroGUI
+    private JTextField ruta;
+
 
 
     public EntradaGUI() {
@@ -61,21 +61,30 @@ public class EntradaGUI extends JFrame {//kk
         //accion del boton nuevoJuego
         nuevoJuego.addActionListener(e -> {
             juego=new Juego();
-            tableroDefault= new TableroDefault(panelDeTexto, juego);
+            TableroDefault tableroDefault= new TableroDefault(panelDeTexto, juego);
             ShowPanel(tableroDefault);
             PanelPersonaje panelPersonaje=new PanelPersonaje(panelDeTexto, juego);
             panelPrincipal.add(panelPersonaje);
         });
 
         //accion del boton cargarJuego
-        cargarJuego.addActionListener(e -> System.out.println("Cargar juego no implementado."));
+        cargarJuego.addActionListener(e -> {
+            JDialogCargar(ruta);
+            IO io = new IO();
+            juego = io.leerJSON(ruta.getText());
+            TableroDefault tableroDefault = new TableroDefault(panelDeTexto, juego);
+            ShowPanel(tableroDefault);
+            PanelPersonajeCargado panelPersonajeCargado = new PanelPersonajeCargado(panelDeTexto, juego);
+            panelPrincipal.add(panelPersonajeCargado);
+        });
+
 
         // Acción para el boton de pruebas
         pruebas.addActionListener(e ->{
             juego=new Juego();
-            tableroGUI= new TableroPrueba(panelDeTexto, juego);
-            ShowPanel(tableroGUI);
-            Posicion posicionObjetivo = tableroGUI.getPosicionObjetivo();
+            TableroPrueba tableroPrueba= new TableroPrueba(panelDeTexto, juego);
+            ShowPanel(tableroPrueba);
+            Posicion posicionObjetivo = tableroPrueba.getPosicionObjetivo();
             PanelPersonajePrueba panelPersonajePrueba=new PanelPersonajePrueba(panelDeTexto, juego,posicionObjetivo);
             panelPrincipal.add(panelPersonajePrueba);
         });
@@ -96,4 +105,55 @@ public class EntradaGUI extends JFrame {//kk
         getContentPane().revalidate();
         getContentPane().repaint();
     }
+
+    private void JDialogCargar(JTextField ruta){
+    Window parentWindow = SwingUtilities.getWindowAncestor(this);
+
+    JDialog dialogo = new JDialog(parentWindow,"Cargar Partida",Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setLayout(new BorderLayout(10,10));
+        dialogo.setSize(400,300);
+        dialogo.setBackground(Color.WHITE);
+        dialogo.setLocationRelativeTo(null);
+
+        JPanel panelCargar= new JPanel();
+        panelCargar.setLayout(new GridLayout(1,2,10,10));
+        panelCargar.setBackground(Color.WHITE);
+        panelCargar.setBorder(new EmptyBorder(10,10,10,10));
+        JLabel l1 = new JLabel("Introduzca la ruta");
+        ruta= new JTextField();
+
+        panelCargar.add(l1);
+        panelCargar.add(ruta);
+
+
+        dialogo.add(panelCargar,BorderLayout.CENTER);
+
+        JButton aceptar = new JButton("Aceptar");
+        JTextField finalRuta = ruta;
+        this.ruta = ruta;
+        aceptar.addActionListener(e->{
+            try{
+                if(finalRuta.getText()!=null){
+                    IO io = new IO();
+                    io.leerJSON(finalRuta.getText());
+                    JOptionPane.showMessageDialog(this,"Se ha cargado correctamente","Partida Cargada",JOptionPane.INFORMATION_MESSAGE);
+                    dialogo.dispose();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,"No se ha cargado correctamente","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JButton cancelar = new JButton("Cancelar");
+        cancelar.addActionListener(e->{dialogo.dispose();});
+        JPanel panelBotones = new JPanel();
+        panelBotones.setBackground(Color.WHITE);
+        panelBotones.setLayout(new GridLayout(1,2,10,10));
+        panelBotones.add(aceptar);
+        panelBotones.add(cancelar);
+
+        dialogo.add(panelBotones, BorderLayout.SOUTH);
+        dialogo.setVisible(true);
+    }
+
 }
