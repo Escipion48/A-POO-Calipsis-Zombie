@@ -6,7 +6,6 @@ import es.urjc.poo.equipoj.io.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.File;
 
 public class EntradaGUI extends JFrame {//kk
     Juego juego;

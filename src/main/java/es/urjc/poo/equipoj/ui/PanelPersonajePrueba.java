@@ -8,16 +8,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class PanelPersonajePrueba extends JPanel{
     final Juego juego;
     private JPanel panelSupervivienteEntero;
     private JTextPane panelDeTexto;
-    private JButton siguienteRonda;
     private JButton crearSuperviviente;
-    private JButton guardar;
-    private JButton terminar;
     private JButton empezar;
     private Posicion posicionObjetivo;
 
@@ -54,9 +50,9 @@ public class PanelPersonajePrueba extends JPanel{
         contenedorDeBotones.setBackground(Color.WHITE);
         contenedorDeBotones.setLayout(new GridLayout(4, 1, 10, 10));
 
-        siguienteRonda = new JButton("Siguiente Ronda");
-        terminar = new JButton("Terminar");//falta accion
-        guardar = new JButton("Guardar");//falta accion
+        JButton siguienteRonda = new JButton("Siguiente Ronda");
+        JButton terminar = new JButton("Terminar");//falta accion
+        JButton guardar = new JButton("Guardar");//falta accion
 
         contenedorDeBotones.add(siguienteRonda);
         contenedorDeBotones.add(terminar);
