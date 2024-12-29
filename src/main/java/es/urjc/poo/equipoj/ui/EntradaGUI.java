@@ -9,7 +9,6 @@ import java.awt.*;
 
 public class EntradaGUI extends JFrame {//kk
     Juego juego;
-    private JPanel panelPrincipal;
     private JPanel panelInicio;
     private JButton nuevoJuego;
     private JButton cargarJuego;
@@ -24,16 +23,11 @@ public class EntradaGUI extends JFrame {//kk
     }
 
     private void initUI() {
-        //iniciar el panel pricipal que estara atras del de la entrada
-        panelPrincipal=new JPanel();
-        panelPrincipal.setLayout(new GridLayout(1,2));
-        panelPrincipal.setBackground(Color.WHITE);
-        panelPrincipal.setBorder(new EmptyBorder(20,20,20,20));
-
         //iniciar el panel de entrada
         panelInicio = new JPanel();
         panelInicio.setLayout(new GridLayout(3, 1,20,20));
         panelInicio.setBackground(Color.WHITE);
+        panelInicio.setBorder(new EmptyBorder(20,20,20,20));
 
         //iniciar los botones del panel de entrada
         nuevoJuego = new JButton("Nuevo Juego");
@@ -52,10 +46,9 @@ public class EntradaGUI extends JFrame {//kk
         panelInicio.add(nuevoJuego);
         panelInicio.add(cargarJuego);
         panelInicio.add(pruebas);
-        panelPrincipal.add(panelInicio,BorderLayout.CENTER);
 
 
-        setContentPane(panelPrincipal);
+        setContentPane(panelInicio);
 
         //accion del boton nuevoJuego
         nuevoJuego.addActionListener(e -> {
@@ -63,7 +56,7 @@ public class EntradaGUI extends JFrame {//kk
             TableroDefault tableroDefault= new TableroDefault(panelDeTexto, juego);
             ShowPanel(tableroDefault);
             PanelPersonaje panelPersonaje=new PanelPersonaje(panelDeTexto, juego);
-            panelPrincipal.add(panelPersonaje);
+            panelInicio.add(panelPersonaje);
         });
 
         //accion del boton cargarJuego
@@ -74,7 +67,7 @@ public class EntradaGUI extends JFrame {//kk
             TableroDefault tableroDefault = new TableroDefault(panelDeTexto, juego);
             ShowPanel(tableroDefault);
             PanelPersonajeCargado panelPersonajeCargado = new PanelPersonajeCargado(panelDeTexto, juego);
-            panelPrincipal.add(panelPersonajeCargado);
+            panelInicio.add(panelPersonajeCargado);
         });
 
 
@@ -85,7 +78,7 @@ public class EntradaGUI extends JFrame {//kk
             ShowPanel(tableroPrueba);
             Posicion posicionObjetivo = tableroPrueba.getPosicionObjetivo();
             PanelPersonajePrueba panelPersonajePrueba=new PanelPersonajePrueba(panelDeTexto, juego,posicionObjetivo);
-            panelPrincipal.add(panelPersonajePrueba);
+            panelInicio.add(panelPersonajePrueba);
         });
 
 
@@ -93,7 +86,7 @@ public class EntradaGUI extends JFrame {//kk
 
     private void ShowPanel(JPanel p) {
         getContentPane().removeAll(); // Limpiar todos los componentes anteriores
-        getContentPane().setLayout(new GridLayout(1,2));// Usar BorderLayout
+        getContentPane().setLayout(new GridLayout(1,2));
         JPanel panelDivisor= new JPanel();
         panelDivisor.setLayout(new GridLayout(2,1));
         panelDivisor.setBackground(Color.WHITE);

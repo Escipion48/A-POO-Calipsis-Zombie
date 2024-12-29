@@ -146,10 +146,11 @@ public class Zombie implements EntidadActivable {
 
         //Una vez tener las coordenadas de la posicion a donde irá el zombie creamos una nueva posicion y la ponemos en zombie
         Posicion posicion = new Posicion(posicionX,posicionY);
-        this.setPosicion(posicion);
-
-        //Finalmente, quitamos al zombie una activacion
-        this.setActivaciones(this.getActivaciones() - 1);
+        if(!posicion.equals(this.posicion)){
+            this.setPosicion(posicion);
+            //Finalmente, quitamos al zombie una activacion
+            this.setActivaciones(this.getActivaciones() - 1);
+        }
     }
 
     @Override
@@ -157,8 +158,7 @@ public class Zombie implements EntidadActivable {
         ArrayList<Superviviente> supervivientes = pasarEntidadesASupervivientes(entidad);
         if (!supervivientes.isEmpty()) {
             Superviviente supervivienteObjetivo = supervivientes.get(0);
-            int numeroDeHeridas = supervivienteObjetivo.getHeridas()+1;
-            supervivienteObjetivo.setHeridas(numeroDeHeridas);
+            supervivienteObjetivo.anadirHerida();
             supervivienteObjetivo.anadirAtaqueRecibido(this);
             System.out.println(supervivienteObjetivo.getNombre()+ " a sido atacado por : "+ this);
             this.activaciones--;

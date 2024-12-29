@@ -47,7 +47,7 @@ public class PanelPersonaje extends JPanel{
 
         JPanel contenedorDeBotones = new JPanel();
         contenedorDeBotones.setBackground(Color.WHITE);
-        contenedorDeBotones.setLayout(new GridLayout(4, 1, 10, 10));
+        contenedorDeBotones.setLayout(new GridLayout(3, 1, 10, 10));
 
         JButton siguienteRonda = new JButton("Siguiente Ronda");
         JButton terminar = new JButton("Terminar");//falta accion
@@ -102,7 +102,7 @@ public class PanelPersonaje extends JPanel{
         dialogo.setLayout(new BorderLayout(10, 10));
 
         // Panel de contenido del diálogo
-        JPanel panelContenido = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel panelContenido = new JPanel(new GridLayout(4, 2, 10, 10));
         panelContenido.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JLabel l1 = new JLabel("Nombre del personaje 1:");
