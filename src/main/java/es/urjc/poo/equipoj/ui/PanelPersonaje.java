@@ -953,7 +953,6 @@ public class PanelPersonaje extends JPanel{
                 JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma para atacar.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
             // Mostrar panel de coordenadas
             mostrarPanelCoordenadas(dialogo, armaSeleccionada[0], superviviente);
 
