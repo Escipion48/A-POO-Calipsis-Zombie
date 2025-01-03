@@ -763,7 +763,7 @@ public class PanelPersonaje extends JPanel{
                     return;
                 }
                 // Cambiar el arma activa seleccionada
-                superviviente.cambiarArmaActiva(armaActivaSeleccionada[0]);
+                superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);
             } else if (ArmasActivas == 1){
                 if (armaActivaSeleccionada[0] == null){
                     for (int i = 0; i < superviviente.getArmasActivas().length; i++){
@@ -777,7 +777,7 @@ public class PanelPersonaje extends JPanel{
                         }
                     }
                 }else{
-                    superviviente.cambiarArmaActiva(armaInventarioSeleccionada[0]);
+                    superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);
                 }
             }else{
                 // No hay armas activas

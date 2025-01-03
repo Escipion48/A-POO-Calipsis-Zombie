@@ -722,13 +722,12 @@ public class Superviviente implements EntidadActivable{
         this.ataquesRecibidos.add(z);
     }
 
-    public void cambiarArmaActiva(Arma arma){
+    public void cambiarArmaActiva(Arma arma,Arma inventario){
         for(int i = 0 ; i<this.getArmasActivas().length; i++){
             if(this.armasActivas[i] !=null && this.armasActivas[i].equals(arma)){
-                this.setArmaActiva(arma,i);
+                this.setArmaActiva(inventario,i);
                 this.acciones--;
                 break;
-
             }
         }
     }

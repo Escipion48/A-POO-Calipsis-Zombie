@@ -773,7 +773,7 @@ public class PanelPersonajePrueba extends JPanel{
         // Panel de botones
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e -> {
-            // numero de armas activas
+            // Verificar las condiciones de selección según el estado actual
             int ArmasActivas = grupoArmasActivas.getButtonCount();
 
             if(ArmasActivas == 2){
@@ -786,7 +786,7 @@ public class PanelPersonajePrueba extends JPanel{
                     return;
                 }
                 // Cambiar el arma activa seleccionada
-                superviviente.cambiarArmaActiva(armaActivaSeleccionada[0]);
+                superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);
             } else if (ArmasActivas == 1){
                 if (armaActivaSeleccionada[0] == null){
                     for (int i = 0; i < superviviente.getArmasActivas().length; i++){
@@ -800,9 +800,8 @@ public class PanelPersonajePrueba extends JPanel{
                         }
                     }
                 }else{
-                    superviviente.cambiarArmaActiva(armaInventarioSeleccionada[0]);
-                    }
-
+                    superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);
+                }
             }else{
                 // No hay armas activas
                 if (armaInventarioSeleccionada[0] == null){
@@ -831,9 +830,6 @@ public class PanelPersonajePrueba extends JPanel{
         dialogo.setVisible(true);
     }
 
-    /**
-     * JDialogMoverse es una accion del superviviente que le permite moverse a otra posicion adyacente
-     */
     private void JDialogMoverse(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
@@ -1154,6 +1150,7 @@ public class PanelPersonajePrueba extends JPanel{
         int numero = superviviente.calcularNumeroObjetosInventario();
         if(numero==5){
             JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
+            dialogo.dispose();
         }
         JPanel panelCrearArma = new JPanel();
         panelCrearArma.setBorder(new EmptyBorder(10,10,10,10));
@@ -1219,6 +1216,7 @@ public class PanelPersonajePrueba extends JPanel{
         int numero = superviviente.calcularNumeroObjetosInventario();
         if(numero==5){
             JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
+        dialogo.dispose();
         }
         JPanel panelCrearProvision = new JPanel();
         panelCrearProvision.setBorder(new EmptyBorder(10,10,10,10));
