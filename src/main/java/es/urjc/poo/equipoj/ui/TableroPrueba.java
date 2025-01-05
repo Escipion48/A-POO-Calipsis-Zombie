@@ -150,8 +150,8 @@ public class TableroPrueba extends JPanel {
 
         SpinnerNumberModel Ox = new SpinnerNumberModel(1, 1, 100, 1);
         SpinnerNumberModel Oy = new SpinnerNumberModel(1, 1, 100, 1);
-        SpinnerNumberModel ObjX = new SpinnerNumberModel(1, 1, 100, 1);
-        SpinnerNumberModel ObjY = new SpinnerNumberModel(1, 1, 100, 1);
+        SpinnerNumberModel ObjX = new SpinnerNumberModel(0, 0, 100, 1);
+        SpinnerNumberModel ObjY = new SpinnerNumberModel(0, 0, 100, 1);
 
         x = new JSpinner(Ox);
         y = new JSpinner(Oy);

@@ -759,4 +759,13 @@ public class Superviviente implements EntidadActivable{
     public void anadirHerida(){
         this.heridas++;
     }
+
+    public boolean estaActiva(Arma arma){
+        for(int i =0; i<2; i++){
+            if(this.getArmaActiva(i)!=null && this.getArmaActiva(i).equals(arma)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

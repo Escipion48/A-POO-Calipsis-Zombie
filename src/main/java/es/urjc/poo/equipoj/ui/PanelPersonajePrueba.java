@@ -757,14 +757,16 @@ public class PanelPersonajePrueba extends JPanel{
         panelInventario.setBorder(BorderFactory.createTitledBorder("Inventario"));
         ButtonGroup grupoInventario = new ButtonGroup();
 
-        for(int j = 0; j < superviviente.getInventario().length; j++){
-            if (superviviente.getInventario(j) instanceof Arma){
+        for(int j = 0; j < superviviente.getInventario().length-superviviente.getArmasActivas().length; j++){
+            if (superviviente.getInventario(j) instanceof Arma ){
                 Arma arma = (Arma) superviviente.getInventario(j);
+                if(!superviviente.estaActiva(arma)){
                 JRadioButton botonArma = new JRadioButton(arma.getNombre());
                 botonArma.addActionListener(e -> armaInventarioSeleccionada[0] = arma);
                 grupoInventario.add(botonArma);
                 panelInventario.add(botonArma);
             }
+        }
         }
         panelPrincipal.add(panelInventario);
 
