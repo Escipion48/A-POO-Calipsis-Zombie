@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj.entidades;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Juego {
@@ -23,6 +24,7 @@ public class Juego {
         this.zombies.add(generarZombie());
         this.zombies.add(generarZombie());
         this.ataques = new Ataques();
+
 
     }
 
@@ -72,13 +74,14 @@ public class Juego {
         this.ataques = ataques;
     }
 
-    public void setAtaque(Ataque ataque, int pos) {
-        this.ataques.setAtaque(pos, ataque);
+    public void setAtaque(Ataque ataque) {
+        this.ataques.setAtaque(ataque);
     }
 
     public ArrayList<Zombie> getZombies() {
         return zombies;
     }
+
 
     public Zombie getZombie(int pos) {
         return zombies.get(pos);
@@ -117,6 +120,12 @@ public class Juego {
         //Generamos una posicion aleatoria con las dimensiones del tablero como valores máximos posibles.
         Posicion posicionAleatoria = new Posicion(random.nextInt(this.getTablero().getDimensiones().getPosicionX())+1,random.nextInt(this.getTablero().getDimensiones().getPosicionY())+1);
 
+        try{
+            Thread.sleep(1);
+        }catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
         //Elegimos el tipo del zombie con un 60% de probabilidad de que sea caminante, 30% Corredor y 10% Abominacion
         int tipoZombie = random.nextInt(10);
         TipoZombie tipoZombieEnum;
@@ -143,5 +152,20 @@ public class Juego {
             default:
                 return null; // No deberia de llegar aqui, ya que el random va de 0 a 2, en cualquier caso retorna un null
         }
+    }
+
+    public void anadirZombie(){
+        Zombie z = generarZombie();
+        this.zombies.add(z);
+    }
+
+    public void reiniciar(){
+        this.setSupervivientes(new Superviviente[]{});
+        this.setAtaques(new Ataques());
+        this.setTablero(new Tablero());
+        this.zombies.clear();
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
     }
 }

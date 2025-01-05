@@ -107,31 +107,19 @@ public class Zombie implements EntidadActivable {
     }
 
     public void reaccionAtaque() {
-        //TODO: Implementar
+        //Esto ya esta en ataque de superviviente
     }
 
 
     //De momento solo esta la logica general de activarse, falta moverse y atacar.
     @Override
-    public void activarse(Tablero tablero, ArrayList<EntidadActivable> entidades) {
-
+    public void activarse() {
         this.recuperarActivaciones();
-        ArrayList<Superviviente> supervivientes = this.pasarEntidadesASupervivientes(entidades);
 
-        do{
-            if(this.getSupervivienteEnMismaCasilla(supervivientes)==null){
-            this.moverse(entidades);
-            }
-            else{
-                this.atacar();
-            }
-
-        }while(activaciones > 0);
     }
 
     @Override
     public void moverse(ArrayList<EntidadActivable> entidades) {
-    //TODO: Implementar
 
         //Creamos las coordenadas con la posicion actual del zombie con las que operaremos.
         int posicionX = this.getPosicion().getPosicionX();
@@ -158,16 +146,25 @@ public class Zombie implements EntidadActivable {
 
         //Una vez tener las coordenadas de la posicion a donde irá el zombie creamos una nueva posicion y la ponemos en zombie
         Posicion posicion = new Posicion(posicionX,posicionY);
-        this.setPosicion(posicion);
-
-        //Finalmente, quitamos al zombie una activacion
-        this.setActivaciones(this.getActivaciones() - 1);
+        if(!posicion.equals(this.posicion)){
+            this.setPosicion(posicion);
+            //Finalmente, quitamos al zombie una activacion
+            this.setActivaciones(this.getActivaciones() - 1);
+        }
     }
 
     @Override
-    public void atacar() {
-    //TODO: Implementar
+    public void atacar(ArrayList<EntidadActivable> entidad) {
+        ArrayList<Superviviente> supervivientes = pasarEntidadesASupervivientes(entidad);
+        if (!supervivientes.isEmpty()) {
+            Superviviente supervivienteObjetivo = supervivientes.get(0);
+            supervivienteObjetivo.anadirHerida();
+            supervivienteObjetivo.anadirAtaqueRecibido(this);
+            System.out.println(supervivienteObjetivo.getNombre()+ " a sido atacado por : "+ this);
+            this.activaciones--;
+        }
     }
+
 
 
     /**
@@ -189,7 +186,7 @@ public class Zombie implements EntidadActivable {
      * @param entidades
      * @return ArrayLIst con los supervivientes del juego
      */
-    private ArrayList<Superviviente> pasarEntidadesASupervivientes(ArrayList<EntidadActivable> entidades) {
+    public ArrayList<Superviviente> pasarEntidadesASupervivientes(ArrayList<EntidadActivable> entidades) {
         ArrayList<Superviviente> supervivientes = new ArrayList<>();
         for(EntidadActivable entidad : entidades){
             if(entidad instanceof Superviviente){
@@ -207,25 +204,16 @@ public class Zombie implements EntidadActivable {
      * @param supervivientes Supervivientes del juego
      * @return
      */
-    private Superviviente getSupervivienteEnMismaCasilla(ArrayList<Superviviente> supervivientes){
+    public ArrayList<Superviviente> getSupervivienteEnMismaCasilla(ArrayList<Superviviente> supervivientes){
 
-        Superviviente supervivienteMismaCasilla = null;
+        ArrayList<Superviviente> listaSuperviviente = new ArrayList<>();
 
         for(Superviviente superviviente : supervivientes){
-
             if(superviviente.getPosicion().equals(this.getPosicion())){
-
-                if(supervivienteMismaCasilla == null){
-
-                    supervivienteMismaCasilla = superviviente;
-
-                }
-                else{
-                    supervivienteMismaCasilla = supervivienteMismaCasilla.cualTieneMasMordeduras(superviviente);
-                }
+                listaSuperviviente.add(superviviente);
             }
         }
-        return supervivienteMismaCasilla;
+        return listaSuperviviente;
     }
 
 
@@ -237,12 +225,12 @@ public class Zombie implements EntidadActivable {
      * @param supervivientes
      * @return el superviviente más cercano y con más mordeduras
      */
-    private Superviviente getSupervivienteAlQueDirigirse(ArrayList<Superviviente> supervivientes){
+    public Superviviente getSupervivienteAlQueDirigirse(ArrayList<Superviviente> supervivientes){
         int distancia = 1;
         Superviviente supervivienteObjetivo = null;
         do{
             for(Superviviente superviviente : supervivientes){
-                if(this.getPosicion().comprobarDentroDeDistancia(superviviente.getPosicion(),distancia)==true){
+                if(this.getPosicion().comprobarDentroDeDistancia(superviviente.getPosicion(), distancia)){
                     if(supervivienteObjetivo == null){
                         supervivienteObjetivo = superviviente;
                     }

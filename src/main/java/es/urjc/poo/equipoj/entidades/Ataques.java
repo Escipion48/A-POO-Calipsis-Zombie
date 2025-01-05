@@ -26,15 +26,15 @@ public class Ataques {
         this.ataques.addAll(ataques);
     }
 
-    public void setAtaque(int pos, Ataque ataque) {
-        ataques.add(pos, ataque);
+    public void setAtaque(Ataque ataque) {
+        ataques.add(ataque);
     }
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         for(Ataque ataque : ataques) {
-            str.append(ataque.toString()+"\n");
+            str.append(ataque.toString()).append("\n");
         }
         return str.toString();
     }

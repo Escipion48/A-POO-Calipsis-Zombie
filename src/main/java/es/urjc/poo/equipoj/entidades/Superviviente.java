@@ -1,8 +1,8 @@
 package es.urjc.poo.equipoj.entidades;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Superviviente implements EntidadActivable{
 
@@ -188,9 +188,9 @@ public class Superviviente implements EntidadActivable{
     }
 
     @Override
-    public void activarse(Tablero tablero, ArrayList<EntidadActivable> entidades) {
+    public void activarse() {
     this.setAcciones(3);
-    Scanner kdc = new Scanner(System.in);
+    /*Scanner kdc = new Scanner(System.in);
     System.out.println("Introduzca la accion deseada: 0:Moverse");
     int selector = kdc.nextInt(); //Más adelante hay que hacer que el selector dependa del valor introducido por la UI
     do{
@@ -235,39 +235,28 @@ public class Superviviente implements EntidadActivable{
                 this.setInventario(null, posicionDelInventario);
 
         }
-    }while(acciones>0);
+    }while(acciones>0);*/
     }
 
 
     /**
-     * Como indica esta funcion, se encarga de mover a Superviviente, teniendo en cuenta
+     * Como indica esta funcion, se encarga de actualizar las acciones de Superviviente, teniendo en cuenta
      * la cantidad de acciones que tiene y la cantidad de zombies con las que comparte
-     * casilla, restando una accion extra por cada zombie.
+     * casilla, restando una accion extra por cada zombie mas 1 de la accion propia de moverse.
      */
     @Override
     public void moverse(ArrayList<EntidadActivable> entidades){
-    //La parte del scanner se tiene que cambiar a interfaz Gráfica y mantener el bucle hasta que se elija una casilla adyacente //TODO
-        do{
-    Scanner kdc = new Scanner(System.in);
-    System.out.println("Introduzca la posicion X:");
-    int posicionX = kdc.nextInt();
-    System.out.println("Introduzca la posicion Y:");
-    int posicionY = kdc.nextInt();
-    //Con estos dos valores podemos ver el desplazamiento;
-    Posicion posicion = new Posicion(posicionX, posicionY);
-        } while(this.getPosicion().comprobarAdyacente(posicion)==false); //Bucle para asegurarnos que son posiciones adyacentes
-
-        //Una vez comprobado, restamos las acciones y cambiamos la posicion.
-
-        this.setAcciones(this.getAcciones() - this.calcularNumeroAccinesPorMoverse(entidades));
-        this.setPosicion(posicion);
+        this.setAcciones(this.getAcciones() - (this.calcularNumeroAccinesPorMoverse(entidades)+1));
 
     }
 
 
     @Override
-    public void atacar() {
-    //TODO: Implementar
+    public void atacar(ArrayList<EntidadActivable> entidad ) {
+        ArrayList<Zombie> zombieEliminado = this.convertirArrayEntidadesActivableAZombie(entidad);
+        this.zombiesEliminados.addAll(zombieEliminado);
+        this.acciones--;
+        System.out.println(this.zombiesEliminados);
     }
 
 
@@ -588,7 +577,7 @@ public class Superviviente implements EntidadActivable{
      * Funcion auxiliar para calcular el número de objetos que tenemos en el inventario
      * @return Un entero con el número de Objetos del inventario
      */
-    private int calcularNumeroObjetosInventario(){
+    public int calcularNumeroObjetosInventario(){
         int contador = 0;
         for(int i=0;i<5;i++){
             if(this.getInventario(i)!=null){
@@ -629,7 +618,7 @@ public class Superviviente implements EntidadActivable{
         return zombies;
     }
 
-    private int calcularNumeroAccinesPorMoverse(ArrayList<EntidadActivable> entidades){
+    public int calcularNumeroAccinesPorMoverse(ArrayList<EntidadActivable> entidades){
         int contador = this.devolverZombiesEnPosicion(this.convertirArrayEntidadesActivableAZombie(entidades),this.getPosicion()).size();
         return contador;
     }
@@ -667,5 +656,116 @@ public class Superviviente implements EntidadActivable{
         else{
             return superviviente;
         }
+    }
+
+    private int[] lanzarDados(Ataque ataque,Arma arma) {
+        int n = arma.getNumeroDados();
+        int[] nd= new int[n];
+        ataque.setDados(nd);
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            ataque.dados[i]=0;
+            ataque.dados[i] = random.nextInt(6) + 1;  }
+        return ataque.dados;
+    }
+
+    private int evaluarExito(Arma arma,int[]dados) {
+        int exitos=0;
+        for(int i=0 ; i<dados.length ; i++){
+            if(dados[i]>=arma.getValorExito()){
+                exitos++;
+            }
+        }
+        return exitos;
+    }
+
+
+    public ArrayList<Zombie>  resolverAtaque(Arma arma, Posicion p, ArrayList<EntidadActivable> entidades,Ataque ataque) {
+        int potencia = arma.getPotencia();
+        int[] nd= lanzarDados(ataque,arma);
+        int num_exitos = evaluarExito(arma, nd);
+
+        ArrayList<Zombie> CasillaConZombie = new ArrayList<>();
+        ArrayList<Zombie> Eliminados = new ArrayList<>();
+
+        for (Zombie zombie : convertirArrayEntidadesActivableAZombie(entidades)) {
+            if (p.equals(zombie.getPosicion())) {
+                CasillaConZombie.add(zombie);
+            }
+        }
+
+        Iterator<Zombie> iterator = CasillaConZombie.iterator();
+
+        while (iterator.hasNext() && num_exitos>0) {
+            Zombie zombie = iterator.next();
+            if (zombie instanceof Berserker && zombie.getAguante() <= potencia && this.getPosicion().equals(zombie.getPosicion())) {
+                iterator.remove();
+                convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
+                Eliminados.add(zombie);
+                this.contadorZombiesEliminados++;
+                num_exitos--;
+            } else if (!(zombie instanceof Berserker) && zombie.getAguante() <= potencia) {
+                iterator.remove();
+                convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
+                Eliminados.add(zombie);
+                this.contadorZombiesEliminados++;
+                num_exitos--;
+            }
+        }
+
+        return Eliminados;
+    }
+
+
+
+    public void anadirAtaqueRecibido(Zombie z){
+        this.ataquesRecibidos.add(z);
+    }
+
+    public void cambiarArmaActiva(Arma arma,Arma inventario){
+        for(int i = 0 ; i<this.getArmasActivas().length; i++){
+            if(this.armasActivas[i] !=null && this.armasActivas[i].equals(arma)){
+                this.setArmaActiva(inventario,i);
+                this.acciones--;
+                break;
+            }
+        }
+    }
+
+    public void cambiarArmaActiva2(Arma arma , int i){
+        this.setArmaActiva(arma,i);
+        this.acciones--;
+    }
+
+    public void eliminarItemInventario(Equipo equipo){
+        for(int i = 0 ; i<this.getInventario().length;i++){
+            if(this.inventario[i].equals(equipo)){
+                this.inventario[i]=null;
+                this.acciones--;
+                break;
+            }
+        }
+    }
+
+    public void eliminarArmaActiva(Arma arma){
+        for(int i =0 ; i<this.getArmasActivas().length; i++){
+            if(this.armasActivas[i].equals(arma)){
+                this.armasActivas[i]= null;
+                break;
+            }
+        }
+    }
+
+    public void anadirHerida(){
+        this.heridas++;
+    }
+
+    public boolean estaActiva(Arma arma){
+        for(int i =0; i<2; i++){
+            if(this.getArmaActiva(i)!=null && this.getArmaActiva(i).equals(arma)){
+                return true;
+            }
+        }
+        return false;
     }
 }
