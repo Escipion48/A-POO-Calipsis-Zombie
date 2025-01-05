@@ -7,13 +7,8 @@ public interface EntidadActivable {
     Posicion posicion = null;
 
 
-   /* /**
-     * La funcion activarse será utilizada por juego para activar cada entidad, se encargará de que cada entidad
-     * activable haga todas sus accines posibles hasta que se quede sin acciones. También se encarga de "regenerar"
-     * su respectiva cantidad de acciones a la clase.
-     * @param tablero EL tablero del juego, util para los metodos de las clases.
-     * @param entidades ArrayList con entidades activables, en supervivientes serán zombies y en zombies supervivientes,
-     * Aunque dentro de cada clase hay metodos incluidos para asegurarse que se opera solo con las clases deseadas
+   /**
+     * La funcion activarse se encarga de regenerar las activaciones de cada entidad del juego
      */
     void activarse();
 

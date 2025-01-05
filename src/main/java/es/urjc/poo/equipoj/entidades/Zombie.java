@@ -1,7 +1,6 @@
 package es.urjc.poo.equipoj.entidades;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Zombie implements EntidadActivable {
 
@@ -158,8 +157,7 @@ public class Zombie implements EntidadActivable {
         ArrayList<Superviviente> supervivientes = pasarEntidadesASupervivientes(entidad);
         if (!supervivientes.isEmpty()) {
             Superviviente supervivienteObjetivo = supervivientes.get(0);
-            supervivienteObjetivo.anadirHerida();
-            supervivienteObjetivo.anadirAtaqueRecibido(this);
+            supervivienteObjetivo.recibirAtaque(this);
             System.out.println(supervivienteObjetivo.getNombre()+ " a sido atacado por : "+ this);
             this.activaciones--;
         }

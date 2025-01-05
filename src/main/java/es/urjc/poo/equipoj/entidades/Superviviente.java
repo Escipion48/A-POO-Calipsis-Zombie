@@ -190,52 +190,6 @@ public class Superviviente implements EntidadActivable{
     @Override
     public void activarse() {
     this.setAcciones(3);
-    /*Scanner kdc = new Scanner(System.in);
-    System.out.println("Introduzca la accion deseada: 0:Moverse");
-    int selector = kdc.nextInt(); //Más adelante hay que hacer que el selector dependa del valor introducido por la UI
-    do{
-        switch (selector){
-            case 0:  //Moverse
-                //Primero vemos los zombies que hay en la posicion del superviviente, para comprobar si puede moverse o no.
-                ArrayList<Zombie> zombiesEnPosicionActual = this.devolverZombiesEnPosicion(this.convertirArrayEntidadesActivableAZombie(entidades),this.getPosicion());
-                if(zombiesEnPosicionActual.size()<this.getAcciones()){
-                    this.moverse(entidades);
-                }
-                else{
-                    System.out.println("Demasiados zombies en la casilla actual como para moverse");
-                }
-                break;
-
-            case 1: //Buscar un objeto en una casilla
-                this.buscar(tablero.getCasilla(this.getPosicion())); //Hay que añadir casilla
-                break;
-
-            case 2: //Atacar
-
-                this.atacar();
-                break;
-
-            case 3: //Elegir un arma para ponerla como arma Activa
-
-                System.out.println("Introduzca posicion arma equipo:");
-                int posicionInventario = kdc.nextInt();
-                System.out.println("Introduzca posicion armaActiva:");
-                int posicionActiva = kdc.nextInt();
-                this.setArmaActiva(this.getArmaActiva(posicionInventario), posicionActiva);
-                break;
-
-            case 4:    //No hacer nada, numero de movimientos se pone en 0
-                this.setAcciones(0);
-                break;
-
-            case 5: //eliminar objeto del equipo
-
-                System.out.println("Introduzca posicion del inventario a eliminar:");
-                int posicionDelInventario = kdc.nextInt();
-                this.setInventario(null, posicionDelInventario);
-
-        }
-    }while(acciones>0);*/
     }
 
 
@@ -658,17 +612,33 @@ public class Superviviente implements EntidadActivable{
         }
     }
 
+    /**
+     * Esta funcion se encarga de calcular el resultado de los dados, introducirlos en el ataque y devolverlos
+     * para se usados posteriormente
+     * @param ataque ataque en el que guardaremos los dados
+     * @param arma arma con la que se ataca
+     * @return array con el resultado de los dados
+     */
     private int[] lanzarDados(Ataque ataque,Arma arma) {
-        int n = arma.getNumeroDados();
-        int[] nd= new int[n];
-        ataque.setDados(nd);
+
+        int numeroDados = arma.getNumeroDados();
+        int[] ResultadosDeLosDados= new int[numeroDados];
         Random random = new Random();
-        for (int i = 0; i < n; i++) {
-            ataque.dados[i]=0;
-            ataque.dados[i] = random.nextInt(6) + 1;  }
+
+        for (int i = 0; i < numeroDados; i++) {
+            ataque.dados[i] = random.nextInt(6) + 1; //Como simula un dado debe tomar valores de 1 a 6
+        }
+
+        ataque.setDados(ResultadosDeLosDados);
         return ataque.dados;
     }
 
+    /**
+     * Calcula el número de exitos que ha tenido el ataque
+     * @param arma arma con la que se ataca
+     * @param dados array con los dados del ataque
+     * @return numero de exitos
+     */
     private int evaluarExito(Arma arma,int[]dados) {
         int exitos=0;
         for(int i=0 ; i<dados.length ; i++){
@@ -680,52 +650,63 @@ public class Superviviente implements EntidadActivable{
     }
 
 
-    public ArrayList<Zombie>  resolverAtaque(Arma arma, Posicion p, ArrayList<EntidadActivable> entidades,Ataque ataque) {
-        int potencia = arma.getPotencia();
-        int[] nd= lanzarDados(ataque,arma);
-        int num_exitos = evaluarExito(arma, nd);
+    /**
+     * La funcion se encarga de resolver un ataque utilizando las funciones anteriores.
+     * @param arma arma seleccionada
+     * @param posicionObjetivo posicion a la que atacaremos
+     * @param entidades entidades del juego
+     * @param ataque variable donde se guardara el ataque realizado
+     * @return  Array con los zombies eliminados
+     */
+    public ArrayList<Zombie>  resolverAtaque(Arma arma, Posicion posicionObjetivo, ArrayList<EntidadActivable> entidades,Ataque ataque) {
 
-        ArrayList<Zombie> CasillaConZombie = new ArrayList<>();
-        ArrayList<Zombie> Eliminados = new ArrayList<>();
+        int potenciaArmaElegida = arma.getPotencia();
+        int numeroExitos = evaluarExito(arma, lanzarDados(ataque,arma));
 
-        for (Zombie zombie : convertirArrayEntidadesActivableAZombie(entidades)) {
-            if (p.equals(zombie.getPosicion())) {
-                CasillaConZombie.add(zombie);
-            }
-        }
+        ArrayList<Zombie> zombiesEnCasillaObjetivo = devolverZombiesEnPosicion(convertirArrayEntidadesActivableAZombie(entidades),posicionObjetivo);
+        ArrayList<Zombie> zombiesEliminados = new ArrayList<>();
 
-        Iterator<Zombie> iterator = CasillaConZombie.iterator();
+        Iterator<Zombie> iterator = zombiesEnCasillaObjetivo.iterator();
 
-        while (iterator.hasNext() && num_exitos>0) {
+        while (iterator.hasNext() && numeroExitos>0) {
             Zombie zombie = iterator.next();
-            if (zombie instanceof Berserker && zombie.getAguante() <= potencia && this.getPosicion().equals(zombie.getPosicion())) {
+            if (zombie instanceof Berserker && zombie.getAguante() <= potenciaArmaElegida && this.getPosicion().equals(zombie.getPosicion())) {
                 iterator.remove();
                 convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
-                Eliminados.add(zombie);
+                zombiesEliminados.add(zombie);
                 this.contadorZombiesEliminados++;
-                num_exitos--;
-            } else if (!(zombie instanceof Berserker) && zombie.getAguante() <= potencia) {
+                numeroExitos--;
+            } else if (!(zombie instanceof Berserker) && zombie.getAguante() <= potenciaArmaElegida) {
                 iterator.remove();
                 convertirArrayEntidadesActivableAZombie(entidades).remove(zombie);
-                Eliminados.add(zombie);
+                zombiesEliminados.add(zombie);
                 this.contadorZombiesEliminados++;
-                num_exitos--;
+                numeroExitos--;
             }
         }
 
-        return Eliminados;
+        return zombiesEliminados;
     }
 
 
-
-    public void anadirAtaqueRecibido(Zombie z){
-        this.ataquesRecibidos.add(z);
+    /**
+     * Recibe un ataque de un zombie y añade una mordedura y lo almacena en ataques recibidos
+     * @param zombie que ataca al superviviente
+     */
+    public void recibirAtaque(Zombie zombie){
+        this.ataquesRecibidos.add(zombie);
+        this.heridas++;
     }
 
-    public void cambiarArmaActiva(Arma arma,Arma inventario){
+    /**
+     * Cambia un arma antigua por una nueva en las armas activas
+     * @param armaAntigua
+     * @param armaNueva
+     */
+    public void cambiarArmaActiva(Arma armaAntigua,Arma armaNueva){
         for(int i = 0 ; i<this.getArmasActivas().length; i++){
-            if(this.armasActivas[i] !=null && this.armasActivas[i].equals(arma)){
-                this.setArmaActiva(inventario,i);
+            if(this.armasActivas[i] !=null && this.armasActivas[i].equals(armaAntigua)){
+                this.setArmaActiva(armaNueva,i);
                 this.acciones--;
                 break;
             }
@@ -756,9 +737,6 @@ public class Superviviente implements EntidadActivable{
         }
     }
 
-    public void anadirHerida(){
-        this.heridas++;
-    }
 
     public boolean estaActiva(Arma arma){
         for(int i =0; i<2; i++){

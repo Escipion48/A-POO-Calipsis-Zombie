@@ -1022,8 +1022,7 @@ public class PanelPersonaje extends JPanel{
                         stringBuilder.append(zombie1.toString()).append("\n");
                         for(Superviviente superviviente1 : juego.getSupervivientes()){
                             if(zombie1 instanceof Toxico && zombie1.getPosicion().equals(superviviente1.getPosicion())){
-                                superviviente1.anadirAtaqueRecibido(zombie1);
-                                superviviente1.anadirHerida();
+                                superviviente1.recibirAtaque(zombie1);
                                 panelDeTexto.setText(panelDeTexto.getText()+"\n"+superviviente1.getNombre()+" ha sido salpicado por un zombie toxico");
                             }
                         }
