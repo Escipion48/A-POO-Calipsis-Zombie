@@ -692,13 +692,6 @@ public class PanelPersonajePrueba extends JPanel{
             Equipo equipo = Item[0];
             superviviente.eliminarItemInventario(equipo);
 
-
-            // Verificar si es un arma activa
-            if(Item[0] instanceof Arma){
-                Arma armaItem = (Arma) Item[0];
-                superviviente.eliminarArmaActiva(armaItem);
-            }
-
             // Mostrar mensaje de éxito y cerrar diálogo
             JOptionPane.showMessageDialog(dialogo, "Ítem eliminado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dialogo.dispose();
@@ -757,7 +750,7 @@ public class PanelPersonajePrueba extends JPanel{
         panelInventario.setBorder(BorderFactory.createTitledBorder("Inventario"));
         ButtonGroup grupoInventario = new ButtonGroup();
 
-        for(int j = 0; j < superviviente.getInventario().length-superviviente.getArmasActivas().length; j++){
+        for(int j = 0; j < superviviente.getInventario().length; j++){
             if (superviviente.getInventario(j) instanceof Arma ){
                 Arma arma = (Arma) superviviente.getInventario(j);
                 if(!superviviente.estaActiva(arma)){
@@ -792,14 +785,13 @@ public class PanelPersonajePrueba extends JPanel{
             } else if (ArmasActivas == 1){
                 if (armaActivaSeleccionada[0] == null){
                     for (int i = 0; i < superviviente.getArmasActivas().length; i++){
-                        if (superviviente.getArmaActiva(i) == null){
                             if (armaInventarioSeleccionada[0] == null){
                                 JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma del inventario.", "Error", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
-                            superviviente.cambiarArmaActiva2(armaInventarioSeleccionada[0],i);
+                            superviviente.cambiarArmaActiva(null,armaInventarioSeleccionada[0]);
                             break;
-                        }
+
                     }
                 }else{
                     superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);
@@ -812,7 +804,7 @@ public class PanelPersonajePrueba extends JPanel{
                 }
                 for (int i = 0; i < superviviente.getArmasActivas().length; i++){
                     if (superviviente.getArmaActiva(i) == null){
-                        superviviente.cambiarArmaActiva2(armaInventarioSeleccionada[0],i);
+                        superviviente.cambiarArmaActiva(null,armaInventarioSeleccionada[0]);
                         break;
                     }
                 }

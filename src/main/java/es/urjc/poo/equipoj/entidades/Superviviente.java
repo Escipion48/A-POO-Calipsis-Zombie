@@ -700,44 +700,75 @@ public class Superviviente implements EntidadActivable{
 
     /**
      * Cambia un arma antigua por una nueva en las armas activas
+     * SI no hay arma activadas o no hay un arma que se quiera cambiar
+     * se activara el arma en el primer hueco vacio
      * @param armaAntigua
      * @param armaNueva
      */
     public void cambiarArmaActiva(Arma armaAntigua,Arma armaNueva){
-        for(int i = 0 ; i<this.getArmasActivas().length; i++){
-            if(this.armasActivas[i] !=null && this.armasActivas[i].equals(armaAntigua)){
-                this.setArmaActiva(armaNueva,i);
-                this.acciones--;
-                break;
+        if(armaAntigua==null){
+            if(this.getArmaActiva(0)==null){
+                this.setArmaActiva(armaNueva,0);
+            }
+            else{
+                this.setArmaActiva(armaNueva,1);
             }
         }
-    }
-
-    public void cambiarArmaActiva2(Arma arma , int i){
-        this.setArmaActiva(arma,i);
+        else{
+            for(int i = 0; i<this.getArmasActivas().length ; i++){
+                if(this.getArmaActiva(i).equals(armaAntigua)){
+                    this.setArmaActiva(armaNueva,i);
+                    break;
+                }
+            }
+        }
         this.acciones--;
     }
 
+    /**
+     * Busca un equipo en el inventario y lo pone en nulo para eliminarlo
+     * Hay dos casos, en el caso de que sea una provision simplemente la elimina del inventario
+     * En caso de que sea un arma se elimina del inventario y de Armas activas si lo estuviera
+     * @param equipo equipo a eliminar
+     */
     public void eliminarItemInventario(Equipo equipo){
-        for(int i = 0 ; i<this.getInventario().length;i++){
-            if(this.inventario[i].equals(equipo)){
-                this.inventario[i]=null;
-                this.acciones--;
-                break;
+        if(equipo instanceof Arma){
+            for(int i = 0 ; i<this.getInventario().length;i++){
+
+                if(equipo.equals(this.getInventario(i))){
+
+                    this.setInventario(null,i);
+                    break;
+                }
+            }
+
+            for(int i = 0; i<this.getArmasActivas().length;i++){
+
+                if(equipo.equals(this.getArmaActiva(i))){
+                    this.setArmaActiva(null,i);
+                    break;
+                }
             }
         }
-    }
+        else{
 
-    public void eliminarArmaActiva(Arma arma){
-        for(int i =0 ; i<this.getArmasActivas().length; i++){
-            if(this.armasActivas[i].equals(arma)){
-                this.armasActivas[i]= null;
-                break;
+            for(int i = 0 ; i<this.getInventario().length;i++){
+
+                if(equipo.equals(this.getInventario(i))){
+
+                    this.setInventario(null,i);
+                    break;
+                }
             }
         }
+        this.acciones--;
     }
 
-
+    /**
+     * Comprueba si un arma se encuentra activa
+     * @param arma arma que buscar
+     * @return
+     */
     public boolean estaActiva(Arma arma){
         for(int i =0; i<2; i++){
             if(this.getArmaActiva(i)!=null && this.getArmaActiva(i).equals(arma)){
