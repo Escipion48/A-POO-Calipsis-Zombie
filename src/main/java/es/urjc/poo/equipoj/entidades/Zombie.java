@@ -109,12 +109,9 @@ public class Zombie implements EntidadActivable {
         //Esto ya esta en ataque de superviviente
     }
 
-
-    //De momento solo esta la logica general de activarse, falta moverse y atacar.
     @Override
     public void activarse() {
         this.recuperarActivaciones();
-
     }
 
     @Override

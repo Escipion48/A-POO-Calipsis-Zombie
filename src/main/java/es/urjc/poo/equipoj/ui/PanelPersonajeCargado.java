@@ -493,11 +493,11 @@ import java.util.Arrays;
 
                     //Acciones de los botones
                     noHacerNada.addActionListener(e -> {
-                        NoHacerNada(superviviente);
+                        superviviente.setAcciones(0);
                         dialogo.dispose();
                     });
                     eliminarItemDelInventerio.addActionListener(e -> {
-                        JDialogEliminarItemDelInventerio(superviviente);
+                        JDialogEliminarEquipoDelInventerio(superviviente);
                         dialogo.dispose();
                     });
                     cambiarArmaActiva.addActionListener(e -> {
@@ -541,17 +541,10 @@ import java.util.Arrays;
         }
 
         /**
-         * NoHacerNada es una accion del superviviente que pone todas sus acciones a 0 en esta ronda
-         */
-        private void NoHacerNada(Superviviente superviviente) {
-            superviviente.setAcciones(0);
-        }
-
-        /**
-         * JDialogEliminarItemDelInventario es una accion del superviviente, se selecciona un Equipo del inventario y se elimina
+         * JDialogEliminarEquipoDelInventario es una accion del superviviente, se selecciona un Equipo del inventario y se elimina
          * al darle aceptar
          */
-        private void JDialogEliminarItemDelInventerio(Superviviente superviviente){
+        private void JDialogEliminarEquipoDelInventerio(Superviviente superviviente){
             final Equipo[] Item = new Equipo[1];
             Window parentWindow = SwingUtilities.getWindowAncestor(this);
             String titulo = "Eliminar item del inventario de " + superviviente.getNombre();
@@ -563,14 +556,14 @@ import java.util.Arrays;
 
             JPanel contenidoDelInventario = new JPanel(new GridLayout(5, 1, 10, 10));
             contenidoDelInventario.setBorder(new EmptyBorder(10, 10, 10, 10));
-            ButtonGroup itemInventario = new ButtonGroup();
+            ButtonGroup objetosEnElInventario = new ButtonGroup();
 
-            for(Equipo item : superviviente.getInventario()){
-                if(item != null){ // Crear botón solo si el ítem no es null
-                    JRadioButton botonItem = new JRadioButton(item.getNombre());
-                    itemInventario.add(botonItem);
+            for(Equipo equipo : superviviente.getInventario()){
+                if(equipo != null){ // Crear botón solo si el equipo no es null
+                    JRadioButton botonItem = new JRadioButton(equipo.getNombre());
+                    objetosEnElInventario.add(botonItem);
                     contenidoDelInventario.add(botonItem);
-                    botonItem.addActionListener(e -> Item[0] = item);
+                    botonItem.addActionListener(e -> Item[0] = equipo);
                 }
             }
 
@@ -643,9 +636,9 @@ import java.util.Arrays;
             panelInventario.setBorder(BorderFactory.createTitledBorder("Inventario"));
             ButtonGroup grupoInventario = new ButtonGroup();
 
-            for(int j = 0; j < superviviente.getInventario().length; j++){
-                if (superviviente.getInventario(j) instanceof Arma ){
-                    Arma arma = (Arma) superviviente.getInventario(j);
+            for(int i = 0; i < superviviente.getInventario().length; i++){
+                if (superviviente.getInventario(i) instanceof Arma ){
+                    Arma arma = (Arma) superviviente.getInventario(i);
                     if(!superviviente.estaActiva(arma)){
                         JRadioButton botonArma = new JRadioButton(arma.getNombre());
                         botonArma.addActionListener(e -> armaInventarioSeleccionada[0] = arma);
@@ -675,21 +668,27 @@ import java.util.Arrays;
                     }
                     // Cambiar el arma activa seleccionada
                     superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);
-                } else if (ArmasActivas == 1){
-                    if (armaActivaSeleccionada[0] == null){
-                        for (int i = 0; i < superviviente.getArmasActivas().length; i++){
-                            if (armaInventarioSeleccionada[0] == null){
-                                JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma del inventario.", "Error", JOptionPane.ERROR_MESSAGE);
-                                return;
-                            }
-                            superviviente.cambiarArmaActiva(null,armaInventarioSeleccionada[0]);
-                            break;
 
+                }
+                else if (ArmasActivas == 1){
+
+                    if (armaActivaSeleccionada[0] == null){
+
+                        if (armaInventarioSeleccionada[0] == null){
+
+                            JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma del inventario.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
                         }
-                    }else{
-                        superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);
+
+                        superviviente.cambiarArmaActiva(null,armaInventarioSeleccionada[0]);
+
                     }
-                }else{
+                    else{
+
+                        superviviente.cambiarArmaActiva(armaActivaSeleccionada[0],armaInventarioSeleccionada[0]);}
+
+                }
+                else{
                     // No hay armas activas
                     if (armaInventarioSeleccionada[0] == null){
                         JOptionPane.showMessageDialog(dialogo, "Debe seleccionar un arma del inventario.", "Error", JOptionPane.ERROR_MESSAGE);
