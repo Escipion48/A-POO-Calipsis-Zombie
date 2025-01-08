@@ -777,4 +777,19 @@ public class Superviviente implements EntidadActivable{
         }
         return false;
     }
+
+    /**
+     * Calcula si tiene el superviviente armas en el inventario para
+     * saber si podemos cambiar o no de arma, ya que si no tenemos
+     * armas, no tiene sentido intentar activar armas
+     * @return Un booleano
+     */
+    public boolean tieneArmasEnElInventario(){
+        for(int i = 0; i<this.getArmasActivas().length;i++){
+            if(this.getInventario(i) instanceof Arma){
+                return true;
+            }
+        }
+        return false;
+    }
 }

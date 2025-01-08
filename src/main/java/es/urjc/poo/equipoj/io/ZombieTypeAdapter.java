@@ -42,9 +42,9 @@ public class ZombieTypeAdapter extends TypeAdapter<Zombie> {
         jsonReader.beginObject();
 
         while (jsonReader.hasNext()) {
-            String name = jsonReader.nextName();
+            String proximoValor = jsonReader.nextName();
 
-            switch (name) {
+            switch (proximoValor) {
                 case "Clase":
                     clase = jsonReader.nextString();  // Leemos el nombre de la clase
                     break;

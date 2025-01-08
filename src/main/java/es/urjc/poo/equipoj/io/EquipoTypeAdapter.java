@@ -76,8 +76,8 @@ public class EquipoTypeAdapter extends TypeAdapter<Equipo> {
         //Guardamos los objetos comunos de ambas clases y vemos si es Provision u Arma y invocamos a un private dependiendo de la clase
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
-            String name = jsonReader.nextName();
-            switch (name) {
+            String proximoValor = jsonReader.nextName();
+            switch (proximoValor) {
                 case "clase":
                     clase = jsonReader.nextString();
                     break;
