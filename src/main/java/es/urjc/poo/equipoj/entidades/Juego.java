@@ -1,7 +1,9 @@
 package es.urjc.poo.equipoj.entidades;
 
+import javax.swing.*;
+import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class Juego {
@@ -167,5 +169,26 @@ public class Juego {
         this.zombies.add(generarZombie());
         this.zombies.add(generarZombie());
         this.zombies.add(generarZombie());
+    }
+
+
+    /**
+     * Este metodo se encarga de comprobar si se cumplen las condiciones de victoria dentro de un juego
+     * @return Boolean, true= victoria, false = derrota
+     */
+    public boolean comprobarVictoria(){
+        boolean victoria = true;
+
+        for(Superviviente superviviente : this.getSupervivientes()) {
+            if(!(superviviente.getPosicion().equals(this.getTablero().getObjetivo()))){
+                victoria = false;
+                break;
+            }
+            if(!superviviente.tieneProvisionValida(LocalDate.now())){
+                victoria = false;
+                break;
+            }
+        }
+        return victoria;
     }
 }

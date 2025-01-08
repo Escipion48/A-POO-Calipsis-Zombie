@@ -1,6 +1,6 @@
 package es.urjc.poo.equipoj.entidades;
 
-import java.util.Random;
+import java.time.LocalDate;
 
 public class Provision extends Equipo{
     private int kcal;
@@ -47,12 +47,26 @@ public class Provision extends Equipo{
         return this.tipo;
     }
 
-    public boolean caducado(){
-        int anio = this.caducidad[2];
-        if(anio>=2025){
-            return false;
+    /**
+     * Calcula si la comida está caducada con la fecha que se pasa
+     * Le pasaremos la fecha actual del ordenador en tiempo de ejecución
+     * @return Booleano con un cierto o falso si esta caducado o no
+     */
+    public boolean noCaducado(LocalDate fechaActual){
+
+        if(this.getCaducidad(2)>fechaActual.getYear()){
+            return true;
         }
-        return true;
+
+        else if (this.getCaducidad(1)>fechaActual.getDayOfMonth()) {
+            return true;
+        }
+
+        else if (this.getCaducidad(0)>=fechaActual.getDayOfMonth()) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

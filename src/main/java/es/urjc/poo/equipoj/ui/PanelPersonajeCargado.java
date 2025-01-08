@@ -6,6 +6,7 @@ import es.urjc.poo.equipoj.io.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -1137,7 +1138,7 @@ import java.util.Arrays;
                     fechaCorrecta = false;
                     return fechaCorrecta;
                 } else {
-                    if(((Provision) e).caducado()){
+                    if(((Provision) e).noCaducado(LocalDate.now())){
                         fechaCorrecta = false;
                         return fechaCorrecta;
                     }

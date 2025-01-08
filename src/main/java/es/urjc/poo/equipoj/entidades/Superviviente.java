@@ -1,5 +1,6 @@
 package es.urjc.poo.equipoj.entidades;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -792,4 +793,18 @@ public class Superviviente implements EntidadActivable{
         }
         return false;
     }
+
+    /**
+     * Este metodo se encarga de indicar mediante un boolean si tiene una provision caducada o no
+     * @param fechaActual Una fecha para comprobar
+     * @return True si tiene un objeto no caducado y false en caso contrario
+     */
+    public boolean tieneProvisionValida(LocalDate fechaActual){
+        for(Equipo equipo : this.getInventario()){
+            if(equipo instanceof Provision && ((Provision) equipo).noCaducado(fechaActual)==true){
+            return true;
+            }
+        }
+        return false;
+        }
 }

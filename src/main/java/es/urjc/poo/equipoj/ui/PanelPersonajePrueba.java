@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -589,7 +590,8 @@ public class PanelPersonajePrueba extends JPanel{
                 menuTurnoSuperviviente.setLocationRelativeTo(pantallaJuego);
                 menuTurnoSuperviviente.setLayout(new BorderLayout(10, 10));
 
-                menuTurnoSuperviviente.setSize(500, 300);
+                menuTurnoSuperviviente.setSize(500, 350);
+                menuTurnoSuperviviente.setResizable(false);
 
 
                 JPanel panelTurnoSuperviviente = new JPanel();
@@ -671,11 +673,22 @@ public class PanelPersonajePrueba extends JPanel{
                 accionesRestantes.setHorizontalAlignment(SwingConstants.CENTER);
                 menuTurnoSuperviviente.add(accionesRestantes, BorderLayout.NORTH);
 
-                Victoria();
-
-                menuTurnoSuperviviente.setVisible(true);
-
-
+                if(!juego.comprobarVictoria()){
+                    removeAll();
+                    panelDeTexto.setText("");
+                    JPanel terminar = new JPanel();
+                    terminar.setLayout(new GridLayout());
+                    JLabel mensajeVictoria = new JLabel("Victoria",SwingConstants.CENTER);
+                    mensajeVictoria.setFont(new Font("Arial", Font.BOLD, 50));
+                    terminar.add(mensajeVictoria);
+                    add(terminar, BorderLayout.CENTER);
+                    revalidate();
+                    repaint();
+                    break;
+                }
+                else{
+                    menuTurnoSuperviviente.setVisible(true);
+                }
             }
         }
 
@@ -1448,37 +1461,6 @@ public class PanelPersonajePrueba extends JPanel{
 
         }}
 
-
-    private void Victoria(){
-        boolean victoria = true;
-
-        for(Superviviente superviviente : juego.getSupervivientes()){
-            if(!(superviviente.getPosicion().equals(posicionObjetivo))){
-                victoria = false;
-                break;
-            }
-            if(!comprobarCaducidad(superviviente)){
-                victoria = false;
-                break;
-            }
-        }
-
-        if(victoria){
-            System.out.println("Victoria");
-            removeAll();
-            panelDeTexto.setText("");
-            setLayout(new BorderLayout());
-
-            JLabel l1 = new JLabel("Victoria", SwingConstants.CENTER);
-            l1.setFont(new Font("Arial", Font.BOLD, 50));
-            l1.setForeground(Color.RED);
-            add(l1, BorderLayout.CENTER);
-            revalidate();
-            repaint();
-            setReiniciar();
-        }
-    }
-
     private void Terminar(){
         removeAll();
         setLayout(new BorderLayout());
@@ -1539,17 +1521,6 @@ public class PanelPersonajePrueba extends JPanel{
 
         dialogo.add(panelBotones, BorderLayout.SOUTH);
         dialogo.setVisible(true);
-    }
-
-    private boolean comprobarCaducidad(Superviviente superviviente){
-        for(Equipo e : superviviente.getInventario()){
-            if(e instanceof Provision){
-                if(!((Provision) e).caducado()){
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 
