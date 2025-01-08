@@ -36,4 +36,8 @@ public class LectorImagenes {
     static public Icon cargarMoverse(){
         return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/moverseIcono.gif");
     }
+
+    static public Icon cargarIconoVictoria(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/victoriaIcono.gif");
+    }
 }

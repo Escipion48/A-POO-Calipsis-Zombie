@@ -678,7 +678,7 @@ public class PanelPersonajePrueba extends JPanel{
                     panelDeTexto.setText("");
                     JPanel terminar = new JPanel();
                     terminar.setLayout(new GridLayout());
-                    JLabel mensajeVictoria = new JLabel("Victoria",SwingConstants.CENTER);
+                    JLabel mensajeVictoria = new JLabel("Victoria",LectorImagenes.cargarIconoVictoria(),SwingConstants.CENTER);
                     mensajeVictoria.setFont(new Font("Arial", Font.BOLD, 50));
                     terminar.add(mensajeVictoria);
                     add(terminar, BorderLayout.CENTER);
