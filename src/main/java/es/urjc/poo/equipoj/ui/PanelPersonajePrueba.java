@@ -7,11 +7,17 @@ import es.urjc.poo.equipoj.sfx.LectorSonido;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class PanelPersonajePrueba extends JPanel{
     final Juego juego;
@@ -499,17 +505,563 @@ public class PanelPersonajePrueba extends JPanel{
         panelSuperviviente3.add(posicion3);
         panelSuperviviente4.add(posicion4);
 
+
+
+
+        //////////Metodos crear
+        class crearEquipo extends AbstractAction{
+            crearEquipo(String nombre, String descripcion, Icon imagen, int indicePersonaje){
+                putValue(NAME,nombre);
+                putValue(SHORT_DESCRIPTION,descripcion);
+                putValue(SMALL_ICON,imagen);
+                putValue("Indice personaje",indicePersonaje);
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LectorSonido.reproducirClick();
+
+                JDialog panelCrearEquipo = new JDialog();
+                panelCrearEquipo.setTitle(getValue(NAME).toString());
+                panelCrearEquipo.setIconImage(((ImageIcon)getValue(SHORT_DESCRIPTION)).getImage());
+                Dimension dimensionesPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+                panelCrearEquipo.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,300,350);
+                panelCrearEquipo.setResizable(false);
+                panelCrearEquipo.setLayout(new GridLayout(1,2));
+
+                //Añadimos los dos botones para que se pueda elejir que tipo de equipo crear
+                panelCrearEquipo.add(new JButton(new CrearArma("Crear Arma", (int)getValue("Indice personaje"))));
+                panelCrearEquipo.add(new JButton(new CrearProvision("Crear Provision", (int)getValue("Indice personaje"))));
+            }
+
+            class CrearArma extends AbstractAction {
+
+                //Tenemos que declarar previamente los elementos que vayamos a manipular cuando ocurran acciones
+                JButton aceptar = new JButton("Aceptar");
+                JButton cancelar = new JButton("Cancelar");
+
+                JTextField nombreTexto;
+                JTextField alcanceTexto;
+                JTextField potenciaTexto;
+                JTextField valorExitoTexto;
+                JTextField numeroDadosTexto;
+
+                public CrearArma(String nombre, int indicePersonaje) {
+                    putValue(NAME, nombre);
+                    putValue("Indice personaje", indicePersonaje);
+                }
+
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    LectorSonido.reproducirClick();
+
+                    Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
+                    if(superviviente.calcularNumeroObjetosInventario()==5){
+                        JOptionPane.showMessageDialog(null,"Inventario lleno", "Error Inventario lleno", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else{
+
+                        //Crear panel donde introduciremos los elementos
+                        JDialog panelCrearArma = new JDialog();
+                        panelCrearArma.setTitle("Crear Arma");
+                        Dimension dimensionesPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+                        panelCrearArma.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,300,350);
+                        panelCrearArma.setLayout(new GridLayout(6,2,10,10));
+                        panelCrearArma.setResizable(false);
+                        panelCrearArma.setVisible(true);
+
+                        //Creamos los Jlabel para que el usuario sepa que hace cada campo
+                        JLabel nombre = new JLabel("Nombre");
+                        JLabel alcance = new JLabel("Alcance");
+                        JLabel potencia = new JLabel("Potencia");
+                        JLabel valorExito = new JLabel("Valor éxito");
+                        JLabel numeroDados = new JLabel("Numero Dados");
+
+                        //Como ya hemos declarado los Jtextfield solo queda añadirle los oyentes
+                        nombreTexto.getDocument().addDocumentListener(new DocumentListener(){
+                            @Override
+                            public void insertUpdate(DocumentEvent e) {
+                                String texto = nombreTexto.getText().trim();
+
+                                if(texto.length()==0){
+                                    nombreTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    nombreTexto.setBackground(Color.WHITE);
+                                    aceptar.setEnabled(true);
+                                }
+
+                            }
+
+                            @Override
+                            public void removeUpdate(DocumentEvent e) {
+                                String texto = nombreTexto.getText().trim();
+
+                                if(texto.length()==0){
+                                    nombreTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    nombreTexto.setBackground(Color.WHITE);
+                                    aceptar.setEnabled(true);
+                                }
+                            }
+
+                            @Override
+                            public void changedUpdate(DocumentEvent e) {
+                                String texto = nombreTexto.getText().trim();
+
+                                if(texto.length()==0){
+                                    nombreTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    nombreTexto.setBackground(Color.WHITE);
+                                    aceptar.setEnabled(true);
+                                }
+                            }
+                        });
+                        alcanceTexto.getDocument().addDocumentListener(new DocumentListener(){
+
+                            @Override
+                            public void insertUpdate(DocumentEvent e) {
+                                String texto = alcanceTexto.getText().trim();
+                                if(texto.length()==0){
+                                    alcanceTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    int valorAlcance= Integer.parseInt(alcanceTexto.getText().trim());
+                                    if(valorAlcance<0){
+                                        alcanceTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        alcanceTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void removeUpdate(DocumentEvent e) {
+                                String texto = alcanceTexto.getText().trim();
+                                if(texto.length()==0){
+                                    alcanceTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    int valorAlcance= Integer.parseInt(alcanceTexto.getText().trim());
+                                    if(valorAlcance<0){
+                                        alcanceTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        alcanceTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void changedUpdate(DocumentEvent e) {
+                                String texto = alcanceTexto.getText().trim();
+                                if(texto.length()==0){
+                                    alcanceTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    int valorAlcance= Integer.parseInt(alcanceTexto.getText().trim());
+                                    if(valorAlcance<0){
+                                        alcanceTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        alcanceTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+                        });
+                        potenciaTexto.getDocument().addDocumentListener(new DocumentListener(){
+
+                            @Override
+                            public void insertUpdate(DocumentEvent e) {
+                                String texto = potenciaTexto.getText().trim();
+                                if(texto.length()==0){
+                                    potenciaTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorPotencia= Integer.parseInt(potenciaTexto.getText().trim());
+                                    if(valorPotencia<0){
+                                        potenciaTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        potenciaTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void removeUpdate(DocumentEvent e) {
+                                String texto = potenciaTexto.getText().trim();
+                                if(texto.length()==0){
+                                    potenciaTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorPotencia= Integer.parseInt(potenciaTexto.getText().trim());
+                                    if(valorPotencia<0){
+                                        potenciaTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        potenciaTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void changedUpdate(DocumentEvent e) {
+                                String texto = potenciaTexto.getText().trim();
+                                if(texto.length()==0){
+                                    potenciaTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorPotencia= Integer.parseInt(potenciaTexto.getText().trim());
+                                    if(valorPotencia<0){
+                                        potenciaTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        potenciaTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+                        });
+                        valorExitoTexto.getDocument().addDocumentListener(new DocumentListener(){
+
+                            @Override
+                            public void insertUpdate(DocumentEvent e) {
+                                String texto = valorExitoTexto.getText().trim();
+                                if(texto.length()==0){
+                                    valorExitoTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorExito= Integer.parseInt(valorExitoTexto.getText().trim());
+                                    if(valorExito<0){
+                                        valorExitoTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        valorExitoTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void removeUpdate(DocumentEvent e) {
+                                String texto = valorExitoTexto.getText().trim();
+                                if(texto.length()==0){
+                                    valorExitoTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorExito= Integer.parseInt(valorExitoTexto.getText().trim());
+                                    if(valorExito<0){
+                                        valorExitoTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        valorExitoTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void changedUpdate(DocumentEvent e) {
+                                String texto = valorExitoTexto.getText().trim();
+                                if(texto.length()==0){
+                                    valorExitoTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorExito= Integer.parseInt(valorExitoTexto.getText().trim());
+                                    if(valorExito<0){
+                                        valorExitoTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        valorExitoTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+                        });
+                        numeroDadosTexto.getDocument().addDocumentListener(new DocumentListener(){
+
+                            @Override
+                            public void insertUpdate(DocumentEvent e) {
+                                String texto = numeroDadosTexto.getText().trim();
+                                if(texto.length()==0){
+                                    numeroDadosTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorNumeroDados= Integer.parseInt(numeroDadosTexto.getText().trim());
+                                    if(valorNumeroDados<0){
+                                        numeroDadosTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        numeroDadosTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void removeUpdate(DocumentEvent e) {
+                                String texto = numeroDadosTexto.getText().trim();
+                                if(texto.length()==0){
+                                    numeroDadosTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorNumeroDados= Integer.parseInt(numeroDadosTexto.getText().trim());
+                                    if(valorNumeroDados<0){
+                                        numeroDadosTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        numeroDadosTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void changedUpdate(DocumentEvent e) {
+                                String texto = numeroDadosTexto.getText().trim();
+                                if(texto.length()==0){
+                                    numeroDadosTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+
+                                }
+                                else{
+                                    int valorNumeroDados= Integer.parseInt(numeroDadosTexto.getText().trim());
+                                    if(valorNumeroDados<0){
+                                        numeroDadosTexto.setBackground(Color.RED);
+                                        aceptar.setEnabled(false);
+                                    }
+                                    else{
+                                        numeroDadosTexto.setBackground(Color.WHITE);
+                                        aceptar.setEnabled(true);
+                                    }
+                                }
+                            }
+                        });
+
+                        //Finalmente construimos el panel emergente para crear Arma rellenando el Jdialog
+                        panelCrearArma.add(nombre); panelCrearArma.add(nombreTexto);
+                        panelCrearArma.add(alcance); panelCrearArma.add(alcanceTexto);
+                        panelCrearArma.add(potencia); panelCrearArma.add(potenciaTexto);
+                        panelCrearArma.add(valorExito); panelCrearArma.add(valorExitoTexto);
+                        panelCrearArma.add(numeroDados); panelCrearArma.add(numeroDadosTexto);
+
+                        //Fialmente configuramos los botones de aceptar y cancelar y los metemos en panelCrearArma
+                        aceptar.setEnabled(false);
+                        aceptar.addActionListener(new ActionListener(){
+
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                for(int i = 0; i<5;i++){
+                                    if(superviviente.getArmaActiva(i)==null){
+                                        superviviente.setArmaActiva(new Arma(nombreTexto.getText().trim(),Integer.parseInt(potenciaTexto.getText().trim()),Integer.parseInt(alcanceTexto.getText().trim()),Integer.parseInt(numeroDadosTexto.getText().trim()),Integer.parseInt(valorExitoTexto.getText().trim())),i);
+                                        panelCrearArma.dispose();
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                        cancelar.addActionListener(new ActionListener(){
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                panelCrearArma.dispose();
+                            }
+                        });
+
+                        panelCrearArma.add(aceptar);
+                        panelCrearArma.add(cancelar);
+                        panelCrearArma.setVisible(true);
+                    }
+                }
+
+            }
+            class CrearProvision extends AbstractAction{
+
+                //Tenemos que declarar previamente los elementos que vayamos a manipular cuando ocurran acciones
+                JButton aceptar = new JButton("Aceptar");
+                JButton cancelar = new JButton("Cancelar");
+
+                JTextField nombreTexto = new JTextField();
+                JSpinner kcalTexto = new JSpinner();
+                JSpinner caducidadTexto = new JSpinner();
+                JSpinner tipoTexto = new JSpinner();
+
+
+                CrearProvision(String nombre, int indicePersonaje){
+                    putValue(NAME,nombre);
+                    putValue("Indice personaje", indicePersonaje);
+                }
+
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    LectorSonido.reproducirClick();
+
+                    Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
+                    if(superviviente.calcularNumeroObjetosInventario()==5){
+                        JOptionPane.showMessageDialog(null,"Inventario lleno", "Error Inventario lleno", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else{
+
+                        //Crear panel donde introduciremos los elementos
+                        JDialog panelCrearProvision = new JDialog();
+                        panelCrearProvision.setTitle("Crear Arma");
+                        Dimension dimensionesPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+                        panelCrearProvision.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,300,350);
+                        panelCrearProvision.setLayout(new GridLayout(5,2,10,10));
+                        panelCrearProvision.setResizable(false);
+                        panelCrearProvision.setVisible(true);
+
+                        //Creamos los Jlabel para que el usuario sepa que hace cada campo
+                        JLabel nombre = new JLabel("Nombre");
+                        JLabel kcal = new JLabel("Kcal");
+                        JLabel caducidad = new JLabel("Caducidad");
+                        JLabel tipo = new JLabel("Tipo");
+
+                        //Configuramos las entradas de datos para evitar errores
+                        nombreTexto.setBackground(Color.RED);
+                        nombreTexto.getDocument().addDocumentListener(new DocumentListener(){
+                            @Override
+                            public void insertUpdate(DocumentEvent e) {
+                                String texto = nombreTexto.getText().trim();
+
+                                if(texto.length()==0){
+                                    nombreTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    nombreTexto.setBackground(Color.WHITE);
+                                    aceptar.setEnabled(true);
+                                }
+
+                            }
+
+                            @Override
+                            public void removeUpdate(DocumentEvent e) {
+                                String texto = nombreTexto.getText().trim();
+
+                                if(texto.length()==0){
+                                    nombreTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    nombreTexto.setBackground(Color.WHITE);
+                                    aceptar.setEnabled(true);
+                                }
+                            }
+
+                            @Override
+                            public void changedUpdate(DocumentEvent e) {
+                                String texto = nombreTexto.getText().trim();
+
+                                if(texto.length()==0){
+                                    nombreTexto.setBackground(Color.RED);
+                                    aceptar.setEnabled(false);
+                                }
+                                else{
+                                    nombreTexto.setBackground(Color.WHITE);
+                                    aceptar.setEnabled(true);
+                                }
+                            }
+                        });
+                        kcalTexto.setModel(new SpinnerNumberModel(1,1,2000,1));
+                        caducidadTexto.setModel(new SpinnerDateModel(Date.from(Instant.from(LocalDate.now())),new Date(2000,1,1),new Date(2100,1,1), Calendar.MONTH));
+
+
+                        //Finalmente construimos el panel emergente para crear Arma rellenando el Jdialog
+                        panelCrearProvision.add(nombre); panelCrearProvision.add(nombreTexto);
+                        panelCrearProvision.add(kcal); panelCrearProvision.add(kcalTexto);
+                        panelCrearProvision.add(caducidad); panelCrearProvision.add(caducidadTexto);
+                        panelCrearProvision.add(tipo); panelCrearProvision.add(tipoTexto);
+
+                        //Añadimos por ultimo los botones de aceptar y cancelar
+                        aceptar.setEnabled(false);
+                        aceptar.addActionListener(new ActionListener() {
+
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                for(int i = 0; i<5; i++){
+                                    if(superviviente.getInventario(i)==null){
+                                        int [] caducidad =  {(((Date)caducidadTexto.getValue()).getDay()),(((Date)caducidadTexto.getValue()).getMonth()),(((Date)caducidadTexto.getValue()).getYear())};
+                                        superviviente.setInventario(new Provision(nombreTexto.getText().trim(),(int) kcalTexto.getValue(), caducidad,(boolean)tipoTexto.getValue()),i);
+                                        panelCrearProvision.dispose();
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                        cancelar.addActionListener(new ActionListener(){
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                panelCrearProvision.dispose();
+                            }
+                        });
+
+                        panelCrearProvision.add(aceptar); panelCrearProvision.add(cancelar);
+                        panelCrearProvision.setVisible(true);
+                    }
+                }
+            }
+        }
+
+
         //Crear botones para crear Equipo
         JButton crear1 = new JButton("Crear");
         JButton crear2 = new JButton("Crear");
         JButton crear3 = new JButton("Crear");
         JButton crear4 = new JButton("Crear");
 
+
+
+
+
         //
-        crear1.addActionListener(e->JDialogCrear(juego.getSuperviviente(0)));
-        crear2.addActionListener(e->JDialogCrear(juego.getSuperviviente(1)));
-        crear3.addActionListener(e->JDialogCrear(juego.getSuperviviente(2)));
-        crear4.addActionListener(e->JDialogCrear(juego.getSuperviviente(3)));
+        crear1.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(0)));
+        crear2.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(1)));
+        crear3.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(2)));
+        crear4.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(3)));
 
         //
         panelSuperviviente1.add(crear1);
@@ -539,39 +1091,12 @@ public class PanelPersonajePrueba extends JPanel{
         // Actualizar la interfaz gráfica
         revalidate();
         repaint();
-    }
 
 
-
-    private void JDialogCrear(Superviviente superviviente){
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-
-        JDialog dialogo = new JDialog(parentWindow,"Crear",Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setLayout(new BorderLayout(10,10));
-        dialogo.setSize(400,300);
-        dialogo.setBackground(Color.WHITE);
-        dialogo.setLocationRelativeTo(null);
-
-        JPanel panelCrear = new JPanel();
-        panelCrear.setBorder(new EmptyBorder(10,10,10,10));
-        panelCrear.setLayout(new GridLayout(1,2,10,10));
-        panelCrear.setBackground(Color.WHITE);
-
-        JButton crearArma = new JButton("Crear Arma");
-        JButton crearProvision = new JButton("Crear Provision");
-
-        crearArma.addActionListener(e->crearArma(superviviente,dialogo));
-        crearProvision.addActionListener(e->crearProvision(superviviente,dialogo));
-
-        panelCrear.add(crearArma);
-        panelCrear.add(crearProvision);
-
-        dialogo.add(panelCrear, BorderLayout.CENTER);
-        dialogo.setVisible(true);
 
     }
 
-    private void crearArma(Superviviente superviviente,JDialog dialogo){
+    private void crearArmaTemp(Superviviente superviviente, JDialog dialogo){
         int numero = superviviente.calcularNumeroObjetosInventario();
         if(numero==5){
             JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -637,7 +1162,37 @@ public class PanelPersonajePrueba extends JPanel{
 
     }
 
-    private void crearProvision(Superviviente superviviente,JDialog dialogo){
+    private void crearEquipotemp(Superviviente superviviente){
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+
+        JDialog dialogo = new JDialog(parentWindow,"Crear",Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setLayout(new BorderLayout(10,10));
+        dialogo.setSize(400,300);
+        dialogo.setBackground(Color.WHITE);
+        dialogo.setLocationRelativeTo(null);
+
+        JPanel panelCrear = new JPanel();
+        panelCrear.setBorder(new EmptyBorder(10,10,10,10));
+        panelCrear.setLayout(new GridLayout(1,2,10,10));
+        panelCrear.setBackground(Color.WHITE);
+
+        JButton crearArma = new JButton("Crear Arma");
+        JButton crearProvision = new JButton("Crear Provision");
+
+        crearArma.addActionListener(e-> crearArmaTemp(superviviente,dialogo));
+        crearProvision.addActionListener(e-> crearProvisionTemp(superviviente,dialogo));
+
+        panelCrear.add(crearArma);
+        panelCrear.add(crearProvision);
+
+        dialogo.add(panelCrear, BorderLayout.CENTER);
+        dialogo.setVisible(true);
+
+    }
+
+
+
+    private void crearProvisionTemp(Superviviente superviviente, JDialog dialogo){
         int numero = superviviente.calcularNumeroObjetosInventario();
         if(numero==5){
             JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
