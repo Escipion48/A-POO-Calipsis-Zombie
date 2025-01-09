@@ -235,7 +235,13 @@ public class Superviviente implements EntidadActivable{
              Random r = new Random();
              int valorExito = r.nextInt(11);
              if(valorExito-this.calcularNumeroObjetosInventario()>=5){
-                 this.setInventario(crearEquipoAleatorio(),this.calcularNumeroObjetosInventario());
+                 //this.setInventario(crearEquipoAleatorio(),this.calcularNumeroObjetosInventario());
+                 for(int i = 0; i<5;i++){
+                     if(this.getInventario(i)==null){
+                         this.setInventario(crearEquipoAleatorio(),i);
+                         break;
+                     }
+                 }
              }
              else{
                  //No hace nada, ya que el superviviente no ha encontrado nada.

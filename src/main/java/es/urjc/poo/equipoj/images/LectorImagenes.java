@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj.images;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class LectorImagenes {
 
@@ -95,5 +96,9 @@ public class LectorImagenes {
 
     static public Icon cargarIconoAbajoDerecha(){
         return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/abajoDerechaIcono.gif");
+    }
+
+    static public Image cargarImagenFondo1(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/fondoPantalla1.gif").getImage();
     }
 }

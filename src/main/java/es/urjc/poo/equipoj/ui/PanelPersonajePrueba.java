@@ -1403,16 +1403,19 @@ public class PanelPersonajePrueba extends JPanel{
      * JDialogResultadoBuscar muestra el resultado de buscar
      */
     private void JDialogResultadoBuscar(Superviviente superviviente) {
-        //Comprueba de que si la casilla ya se a buscado y si hay o no Equipo
+        Casilla casillaABuscar = juego.getTablero().getCasilla(superviviente.getPosicion());
         int numeroObjetoInventerio = superviviente.calcularNumeroObjetosInventario();
-        if(superviviente.buscar(juego.getTablero().getCasilla(superviviente.getPosicion()))){
-            if (numeroObjetoInventerio < superviviente.calcularNumeroObjetosInventario()){
-                JDialogBuscarTrue(superviviente);
-            } else{
-                JDialogBuscarNada();
+        if(superviviente.buscar(casillaABuscar)){
+            if(numeroObjetoInventerio<superviviente.calcularNumeroObjetosInventario()){
+                LectorSonido.reproducirRespiroAlivio();
+                JOptionPane.showMessageDialog(null,"Has encontrado algo, mira en tu inventario","Busqueda", JOptionPane.INFORMATION_MESSAGE);
             }
-        } else{
-            JDialogBuscarFalse();
+            else{
+                JOptionPane.showMessageDialog(null,"No habia nada","Busqueda", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"No puedes buscar aquí", "Error",JOptionPane.ERROR_MESSAGE);
         }
     }
 
