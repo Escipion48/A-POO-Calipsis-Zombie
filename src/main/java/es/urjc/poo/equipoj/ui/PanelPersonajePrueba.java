@@ -334,179 +334,6 @@ public class PanelPersonajePrueba extends JPanel{
 
             }
         }
-
-
-        panelSupervivienteEntero.removeAll();
-        panelSupervivienteEntero.setLayout(new BorderLayout(10, 10));
-
-        JPanel panelSuperviviente = new JPanel();
-        panelSuperviviente.setLayout(new GridLayout(1, 4, 10, 10));
-        panelSuperviviente.setBorder(BorderFactory.createTitledBorder("Supervivientes"));
-        panelSuperviviente.setBackground(Color.WHITE);
-
-        //Crear paneles para cada superviviente
-        JPanel panelSuperviviente1 = new JPanel();
-        JPanel panelSuperviviente2 = new JPanel();
-        JPanel panelSuperviviente3 = new JPanel();
-        JPanel panelSuperviviente4 = new JPanel();
-
-        //Poner la distribucion de los paneles
-        panelSuperviviente1.setLayout(new GridLayout(7, 1, 10, 10));
-        panelSuperviviente2.setLayout(new GridLayout(7, 1, 10, 10));
-        panelSuperviviente3.setLayout(new GridLayout(7, 1, 10, 10));
-        panelSuperviviente4.setLayout(new GridLayout(7, 1, 10, 10));
-
-        //Ponerlos de color blanco
-        panelSuperviviente1.setBackground(Color.WHITE);
-        panelSuperviviente2.setBackground(Color.WHITE);
-        panelSuperviviente3.setBackground(Color.WHITE);
-        panelSuperviviente4.setBackground(Color.WHITE);
-
-        //Añadir los paneles al panel grande para juntarlos
-        panelSuperviviente.add(panelSuperviviente1);
-        panelSuperviviente.add(panelSuperviviente2);
-        panelSuperviviente.add(panelSuperviviente3);
-        panelSuperviviente.add(panelSuperviviente4);
-
-        //Añadir los personajes a sus corespondientes paneles
-        panelSuperviviente1.add(new JLabel(juego.getSuperviviente(0).getNombre()));
-        panelSuperviviente2.add(new JLabel(juego.getSuperviviente(1).getNombre()));
-        panelSuperviviente3.add(new JLabel(juego.getSuperviviente(2).getNombre()));
-        panelSuperviviente4.add(new JLabel(juego.getSuperviviente(3).getNombre()));
-
-        //Crear los botones de para ver el inventerio de cada uno
-
-
-        JButton inventario1 = new JButton(new verInventario("Inventario","Accede al inventario del personaje",LectorImagenes.cargarIconoVerInventario(),0));
-        JButton inventario2 = new JButton(new verInventario("Inventario","Accede al inventario del personaje",LectorImagenes.cargarIconoVerInventario(),0));
-        JButton inventario3 = new JButton(new verInventario("Inventario","Accede al inventario del personaje",LectorImagenes.cargarIconoVerInventario(),0));
-        JButton inventario4 = new JButton(new verInventario("Inventario","Accede al inventario del personaje",LectorImagenes.cargarIconoVerInventario(),0));
-
-
-        /*JButton inventario1 = new JButton("Inventario");
-        JButton inventario2 = new JButton("Inventario");
-        JButton inventario3 = new JButton("Inventario");
-        JButton inventario4 = new JButton("Inventario");
-
-        //Accion del boton para ver el inventario de cada superviviente
-        inventario1.addActionListener(e -> verInventarioTemp(juego.getSuperviviente(0)));
-        inventario2.addActionListener(e -> verInventarioTemp(juego.getSuperviviente(1)));
-        inventario3.addActionListener(e -> verInventarioTemp(juego.getSuperviviente(2)));
-        inventario4.addActionListener(e -> verInventarioTemp(juego.getSuperviviente(3)));*/
-
-        //Añadir los botones a sus respectivos paneles
-        panelSuperviviente1.add(inventario1);
-        panelSuperviviente2.add(inventario2);
-        panelSuperviviente3.add(inventario3);
-        panelSuperviviente4.add(inventario4);
-
-        //Crear botones para ver las armas activas
-
-        JButton armaActivas1 = new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",LectorImagenes.cargarIconoVerArmasActivas(),0));
-        JButton armaActivas2 = new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",LectorImagenes.cargarIconoVerArmasActivas(),1));
-        JButton armaActivas3 = new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",LectorImagenes.cargarIconoVerArmasActivas(),2));
-        JButton armaActivas4 = new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",LectorImagenes.cargarIconoVerArmasActivas(),3));
-
-
-        /*JButton armaActivas1 = new JButton("Arma Activas");
-        JButton armaActivas2 = new JButton("Arma Activas");
-        JButton armaActivas3 = new JButton("Arma Activas");
-        JButton armaActivas4 = new JButton("Arma Activas");
-
-        //Accion al pulsar el boton armasActivas
-        armaActivas1.addActionListener(e -> verArmasActivasTemp(juego.getSuperviviente(0)));
-        armaActivas2.addActionListener(e -> verArmasActivasTemp(juego.getSuperviviente(1)));
-        armaActivas3.addActionListener(e -> verArmasActivasTemp(juego.getSuperviviente(2)));
-        armaActivas4.addActionListener(e -> verArmasActivasTemp(juego.getSuperviviente(3)));*/
-
-        //Añadir los botones armasActivas a sus correspondientes paneles
-        panelSuperviviente1.add(armaActivas1);
-        panelSuperviviente2.add(armaActivas2);
-        panelSuperviviente3.add(armaActivas3);
-        panelSuperviviente4.add(armaActivas4);
-
-        //Crear botones para ver los ZombiesEliminados
-
-        JButton zombiesEliminados1 = new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida",LectorImagenes.cargarIconoZombiesEliminados(),0));
-        JButton zombiesEliminados2 = new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida",LectorImagenes.cargarIconoZombiesEliminados(),1));
-        JButton zombiesEliminados3 = new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida",LectorImagenes.cargarIconoZombiesEliminados(),2));
-        JButton zombiesEliminados4 = new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida",LectorImagenes.cargarIconoZombiesEliminados(),3));
-
-        /*JButton zombiesEliminados1 = new JButton("Zombies Eliminados");
-        JButton zombiesEliminados2 = new JButton("Zombies Eliminados");
-        JButton zombiesEliminados3 = new JButton("Zombies Eliminados");
-        JButton zombiesEliminados4 = new JButton("Zombies Eliminados");
-
-        //Accion al pulsar el boton zombiesEliminados
-        zombiesEliminados1.addActionListener(e -> mostrarZombiesEliminadosTemp(juego.getSuperviviente(0)));
-        zombiesEliminados2.addActionListener(e -> mostrarZombiesEliminadosTemp(juego.getSuperviviente(1)));
-        zombiesEliminados3.addActionListener(e -> mostrarZombiesEliminadosTemp(juego.getSuperviviente(2)));
-        zombiesEliminados4.addActionListener(e -> mostrarZombiesEliminadosTemp(juego.getSuperviviente(3)));*/
-
-        //Añadir los botones para ver los zombies Eliminados
-        panelSuperviviente1.add(zombiesEliminados1);
-        panelSuperviviente2.add(zombiesEliminados2);
-        panelSuperviviente3.add(zombiesEliminados3);
-        panelSuperviviente4.add(zombiesEliminados4);
-
-        //Crear botones para ver los zombies que nos han atacado
-
-
-
-        JButton ataqueZombiesRecibidos1 = new JButton(new mostrarAtaqueZombies("Ataques Recibidos","Muestra los zombies que te han mordido, ten cuidado, las vidas son muy escasas",LectorImagenes.cargarIconoAtaquesRecibidos(),0));
-        JButton ataqueZombiesRecibidos2 = new JButton(new mostrarAtaqueZombies("Ataques Recibidos","Muestra los zombies que te han mordido, ten cuidado, las vidas son muy escasas",LectorImagenes.cargarIconoAtaquesRecibidos(),1));
-        JButton ataqueZombiesRecibidos3 = new JButton(new mostrarAtaqueZombies("Ataques Recibidos","Muestra los zombies que te han mordido, ten cuidado, las vidas son muy escasas",LectorImagenes.cargarIconoAtaquesRecibidos(),2));
-        JButton ataqueZombiesRecibidos4 = new JButton(new mostrarAtaqueZombies("Ataques Recibidos","Muestra los zombies que te han mordido, ten cuidado, las vidas son muy escasas",LectorImagenes.cargarIconoAtaquesRecibidos(),3));
-
-
-        /*JButton ataqueZombiesRecibidos1 = new JButton("Ataques Recibidos");
-        JButton ataqueZombiesRecibidos2 = new JButton("Ataques Recibidos");
-        JButton ataqueZombiesRecibidos3 = new JButton("Ataques Recibidos");
-        JButton ataqueZombiesRecibidos4 = new JButton("Ataques Recibidos");
-
-        //Accion al pulsar en el boton ataqueZombiesRecibido
-        ataqueZombiesRecibidos1.addActionListener(e -> mostrarAtaqueZombiesTemp(juego.getSuperviviente(0)));
-        ataqueZombiesRecibidos2.addActionListener(e -> mostrarAtaqueZombiesTemp(juego.getSuperviviente(1)));
-        ataqueZombiesRecibidos3.addActionListener(e -> mostrarAtaqueZombiesTemp(juego.getSuperviviente(2)));
-        ataqueZombiesRecibidos4.addActionListener(e -> mostrarAtaqueZombiesTemp(juego.getSuperviviente(3)));*/
-
-        //Añadir los botones al panelSuperviviente correspondiente
-        panelSuperviviente1.add(ataqueZombiesRecibidos1);
-        panelSuperviviente2.add(ataqueZombiesRecibidos2);
-        panelSuperviviente3.add(ataqueZombiesRecibidos3);
-        panelSuperviviente4.add(ataqueZombiesRecibidos4);
-
-
-
-        //Crear botones para consultar la posicion del superviviente
-
-
-        JButton posicion1 = new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", LectorImagenes.cargarIconoPosicion(),0));
-        JButton posicion2 = new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", LectorImagenes.cargarIconoPosicion(),1));
-        JButton posicion3 = new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", LectorImagenes.cargarIconoPosicion(),2));
-        JButton posicion4 = new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", LectorImagenes.cargarIconoPosicion(),3));
-
-        /*JButton posicion1 = new JButton("Posicion");
-        JButton posicion2 = new JButton("Posicion");
-        JButton posicion3 = new JButton("Posicion");
-        JButton posicion4 = new JButton("Posicion");
-
-        //Accion al pulsar los botones de posicion
-        posicion1.addActionListener(e -> mostrarPosicionPersonajeTemp(juego.getSuperviviente(0)));
-        posicion2.addActionListener(e -> mostrarPosicionPersonajeTemp(juego.getSuperviviente(1)));
-        posicion3.addActionListener(e -> mostrarPosicionPersonajeTemp(juego.getSuperviviente(2)));
-        posicion4.addActionListener(e -> mostrarPosicionPersonajeTemp(juego.getSuperviviente(3)));*/
-
-        //Añadir los botones posicion
-        panelSuperviviente1.add(posicion1);
-        panelSuperviviente2.add(posicion2);
-        panelSuperviviente3.add(posicion3);
-        panelSuperviviente4.add(posicion4);
-
-
-
-
-        //////////Metodos crear
         class crearEquipo extends AbstractAction{
             crearEquipo(String nombre, String descripcion, Icon imagen, int indicePersonaje){
                 putValue(NAME,nombre);
@@ -897,7 +724,7 @@ public class PanelPersonajePrueba extends JPanel{
                                 if(nombreTexto.getBackground() == Color.WHITE && alcanceTexto.getBackground() == Color.WHITE && potenciaTexto.getBackground() == Color.WHITE && valorExitoTexto.getBackground() == Color.WHITE && numeroDadosTexto.getBackground() == Color.WHITE ){
                                     for(int i = 0; i<5;i++){
                                         if(superviviente.getArmaActiva(i)==null){
-                                            superviviente.setArmaActiva(new Arma(nombreTexto.getText().trim(),Integer.parseInt(potenciaTexto.getText().trim()),Integer.parseInt(alcanceTexto.getText().trim()),Integer.parseInt(numeroDadosTexto.getText().trim()),Integer.parseInt(valorExitoTexto.getText().trim())),i);
+                                            superviviente.setInventario(new Arma(nombreTexto.getText(),Integer.parseInt(potenciaTexto.getText()),Integer.parseInt(alcanceTexto.getText()),Integer.parseInt(numeroDadosTexto.getText()),Integer.parseInt(valorExitoTexto.getText())),i);
                                             panelCrearArma.dispose();
                                             break;
                                         }
@@ -1055,34 +882,41 @@ public class PanelPersonajePrueba extends JPanel{
             }
         }
 
-        JButton crear1 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 0));
-        JButton crear2 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 1));
-        JButton crear3 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 2));
-        JButton crear4 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 3));
+        panelSupervivienteEntero.removeAll();
+        panelSupervivienteEntero.setLayout(new BorderLayout(10, 10));
 
+        JPanel panelSupervivientes = new JPanel();
+        panelSupervivientes.setLayout(new GridLayout(1,4,10,10));
+        panelSupervivientes.setBorder(BorderFactory.createTitledBorder("Supervivientes"));
+        panelSupervivientes.setBackground(Color.white);
 
-        /*//Crear botones para crear Equipo
-        JButton crear1 = new JButton("Crear");
-        JButton crear2 = new JButton("Crear");
-        JButton crear3 = new JButton("Crear");
-        JButton crear4 = new JButton("Crear");
+        for(int i=0; i<juego.getSupervivientes().length;i++){
+            Superviviente superviviente = juego.getSuperviviente(i);
+            JPanel panelSuperviviente = new JPanel();
+            panelSuperviviente.setLayout(new GridLayout(7,1,10,10));
 
+            Color colorFondo;
+            if(superviviente.getHeridas()==2){
+                colorFondo = Color.RED;
+            }
+            else if(superviviente.getHeridas()==1){
+                colorFondo = Color.YELLOW;
+            }
+            else{
+                colorFondo = Color.white;
+            }
 
-
-
-
-        //
-        crear1.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(0)));
-        crear2.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(1)));
-        crear3.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(2)));
-        crear4.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(3)));*/
-
-        //
-        panelSuperviviente1.add(crear1);
-        panelSuperviviente2.add(crear2);
-        panelSuperviviente3.add(crear3);
-        panelSuperviviente4.add(crear4);
-
+            panelSuperviviente.setBackground(colorFondo);
+            panelSupervivientes.repaint();
+            panelSuperviviente.add(new JLabel(superviviente.getNombre()));
+            panelSuperviviente.add(new JButton(new verInventario("Inventario","Accede al inventario del personaje",LectorImagenes.cargarIconoVerInventario(),i)));
+            panelSuperviviente.add(new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",LectorImagenes.cargarIconoVerArmasActivas(),i)));
+            panelSuperviviente.add(new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida",LectorImagenes.cargarIconoZombiesEliminados(),i)));
+            panelSuperviviente.add(new JButton(new mostrarAtaqueZombies("Ataques Recibidos","Muestra los zombies que te han mordido, ten cuidado, las vidas son muy escasas",LectorImagenes.cargarIconoAtaquesRecibidos(),i)));
+            panelSuperviviente.add(new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", LectorImagenes.cargarIconoPosicion(),i)));
+            panelSuperviviente.add(new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), i)));
+            panelSupervivientes.add(panelSuperviviente);
+        }
 
         //Boton de la posicion de los zombies
         JButton posicionZombies = new JButton("Posicion Zombies");
@@ -1100,197 +934,12 @@ public class PanelPersonajePrueba extends JPanel{
         panelArriba.add(crearZombie);
 
         panelSupervivienteEntero.add(panelArriba, BorderLayout.NORTH);
-        panelSupervivienteEntero.add(panelSuperviviente, BorderLayout.CENTER);
+        panelSupervivienteEntero.add(panelSupervivientes, BorderLayout.CENTER);
 
         // Actualizar la interfaz gráfica
         revalidate();
         repaint();
 
-
-
-    }
-
-    private void crearArmaTemp(Superviviente superviviente, JDialog dialogo){
-        int numero = superviviente.calcularNumeroObjetosInventario();
-        if(numero==5){
-            JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
-            dialogo.dispose();
-        }
-        JPanel panelCrearArma = new JPanel();
-        panelCrearArma.setBorder(new EmptyBorder(10,10,10,10));
-        panelCrearArma.setBorder(BorderFactory.createTitledBorder("Crear Arma"));
-        panelCrearArma.setLayout(new GridLayout(5,2,10,10));
-        panelCrearArma.setBackground(Color.WHITE);
-
-        JLabel nombre = new JLabel("Nombre");
-        JLabel alcance = new JLabel("Alcance");
-        JLabel potencia = new JLabel("Potencia");
-        JLabel valorExito = new JLabel("Valor Exito");
-        JLabel numeroDados = new JLabel("Numero Dados");
-
-        JTextField nombreTexto = new JTextField();
-        JTextField alcanceTexto = new JTextField();
-        JTextField potenciaTexto = new JTextField();
-        JTextField valorExitoTexto = new JTextField();
-        JTextField numeroDadosTexto = new JTextField();
-
-        panelCrearArma.add(nombre);
-        panelCrearArma.add(nombreTexto);
-        panelCrearArma.add(alcance);
-        panelCrearArma.add(alcanceTexto);
-        panelCrearArma.add(potencia);
-        panelCrearArma.add(potenciaTexto);
-        panelCrearArma.add(valorExito);
-        panelCrearArma.add(valorExitoTexto);
-        panelCrearArma.add(numeroDados);
-        panelCrearArma.add(numeroDadosTexto);
-
-        JButton aceptar = new JButton("Aceptar");
-        aceptar.addActionListener(e->{
-            try{
-                String nombreArma = nombreTexto.getText();
-                int alcanceArma = Integer.parseInt(alcanceTexto.getText());
-                int potenciaArma = Integer.parseInt(potenciaTexto.getText());
-                int valorExitoArma = Integer.parseInt(valorExitoTexto.getText());
-                int numeroDadosArma = Integer.parseInt(numeroDadosTexto.getText());
-                Arma arma = new Arma (nombreArma,potenciaArma,alcanceArma,numeroDadosArma,valorExitoArma);
-                int posicionInventario = superviviente.calcularNumeroObjetosInventario();
-                superviviente.setInventario(arma,posicionInventario);
-            } catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(dialogo, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            dialogo.dispose();
-        });
-
-        JButton cancelar = new JButton("Cancelar");
-        cancelar.addActionListener(i->dialogo.dispose());
-
-        JPanel panelBotones = new JPanel();
-        panelBotones.add(aceptar);
-        panelBotones.add(cancelar);
-        dialogo.getContentPane().removeAll();
-        dialogo.add(panelCrearArma, BorderLayout.CENTER);
-        dialogo.add(panelBotones, BorderLayout.SOUTH);
-        dialogo.revalidate();
-        dialogo.repaint();
-
-    }
-
-    private void crearEquipotemp(Superviviente superviviente){
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-
-        JDialog dialogo = new JDialog(parentWindow,"Crear",Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setLayout(new BorderLayout(10,10));
-        dialogo.setSize(400,300);
-        dialogo.setBackground(Color.WHITE);
-        dialogo.setLocationRelativeTo(null);
-
-        JPanel panelCrear = new JPanel();
-        panelCrear.setBorder(new EmptyBorder(10,10,10,10));
-        panelCrear.setLayout(new GridLayout(1,2,10,10));
-        panelCrear.setBackground(Color.WHITE);
-
-        JButton crearArma = new JButton("Crear Arma");
-        JButton crearProvision = new JButton("Crear Provision");
-
-        crearArma.addActionListener(e-> crearArmaTemp(superviviente,dialogo));
-        crearProvision.addActionListener(e-> crearProvisionTemp(superviviente,dialogo));
-
-        panelCrear.add(crearArma);
-        panelCrear.add(crearProvision);
-
-        dialogo.add(panelCrear, BorderLayout.CENTER);
-        dialogo.setVisible(true);
-
-    }
-
-
-
-    private void crearProvisionTemp(Superviviente superviviente, JDialog dialogo){
-        int numero = superviviente.calcularNumeroObjetosInventario();
-        if(numero==5){
-            JOptionPane.showMessageDialog(dialogo,"Inventerio lleno","ERROR",JOptionPane.ERROR_MESSAGE);
-            dialogo.dispose();
-        }
-        JPanel panelCrearProvision = new JPanel();
-        panelCrearProvision.setBorder(new EmptyBorder(10,10,10,10));
-        panelCrearProvision.setBorder(BorderFactory.createTitledBorder("Crear Provision"));
-        panelCrearProvision.setLayout(new GridLayout(6,2,10,10));
-        panelCrearProvision.setBackground(Color.WHITE);
-
-        JLabel nombre = new JLabel("Nombre");
-        JLabel kcal = new JLabel("Kcal");
-        JLabel caducidadD = new JLabel("Dia");
-        JLabel caducidadM = new JLabel("Mes");
-        JLabel caducidadA = new JLabel("Año");
-        JLabel tipo = new JLabel("Tipo");
-
-        JTextField nombreTexto = new JTextField();
-
-        SpinnerNumberModel Skcal = new SpinnerNumberModel(1,1,10000,1);
-        SpinnerNumberModel SDia = new SpinnerNumberModel(1,1,31,1);
-        SpinnerNumberModel SMes = new SpinnerNumberModel(1,1,12,1);
-        SpinnerNumberModel SAno = new SpinnerNumberModel(1,1,10000,1);
-        SpinnerNumberModel STipo = new SpinnerNumberModel(0,0,1,1);
-        JSpinner jkal = new JSpinner(Skcal);
-        JSpinner jdia = new JSpinner(SDia);
-        JSpinner jmes = new JSpinner(SMes);
-        JSpinner jano = new JSpinner(SAno);
-        JSpinner jtipo = new JSpinner(STipo);
-
-
-        panelCrearProvision.add(nombre);
-        panelCrearProvision.add(nombreTexto);
-        panelCrearProvision.add(kcal);
-        panelCrearProvision.add(jkal);
-        panelCrearProvision.add(caducidadD);
-        panelCrearProvision.add(jdia);
-        panelCrearProvision.add(caducidadM);
-        panelCrearProvision.add(jmes);
-        panelCrearProvision.add(caducidadA);
-        panelCrearProvision.add(jano);
-        panelCrearProvision.add(tipo);
-        panelCrearProvision.add(jtipo);
-
-        JButton aceptar = new JButton("Aceptar");
-        aceptar.addActionListener(e->{
-            try{
-                String nombreProvision = nombreTexto.getText();
-                int kcalT = (int)jkal.getValue();
-                int dia = (int)jdia.getValue();
-                int mes =(int)jmes.getValue();
-                int ano = (int)jano.getValue();
-                int tipoI = (int)jtipo.getValue();
-                int[]fecha = new int[3];
-                fecha[0]= dia;
-                fecha[1]= mes;
-                fecha[2]= ano;
-                boolean tipoB= false;
-                if(tipoI == 1){
-                    tipoB= true;
-                }
-                Provision provision = new Provision(nombreProvision,kcalT,fecha,tipoB);
-                int posicionInventario = superviviente.calcularNumeroObjetosInventario();
-                superviviente.setInventario(provision,posicionInventario);
-
-            } catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(dialogo, "Introduzca valores adecuados", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-            dialogo.dispose();
-        });
-
-        JButton cancelar = new JButton("Cancelar");
-        cancelar.addActionListener(i->dialogo.dispose());
-
-        JPanel panelBotones = new JPanel();
-        panelBotones.add(aceptar);
-        panelBotones.add(cancelar);
-        dialogo.getContentPane().removeAll();
-        dialogo.add(panelCrearProvision, BorderLayout.CENTER);
-        dialogo.add(panelBotones, BorderLayout.SOUTH);
-        dialogo.revalidate();
-        dialogo.repaint();
     }
 
     /**
@@ -1298,6 +947,7 @@ public class PanelPersonajePrueba extends JPanel{
      */
     private void JDialogAtaquesHechos(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        LectorSonido.reproducirClick();
 
         JDialog dialogo = new JDialog(parentWindow, "Ataques Realizados", JDialog.ModalityType.APPLICATION_MODAL);
         dialogo.setLayout(new BorderLayout(10, 10));
@@ -1341,6 +991,7 @@ public class PanelPersonajePrueba extends JPanel{
      */
     private void JDialogVerPosicionZombies(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        LectorSonido.reproducirClick();
 
         String titulo = "Posición de Zombies";
         JDialog dialogo = new JDialog(parentWindow, titulo, Dialog.ModalityType.APPLICATION_MODAL);
@@ -1959,6 +1610,7 @@ public class PanelPersonajePrueba extends JPanel{
 
     private void JDialogCrearZombie() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        LectorSonido.reproducirClick();
 
         // Crear el cuadro de diálogo modal
         JDialog dialogo = new JDialog(parentWindow, "Crear Zombie", Dialog.ModalityType.APPLICATION_MODAL);
