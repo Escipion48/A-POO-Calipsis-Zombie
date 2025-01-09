@@ -14,10 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.ZoneId;
+import java.util.*;
 
 public class PanelPersonajePrueba extends JPanel{
     final Juego juego;
@@ -523,15 +521,17 @@ public class PanelPersonajePrueba extends JPanel{
 
                 JDialog panelCrearEquipo = new JDialog();
                 panelCrearEquipo.setTitle(getValue(NAME).toString());
-                panelCrearEquipo.setIconImage(((ImageIcon)getValue(SHORT_DESCRIPTION)).getImage());
+                panelCrearEquipo.setIconImage(((ImageIcon)getValue(SMALL_ICON)).getImage());
                 Dimension dimensionesPantalla = Toolkit.getDefaultToolkit().getScreenSize();
-                panelCrearEquipo.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,300,350);
+                panelCrearEquipo.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,400,350);
                 panelCrearEquipo.setResizable(false);
                 panelCrearEquipo.setLayout(new GridLayout(1,2));
 
                 //Añadimos los dos botones para que se pueda elejir que tipo de equipo crear
                 panelCrearEquipo.add(new JButton(new CrearArma("Crear Arma", (int)getValue("Indice personaje"))));
                 panelCrearEquipo.add(new JButton(new CrearProvision("Crear Provision", (int)getValue("Indice personaje"))));
+
+                panelCrearEquipo.setVisible(true);
             }
 
             class CrearArma extends AbstractAction {
@@ -540,11 +540,11 @@ public class PanelPersonajePrueba extends JPanel{
                 JButton aceptar = new JButton("Aceptar");
                 JButton cancelar = new JButton("Cancelar");
 
-                JTextField nombreTexto;
-                JTextField alcanceTexto;
-                JTextField potenciaTexto;
-                JTextField valorExitoTexto;
-                JTextField numeroDadosTexto;
+                JTextField nombreTexto = new JTextField();
+                JTextField alcanceTexto = new JTextField();
+                JTextField potenciaTexto = new JTextField();
+                JTextField valorExitoTexto  = new JTextField();
+                JTextField numeroDadosTexto = new JTextField();
 
                 public CrearArma(String nombre, int indicePersonaje) {
                     putValue(NAME, nombre);
@@ -566,7 +566,7 @@ public class PanelPersonajePrueba extends JPanel{
                         JDialog panelCrearArma = new JDialog();
                         panelCrearArma.setTitle("Crear Arma");
                         Dimension dimensionesPantalla = Toolkit.getDefaultToolkit().getScreenSize();
-                        panelCrearArma.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,300,350);
+                        panelCrearArma.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,450,350);
                         panelCrearArma.setLayout(new GridLayout(6,2,10,10));
                         panelCrearArma.setResizable(false);
                         panelCrearArma.setVisible(true);
@@ -578,6 +578,8 @@ public class PanelPersonajePrueba extends JPanel{
                         JLabel valorExito = new JLabel("Valor éxito");
                         JLabel numeroDados = new JLabel("Numero Dados");
 
+
+
                         //Como ya hemos declarado los Jtextfield solo queda añadirle los oyentes
                         nombreTexto.getDocument().addDocumentListener(new DocumentListener(){
                             @Override
@@ -586,11 +588,9 @@ public class PanelPersonajePrueba extends JPanel{
 
                                 if(texto.length()==0){
                                     nombreTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
                                 }
-                                else{
+                                else {
                                     nombreTexto.setBackground(Color.WHITE);
-                                    aceptar.setEnabled(true);
                                 }
 
                             }
@@ -601,11 +601,9 @@ public class PanelPersonajePrueba extends JPanel{
 
                                 if(texto.length()==0){
                                     nombreTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
                                 }
-                                else{
+                                else {
                                     nombreTexto.setBackground(Color.WHITE);
-                                    aceptar.setEnabled(true);
                                 }
                             }
 
@@ -615,14 +613,15 @@ public class PanelPersonajePrueba extends JPanel{
 
                                 if(texto.length()==0){
                                     nombreTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
+
                                 }
                                 else{
                                     nombreTexto.setBackground(Color.WHITE);
-                                    aceptar.setEnabled(true);
+
                                 }
                             }
                         });
+                        nombreTexto.setBackground(Color.RED);
                         alcanceTexto.getDocument().addDocumentListener(new DocumentListener(){
 
                             @Override
@@ -630,18 +629,17 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = alcanceTexto.getText().trim();
                                 if(texto.length()==0){
                                     alcanceTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorAlcance= Integer.parseInt(alcanceTexto.getText().trim());
                                     if(valorAlcance<0){
                                         alcanceTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         alcanceTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }else{
+                                    alcanceTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -650,18 +648,18 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = alcanceTexto.getText().trim();
                                 if(texto.length()==0){
                                     alcanceTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorAlcance= Integer.parseInt(alcanceTexto.getText().trim());
                                     if(valorAlcance<0){
                                         alcanceTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         alcanceTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    alcanceTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -670,21 +668,22 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = alcanceTexto.getText().trim();
                                 if(texto.length()==0){
                                     alcanceTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorAlcance= Integer.parseInt(alcanceTexto.getText().trim());
                                     if(valorAlcance<0){
                                         alcanceTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         alcanceTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    alcanceTexto.setBackground(Color.RED);
                                 }
                             }
                         });
+                        alcanceTexto.setBackground(Color.RED);
                         potenciaTexto.getDocument().addDocumentListener(new DocumentListener(){
 
                             @Override
@@ -692,19 +691,19 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = potenciaTexto.getText().trim();
                                 if(texto.length()==0){
                                     potenciaTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
 
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorPotencia= Integer.parseInt(potenciaTexto.getText().trim());
                                     if(valorPotencia<0){
                                         potenciaTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         potenciaTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    potenciaTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -713,19 +712,18 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = potenciaTexto.getText().trim();
                                 if(texto.length()==0){
                                     potenciaTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
-
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorPotencia= Integer.parseInt(potenciaTexto.getText().trim());
                                     if(valorPotencia<0){
                                         potenciaTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         potenciaTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    potenciaTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -734,22 +732,23 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = potenciaTexto.getText().trim();
                                 if(texto.length()==0){
                                     potenciaTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
 
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorPotencia= Integer.parseInt(potenciaTexto.getText().trim());
                                     if(valorPotencia<0){
                                         potenciaTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         potenciaTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    potenciaTexto.setBackground(Color.RED);
                                 }
                             }
                         });
+                        potenciaTexto.setBackground(Color.RED);
                         valorExitoTexto.getDocument().addDocumentListener(new DocumentListener(){
 
                             @Override
@@ -757,19 +756,19 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = valorExitoTexto.getText().trim();
                                 if(texto.length()==0){
                                     valorExitoTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
 
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorExito= Integer.parseInt(valorExitoTexto.getText().trim());
                                     if(valorExito<0){
                                         valorExitoTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         valorExitoTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else {
+                                    valorExitoTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -778,19 +777,19 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = valorExitoTexto.getText().trim();
                                 if(texto.length()==0){
                                     valorExitoTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
 
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorExito= Integer.parseInt(valorExitoTexto.getText().trim());
                                     if(valorExito<0){
                                         valorExitoTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         valorExitoTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else {
+                                    valorExitoTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -799,22 +798,22 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = valorExitoTexto.getText().trim();
                                 if(texto.length()==0){
                                     valorExitoTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
-
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorExito= Integer.parseInt(valorExitoTexto.getText().trim());
                                     if(valorExito<0){
                                         valorExitoTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         valorExitoTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else {
+                                    valorExitoTexto.setBackground(Color.RED);
                                 }
                             }
                         });
+                        valorExitoTexto.setBackground(Color.RED);
                         numeroDadosTexto.getDocument().addDocumentListener(new DocumentListener(){
 
                             @Override
@@ -822,19 +821,19 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = numeroDadosTexto.getText().trim();
                                 if(texto.length()==0){
                                     numeroDadosTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
 
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorNumeroDados= Integer.parseInt(numeroDadosTexto.getText().trim());
                                     if(valorNumeroDados<0){
                                         numeroDadosTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         numeroDadosTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    numeroDadosTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -843,19 +842,19 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = numeroDadosTexto.getText().trim();
                                 if(texto.length()==0){
                                     numeroDadosTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
 
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorNumeroDados= Integer.parseInt(numeroDadosTexto.getText().trim());
                                     if(valorNumeroDados<0){
                                         numeroDadosTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         numeroDadosTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    numeroDadosTexto.setBackground(Color.RED);
                                 }
                             }
 
@@ -864,22 +863,24 @@ public class PanelPersonajePrueba extends JPanel{
                                 String texto = numeroDadosTexto.getText().trim();
                                 if(texto.length()==0){
                                     numeroDadosTexto.setBackground(Color.RED);
-                                    aceptar.setEnabled(false);
 
                                 }
-                                else{
+                                else if(texto.matches("\\d+")){
                                     int valorNumeroDados= Integer.parseInt(numeroDadosTexto.getText().trim());
                                     if(valorNumeroDados<0){
                                         numeroDadosTexto.setBackground(Color.RED);
-                                        aceptar.setEnabled(false);
                                     }
                                     else{
                                         numeroDadosTexto.setBackground(Color.WHITE);
-                                        aceptar.setEnabled(true);
                                     }
+                                }
+                                else{
+                                    numeroDadosTexto.setBackground(Color.RED);
                                 }
                             }
                         });
+                        numeroDadosTexto.setBackground(Color.RED);
+
 
                         //Finalmente construimos el panel emergente para crear Arma rellenando el Jdialog
                         panelCrearArma.add(nombre); panelCrearArma.add(nombreTexto);
@@ -889,17 +890,21 @@ public class PanelPersonajePrueba extends JPanel{
                         panelCrearArma.add(numeroDados); panelCrearArma.add(numeroDadosTexto);
 
                         //Fialmente configuramos los botones de aceptar y cancelar y los metemos en panelCrearArma
-                        aceptar.setEnabled(false);
                         aceptar.addActionListener(new ActionListener(){
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                for(int i = 0; i<5;i++){
-                                    if(superviviente.getArmaActiva(i)==null){
-                                        superviviente.setArmaActiva(new Arma(nombreTexto.getText().trim(),Integer.parseInt(potenciaTexto.getText().trim()),Integer.parseInt(alcanceTexto.getText().trim()),Integer.parseInt(numeroDadosTexto.getText().trim()),Integer.parseInt(valorExitoTexto.getText().trim())),i);
-                                        panelCrearArma.dispose();
-                                        break;
+                                if(nombreTexto.getBackground() == Color.WHITE && alcanceTexto.getBackground() == Color.WHITE && potenciaTexto.getBackground() == Color.WHITE && valorExitoTexto.getBackground() == Color.WHITE && numeroDadosTexto.getBackground() == Color.WHITE ){
+                                    for(int i = 0; i<5;i++){
+                                        if(superviviente.getArmaActiva(i)==null){
+                                            superviviente.setArmaActiva(new Arma(nombreTexto.getText().trim(),Integer.parseInt(potenciaTexto.getText().trim()),Integer.parseInt(alcanceTexto.getText().trim()),Integer.parseInt(numeroDadosTexto.getText().trim()),Integer.parseInt(valorExitoTexto.getText().trim())),i);
+                                            panelCrearArma.dispose();
+                                            break;
+                                        }
                                     }
+                                }
+                                else{
+                                    JOptionPane.showMessageDialog(null,"Valores no validos en alguno de los campos", "Error valores no validos", JOptionPane.ERROR_MESSAGE);
                                 }
                             }
                         });
@@ -949,7 +954,7 @@ public class PanelPersonajePrueba extends JPanel{
                         JDialog panelCrearProvision = new JDialog();
                         panelCrearProvision.setTitle("Crear Arma");
                         Dimension dimensionesPantalla = Toolkit.getDefaultToolkit().getScreenSize();
-                        panelCrearProvision.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,300,350);
+                        panelCrearProvision.setBounds(dimensionesPantalla.width/2,dimensionesPantalla.height/2-100,450,350);
                         panelCrearProvision.setLayout(new GridLayout(5,2,10,10));
                         panelCrearProvision.setResizable(false);
                         panelCrearProvision.setVisible(true);
@@ -1007,8 +1012,12 @@ public class PanelPersonajePrueba extends JPanel{
                             }
                         });
                         kcalTexto.setModel(new SpinnerNumberModel(1,1,2000,1));
-                        caducidadTexto.setModel(new SpinnerDateModel(Date.from(Instant.from(LocalDate.now())),new Date(2000,1,1),new Date(2100,1,1), Calendar.MONTH));
-
+                        caducidadTexto.setModel(new SpinnerDateModel(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                                new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime(),
+                                new GregorianCalendar(2100, Calendar.JANUARY, 1).getTime(),
+                                Calendar.MONTH));
+                        caducidadTexto.setEditor(new JSpinner.DateEditor(caducidadTexto, "dd/MM/yyyy"));
+                        tipoTexto.setModel(new SpinnerNumberModel(0,0,1,1));
 
                         //Finalmente construimos el panel emergente para crear Arma rellenando el Jdialog
                         panelCrearProvision.add(nombre); panelCrearProvision.add(nombreTexto);
@@ -1024,8 +1033,8 @@ public class PanelPersonajePrueba extends JPanel{
                             public void actionPerformed(ActionEvent e) {
                                 for(int i = 0; i<5; i++){
                                     if(superviviente.getInventario(i)==null){
-                                        int [] caducidad =  {(((Date)caducidadTexto.getValue()).getDay()),(((Date)caducidadTexto.getValue()).getMonth()),(((Date)caducidadTexto.getValue()).getYear())};
-                                        superviviente.setInventario(new Provision(nombreTexto.getText().trim(),(int) kcalTexto.getValue(), caducidad,(boolean)tipoTexto.getValue()),i);
+                                        int[] caducidad = {((Date) caducidadTexto.getValue()).getDate(), ((Date) caducidadTexto.getValue()).getMonth() + 1, ((Date) caducidadTexto.getValue()).getYear() + 1900};
+                                        superviviente.setInventario(new Provision(nombreTexto.getText().trim(),(int) kcalTexto.getValue(), caducidad,((int)tipoTexto.getValue() == 1 ? true : false)),i);
                                         panelCrearProvision.dispose();
                                         break;
                                     }
@@ -1046,8 +1055,13 @@ public class PanelPersonajePrueba extends JPanel{
             }
         }
 
+        JButton crear1 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 0));
+        JButton crear2 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 1));
+        JButton crear3 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 2));
+        JButton crear4 = new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), 3));
 
-        //Crear botones para crear Equipo
+
+        /*//Crear botones para crear Equipo
         JButton crear1 = new JButton("Crear");
         JButton crear2 = new JButton("Crear");
         JButton crear3 = new JButton("Crear");
@@ -1061,7 +1075,7 @@ public class PanelPersonajePrueba extends JPanel{
         crear1.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(0)));
         crear2.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(1)));
         crear3.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(2)));
-        crear4.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(3)));
+        crear4.addActionListener(e-> crearEquipotemp(juego.getSuperviviente(3)));*/
 
         //
         panelSuperviviente1.add(crear1);

@@ -60,4 +60,8 @@ public class LectorImagenes {
     static public Icon cargarIconoVerInventario(){
         return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/verInventarioIcon.gif");
     }
+
+    static public Icon cargarIconoCrear(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/crearIcono.gif");
+    }
 }
