@@ -2,6 +2,7 @@ package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
 import es.urjc.poo.equipoj.images.LectorImagenes;
+import es.urjc.poo.equipoj.images.PanelConFondo;
 import es.urjc.poo.equipoj.io.*;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
@@ -1417,31 +1418,6 @@ public class PanelPersonajePrueba extends JPanel{
         else{
             JOptionPane.showMessageDialog(null,"No puedes buscar aquí", "Error",JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    /**
-     * JDialgoBuscarFalse se muestra si ya se a buscado en esa casilla o si tiene el inventario lleno
-     */
-    private void JDialogBuscarFalse(){
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JOptionPane.showMessageDialog(parentWindow, "Ya se ha bucado en esta casilla y/o tiene el inventario lleno", "ERRPR", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    /**
-     * JDilogbuscarNada se muestra si se a podido buscar pero no se a encontrado noda
-     */
-    private void JDialogBuscarNada(){
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-
-        JOptionPane.showMessageDialog(parentWindow, "No se ha encontrado nada", "Buscar", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    /**
-     * JDialogBuscarTrue muestra el equipo encontrado
-     */
-    private void JDialogBuscarTrue(Superviviente superviviente){
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JOptionPane.showMessageDialog(parentWindow, "Se ha encontrado :" + superviviente.getInventario(superviviente.calcularNumeroObjetosInventario() - 1), "Objeto encontrado", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
