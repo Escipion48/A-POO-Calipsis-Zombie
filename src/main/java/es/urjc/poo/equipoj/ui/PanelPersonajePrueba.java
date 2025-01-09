@@ -1322,62 +1322,80 @@ public class PanelPersonajePrueba extends JPanel{
     private void JDialogMoverse(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
+        class elegirDireccion extends AbstractAction{
+            elegirDireccion(JDialog dialogo,Icon icono, int desplazamientoX, int desplazamientoY, ArrayList<EntidadActivable> entidades){
+                putValue("Dialogo", dialogo);
+                putValue(AbstractAction.SMALL_ICON, icono);
+                putValue("x", desplazamientoX);
+                putValue("y", desplazamientoY);
+                putValue("entidades", entidades);
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LectorSonido.reproducirClick();
+                ArrayList<EntidadActivable> entidades = (ArrayList<EntidadActivable>) getValue("entidades");
+                superviviente.moverse(entidades);
+                superviviente.setPosicion(new Posicion(superviviente.getPosicion().getPosicionX()+((int)getValue("x")),superviviente.getPosicion().getPosicionY()+((int)getValue("y"))));
+                LectorSonido.reproducirPasosSonido();
+                ((JDialog)getValue("Dialogo")).dispose();
+            }
+        }
+
+        ArrayList<EntidadActivable> zombies = new ArrayList<>(juego.getZombies());
+        int accionesPorMoverse = superviviente.calcularNumeroAccinesPorMoverse(zombies);
+        if(superviviente.getAcciones()<accionesPorMoverse){
+            JOptionPane.showMessageDialog(this, "No tienes suficientes acciones para moverte", "Acciones insuficientes", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         JDialog dialogo = new JDialog(parentWindow, "Moverse", Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setIconImage(((ImageIcon)LectorImagenes.cargarMoverse()).getImage());
         dialogo.setSize(400, 300);
-        dialogo.setLayout(new BorderLayout(10, 10));
-        dialogo.setLocationRelativeTo(null);
+        dialogo.setLayout(new GridLayout(3, 3,10,10));
+        dialogo.setLocationRelativeTo(this);
 
-        JPanel panelCoordenadas = new JPanel();
-        panelCoordenadas.setBorder(new EmptyBorder(10, 10, 10, 10));
-        panelCoordenadas.setLayout(new GridLayout(3, 2, 10, 10));
+        //Botones de Direccion
+        JButton arribaIzquierda = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoArribaIzquierda(),-1,-1,zombies));
+        JButton arriba = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoArriba(),0,-1,zombies));
+        JButton arribaDerecha = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoArribaDerecha(),1,-1,zombies));
+        JButton izquierda = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoIzquierda(),-1,0,zombies));
+        JButton derecha = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoDerecha(),1,0,zombies));
+        JButton abajoIzquierda = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoAbajoIzquierda(),-1,1,zombies));
+        JButton abajo = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoAbajo(),0,1,zombies));
+        JButton abajoDerecha = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoAbajoDerecha(),1,1,zombies));
 
-        //Crear los componentes
-        JLabel l1 = new JLabel("Posicion actual: " + superviviente.getPosicion());
-        JLabel l2 = new JLabel("X: ");
-        JLabel l3 = new JLabel("Y: ");
-        JTextField jt1 = new JTextField();
-        JTextField jt2 = new JTextField();
+        if(superviviente.getPosicion().getPosicionX()==0){
+            arribaIzquierda.setEnabled(false);
+            izquierda.setEnabled(false);
+            abajoIzquierda.setEnabled(false);
+        }
+        if(superviviente.getPosicion().getPosicionY()==0){
+            arribaDerecha.setEnabled(false);
+            arriba.setEnabled(false);
+            arribaIzquierda.setEnabled(false);
+        }
+        if(superviviente.getPosicion().getPosicionX()==juego.getTablero().getDimensiones().getPosicionX()){
+            arribaDerecha.setEnabled(false);
+            derecha.setEnabled(false);
+            abajoDerecha.setEnabled(false);
+        }
+        if(superviviente.getPosicion().getPosicionY()==juego.getTablero().getDimensiones().getPosicionY()){
+            abajoDerecha.setEnabled(false);
+            abajo.setEnabled(false);
+            abajoIzquierda.setEnabled(false);
+        }
 
-        //Añadirlos al panel
-        panelCoordenadas.add(l1);
-        panelCoordenadas.add(new JLabel(""));
-        panelCoordenadas.add(l2);
-        panelCoordenadas.add(jt1);
-        panelCoordenadas.add(l3);
-        panelCoordenadas.add(jt2);
+        dialogo.add(arribaIzquierda);
+        dialogo.add(arriba);
+        dialogo.add(arribaDerecha);
+        dialogo.add(izquierda);
+        dialogo.add(new JLabel("Panel Movimiento"));
+        dialogo.add(derecha);
+        dialogo.add(abajoIzquierda);
+        dialogo.add(abajo);
+        dialogo.add(abajoDerecha);
 
-
-        JButton aceptar = new JButton("Aceptar");
-        aceptar.addActionListener(e-> {
-            int x, y;
-            try {
-                x = Integer.parseInt(jt1.getText());
-                y = Integer.parseInt(jt2.getText());
-            } catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(dialogo, "Por favor, introduce números válidos para las coordenadas.", "ERROR", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Posicion posicion = new Posicion(x, y);
-            ArrayList<EntidadActivable> entidades = new ArrayList<>(juego.getZombies());
-            if(superviviente.getPosicion().comprobarAdyacente(posicion) && (superviviente.getAcciones() - superviviente.calcularNumeroAccinesPorMoverse(entidades) > 0)){
-                superviviente.moverse(entidades);
-                superviviente.setPosicion(posicion);
-                panelDeTexto.setText(panelDeTexto.getText()+"\n"+superviviente.getNombre()+" se ha movido a "+ superviviente.getPosicion());
-                dialogo.dispose();
-            } else if (!superviviente.getPosicion().comprobarAdyacente(posicion)){
-                JOptionPane.showMessageDialog(dialogo, "La posición no es adyacente...", "ERROR", JOptionPane.ERROR_MESSAGE);
-            } else {
-                for(Zombie z : juego.getZombies()){
-                    System.out.println(z);
-                }
-                JOptionPane.showMessageDialog(dialogo, "Hay demasiados Zombies para moverse y/o falta de acciones.", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        dialogo.add(panelCoordenadas, BorderLayout.CENTER);
-        dialogo.add(aceptar, BorderLayout.SOUTH);
         dialogo.setVisible(true);
     }
 

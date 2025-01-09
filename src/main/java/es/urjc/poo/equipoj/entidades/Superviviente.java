@@ -201,7 +201,7 @@ public class Superviviente implements EntidadActivable{
      */
     @Override
     public void moverse(ArrayList<EntidadActivable> entidades){
-        this.setAcciones(this.getAcciones() - (this.calcularNumeroAccinesPorMoverse(entidades)+1));
+        this.setAcciones(this.getAcciones() - (this.calcularNumeroAccinesPorMoverse(entidades)));
 
     }
 
@@ -575,7 +575,7 @@ public class Superviviente implements EntidadActivable{
 
     public int calcularNumeroAccinesPorMoverse(ArrayList<EntidadActivable> entidades){
         int contador = this.devolverZombiesEnPosicion(this.convertirArrayEntidadesActivableAZombie(entidades),this.getPosicion()).size();
-        return contador;
+        return contador+1;
     }
 
 

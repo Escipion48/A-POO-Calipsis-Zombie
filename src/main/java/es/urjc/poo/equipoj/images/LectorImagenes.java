@@ -64,4 +64,36 @@ public class LectorImagenes {
     static public Icon cargarIconoCrear(){
         return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/crearIcono.gif");
     }
+
+    static public Icon cargarIconoArribaIzquierda(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/arribaIzquierdaIcono.gif");
+    }
+
+    static public Icon cargarIconoArriba(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/arribaIcono.gif");
+    }
+
+    static public Icon cargarIconoArribaDerecha(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/arribaDerechaIcono.gif");
+    }
+
+    static public Icon cargarIconoIzquierda(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/izquierdaIcono.gif");
+    }
+
+    static public Icon cargarIconoDerecha(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/derechaIcono.gif");
+    }
+
+    static public Icon cargarIconoAbajoIzquierda(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/abajoIzquierdaIcono.gif");
+    }
+
+    static public Icon cargarIconoAbajo(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/abajoIcono.gif");
+    }
+
+    static public Icon cargarIconoAbajoDerecha(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/abajoDerechaIcono.gif");
+    }
 }
