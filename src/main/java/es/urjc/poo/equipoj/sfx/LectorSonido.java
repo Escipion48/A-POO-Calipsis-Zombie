@@ -141,4 +141,37 @@ public class LectorSonido {
         clip.start();
 
     }
+
+    public static void reproducirMordiscoSonido(){
+        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/mordiscoEfectoSonido.wav");
+
+        AudioInputStream sonido = null;
+        try {
+            sonido = AudioSystem.getAudioInputStream(ficheroClick);
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        try {
+            clip.open(sonido);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        clip.setFramePosition(0);
+        clip.start();
+    }
 }

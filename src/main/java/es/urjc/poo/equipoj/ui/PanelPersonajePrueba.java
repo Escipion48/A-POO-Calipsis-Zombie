@@ -888,13 +888,13 @@ public class PanelPersonajePrueba extends JPanel{
 
         JPanel panelSupervivientes = new JPanel();
         panelSupervivientes.setLayout(new GridLayout(1,4,10,10));
-        panelSupervivientes.setBorder(BorderFactory.createTitledBorder("Supervivientes"));
         panelSupervivientes.setBackground(Color.white);
 
         for(int i=0; i<juego.getSupervivientes().length;i++){
             Superviviente superviviente = juego.getSuperviviente(i);
             JPanel panelSuperviviente = new JPanel();
             panelSuperviviente.setLayout(new GridLayout(7,1,10,10));
+            panelSuperviviente.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
             Color colorFondo;
             if(superviviente.getHeridas()==2){
@@ -904,7 +904,7 @@ public class PanelPersonajePrueba extends JPanel{
                 colorFondo = Color.YELLOW;
             }
             else{
-                colorFondo = Color.white;
+                colorFondo = Color.WHITE;
             }
 
             panelSuperviviente.setBackground(colorFondo);
@@ -1391,7 +1391,7 @@ public class PanelPersonajePrueba extends JPanel{
         dialogo.add(arriba);
         dialogo.add(arribaDerecha);
         dialogo.add(izquierda);
-        dialogo.add(new JLabel("Panel Movimiento"));
+        dialogo.add(new JLabel("Panel Movimiento", SwingConstants.HORIZONTAL));
         dialogo.add(derecha);
         dialogo.add(abajoIzquierda);
         dialogo.add(abajo);
@@ -1425,6 +1425,7 @@ public class PanelPersonajePrueba extends JPanel{
      */
     private void JDialogAtacar(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        LectorSonido.reproducirClick();
 
         JDialog dialogo = new JDialog(parentWindow, "Atacar", Dialog.ModalityType.APPLICATION_MODAL);
         dialogo.setSize(1000, 300);
@@ -1568,42 +1569,47 @@ public class PanelPersonajePrueba extends JPanel{
      * al terminar se genera un zombie
      */
     private void TurnoZombie(){
-        ArrayList<EntidadActivable> entidades = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
-        for (Zombie z : juego.getZombies()){
-            z.activarse();
-            do {
-                ataqueZombie(z);
-                if (z.getActivaciones() == 0) {
-                    break;
+        ArrayList<Superviviente> entidades = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
+        boolean haHabidoMordiscos=false;
+
+        for(Zombie zombie : juego.getZombies()){
+            zombie.activarse();
+            Superviviente supervivienteObjetivo = zombie.getSupervivienteAlQueDirigirse(entidades);
+            ArrayList<EntidadActivable> listaConSuperviviente = new ArrayList<EntidadActivable>();
+            listaConSuperviviente.add(supervivienteObjetivo);
+            while(zombie.getActivaciones()>0){
+                if(supervivienteObjetivo.getPosicion().equals(zombie.getPosicion())){
+                    zombie.atacar(listaConSuperviviente);
+                    haHabidoMordiscos=true;
+                    panelDeTexto.setText(panelDeTexto.getText()+zombie.toString()+" ha mordido a: "+supervivienteObjetivo.getNombre()+"\n");
                 }
-                z.moverse(entidades);
-            } while(z.getActivaciones() > 0);
-        }
-        juego.anadirZombie();
-        Derrota();
-    }
-
-    /**
-     * ataqueZombie añade una herida al superviviente al que ataca
-     */
-    private void ataqueZombie(Zombie zombie){
-
-        ArrayList<Superviviente> supervivientes = new ArrayList<>(Arrays.asList(juego.getSupervivientes()));
-        // Comprobar si hay supervivientes en la misma casilla que el zombie
-        if (!zombie.getSupervivienteEnMismaCasilla(supervivientes).isEmpty()) {
-            // Determinar el objetivo al que el zombie se dirigirá
-            Superviviente objetivo = zombie.getSupervivienteAlQueDirigirse(supervivientes);
-            if (objetivo != null) {
-                ArrayList<EntidadActivable> objetivoList = new ArrayList<>();
-                objetivoList.add(objetivo);
-                //El zombie ataca
-                zombie.atacar(objetivoList);
-                panelDeTexto.setText(panelDeTexto.getText()+"\n"+objetivo.getNombre()+" ha recibido un ataque");
+                else{
+                    zombie.moverse(listaConSuperviviente);
+                }
             }
         }
+
+        if(haHabidoMordiscos){
+            LectorSonido.reproducirMordiscoSonido();
+        }
+
+        juego.anadirZombie();
+
+        if(juego.derrota()){
+            removeAll(); // Limpiar el panel
+            panelDeTexto.setText("");
+            setLayout(new BorderLayout());
+
+            JLabel l1 = new JLabel("DERROTA ", SwingConstants.CENTER);
+            l1.setFont(new Font("Arial", Font.BOLD, 30));
+            l1.setForeground(Color.RED);
+            add(l1, BorderLayout.CENTER);
+            revalidate();
+            repaint();
+            setReiniciar();
+
+        }
     }
-
-
 
     private void JDialogCrearZombie() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
@@ -1702,34 +1708,6 @@ public class PanelPersonajePrueba extends JPanel{
         // Mostrar el diálogo
         dialogo.setVisible(true);
     }
-
-
-    private void Derrota(){
-        boolean derrota = false;
-        Superviviente s1 = new Superviviente();
-
-        for(Superviviente superviviente : juego.getSupervivientes()){
-            if (superviviente.getHeridas() >= 2) {
-                s1=superviviente;
-                derrota = true;
-                break;
-            }
-        }
-
-        if (derrota){
-            removeAll(); // Limpiar el panel
-            panelDeTexto.setText("");
-            setLayout(new BorderLayout());
-
-            JLabel l1 = new JLabel("DERROTA "+s1.getNombre()+" ha muerto", SwingConstants.CENTER);
-            l1.setFont(new Font("Arial", Font.BOLD, 30));
-            l1.setForeground(Color.RED);
-            add(l1, BorderLayout.CENTER);
-            revalidate();
-            repaint();
-            setReiniciar();
-
-        }}
 
     private void Terminar(){
         removeAll();

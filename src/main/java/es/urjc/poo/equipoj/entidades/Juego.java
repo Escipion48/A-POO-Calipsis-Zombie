@@ -191,4 +191,15 @@ public class Juego {
         }
         return victoria;
     }
+
+    public boolean derrota(){
+        for(Superviviente superviviente : this.getSupervivientes()) {
+            if(superviviente.getEstado()==TipoEstado.ELIMINADO){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

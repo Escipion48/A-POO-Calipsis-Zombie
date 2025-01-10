@@ -703,6 +703,9 @@ public class Superviviente implements EntidadActivable{
     public void recibirAtaque(Zombie zombie){
         this.ataquesRecibidos.add(zombie);
         this.heridas++;
+        if(this.heridas>=2){
+            this.setEstado(TipoEstado.ELIMINADO);
+        }
     }
 
     /**

@@ -156,7 +156,7 @@ public class Zombie implements EntidadActivable {
             Superviviente supervivienteObjetivo = supervivientes.get(0);
             supervivienteObjetivo.recibirAtaque(this);
             System.out.println(supervivienteObjetivo.getNombre()+ " a sido atacado por : "+ this);
-            this.activaciones--;
+            this.activaciones=0;
         }
     }
 
