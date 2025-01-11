@@ -9,7 +9,7 @@ import java.io.IOException;
 public class LectorSonido {
 
     public static void reproducirClick(){
-        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/clickEfectoSonido.wav");
+        File ficheroClick = new File("src/main/resources/sfx/clickEfectoSonido.wav");
 
         AudioInputStream sonido = null;
         try {
@@ -42,7 +42,7 @@ public class LectorSonido {
     }
 
     public static void reproducirRespiroAlivio(){
-        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/respiroAlivioEfectoSonido.wav");
+        File ficheroClick = new File("src/main/resources/sfx/respiroAlivioEfectoSonido.wav");
 
         AudioInputStream sonido = null;
         try {
@@ -75,7 +75,7 @@ public class LectorSonido {
     }
 
     public static void reproducirInventario(){
-        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/inventarioAbriendoyCerrandoseEfectoSonido.wav");
+        File ficheroClick = new File("src/main/resources/sfx/inventarioAbriendoyCerrandoseEfectoSonido.wav");
 
         AudioInputStream sonido = null;
         try {
@@ -109,7 +109,7 @@ public class LectorSonido {
     }
 
     public static void reproducirPasosSonido(){
-        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/pasosEfectoSonido.wav");
+        File ficheroClick = new File("src/main/resources/sfx/pasosEfectoSonido.wav");
 
         AudioInputStream sonido = null;
         try {
@@ -143,7 +143,7 @@ public class LectorSonido {
     }
 
     public static void reproducirMordiscoSonido(){
-        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/mordiscoEfectoSonido.wav");
+        File ficheroClick = new File("src/main/resources/sfx/mordiscoEfectoSonido.wav");
 
         AudioInputStream sonido = null;
         try {
@@ -176,7 +176,7 @@ public class LectorSonido {
     }
 
     public static void reproducirDisparoSonido(){
-        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/ataqueDisparosEfectoSonido.wav");
+        File ficheroClick = new File("src/main/resources/sfx/ataqueDisparosEfectoSonido.wav");
 
         AudioInputStream sonido = null;
         try {
@@ -209,7 +209,7 @@ public class LectorSonido {
     }
 
     public static void reproducirAtaqueCercanoSonido(){
-        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/ataqueCercanoEfectoSonido.wav");
+        File ficheroClick = new File("src/main/resources/sfx/ataqueCercanoEfectoSonido.wav");
 
         AudioInputStream sonido = null;
         try {

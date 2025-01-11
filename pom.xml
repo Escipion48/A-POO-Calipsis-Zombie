@@ -27,4 +27,99 @@
       <version>2.11.0</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Maven Jar Plugin para empaquetar el JAR principal -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <!-- Incluir todas las clases y recursos en el JAR principal -->
+                <manifestEntries>
+                  <Main-Class>es.urjc.poo.equipoj.App</Main-Class> <!-- Nombre de la clase principal de tu aplicación -->
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Maven Resources Plugin para copiar los recursos al JAR principal -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <includes>
+                    <include>**/*</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Si necesitas empaquetar recursos en otro JAR separado con un classifier -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <classifier>resources</classifier> <!-- Este classifier asegura que los recursos no reemplacen el JAR principal -->
+              <archive>
+                <manifestEntries>
+                  <Main-Class>es.urjc.poo.equipoj.App</Main-Class>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <!-- Incluir tus imágenes y sonidos -->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/images/**</include>
+          <include>**/sfx/**</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>local-repo</id>
+      <url>file:/C:/Users/escip/IdeaProjects/A-POO-Calipsis-Zombie</url>
+    </repository>
+  </distributionManagement>
+
 </project>
