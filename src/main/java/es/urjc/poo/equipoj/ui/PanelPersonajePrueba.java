@@ -23,12 +23,11 @@ public class PanelPersonajePrueba extends JPanel{
     private JTextPane panelDeTexto;
     private JButton crearSuperviviente;
     private JButton empezar;
-    private Posicion posicionObjetivo;
 
     public PanelPersonajePrueba(JTextPane panelDeTexto, Juego juego, Posicion posicionObjetivo){
         this.panelDeTexto = panelDeTexto;
         this.juego = juego;
-        this.posicionObjetivo = posicionObjetivo;
+        this.juego.getTablero().setObjetivo(posicionObjetivo);
         initUI();
     }
 
@@ -44,6 +43,7 @@ public class PanelPersonajePrueba extends JPanel{
         // Panel de personajes
         panelSupervivienteEntero = new JPanel(new BorderLayout());
         crearSuperviviente = new JButton("CREAR SUPERVIVIENTES");
+        crearSuperviviente.setIcon( LectorImagenes.cargarImagenPersona());
         crearSuperviviente.addActionListener(e -> JDialogoCrearPersonaje());
         panelSupervivienteEntero.add(crearSuperviviente, BorderLayout.CENTER);
 
@@ -102,13 +102,14 @@ public class PanelPersonajePrueba extends JPanel{
     private void JDialogoCrearPersonaje(){
         // Obtener la ventana padre (JFrame o JDialog)
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        LectorSonido.reproducirClick();
 
         // Crear el JDialog
         JDialog dialogo = new JDialog(parentWindow, "Crear Personaje", Dialog.ModalityType.APPLICATION_MODAL);
         dialogo.setSize(400, 300);
         dialogo.setLocationRelativeTo(parentWindow);
         dialogo.setLayout(new BorderLayout(10, 10));
-        dialogo.setIconImage(LectorImagenes.cargarImagenPersona());
+        dialogo.setIconImage(((ImageIcon)LectorImagenes.cargarImagenPersona()).getImage());
         dialogo.setResizable(false);
 
         // Panel de contenido del diálogo
@@ -1892,6 +1893,7 @@ public class PanelPersonajePrueba extends JPanel{
     }
 
     private void Terminar(){
+        LectorSonido.reproducirClick();
         removeAll();
         setLayout(new BorderLayout());
         panelDeTexto.setText("");
@@ -1905,7 +1907,8 @@ public class PanelPersonajePrueba extends JPanel{
         repaint();
     }
 
-    private void Guardar(){
+    private void Guardar() {
+        LectorSonido.reproducirClick();
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialogo = new JDialog(parentWindow,"Guardar",Dialog.ModalityType.APPLICATION_MODAL);
 
@@ -1929,7 +1932,6 @@ public class PanelPersonajePrueba extends JPanel{
 
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e->{
-            IO.escribirJSON(new Juego(),"Prueba");
             try{
                 if(textField.getText().length()!=0){
                     IO.escribirJSON(juego,textField.getText());
@@ -1953,8 +1955,8 @@ public class PanelPersonajePrueba extends JPanel{
         dialogo.setVisible(true);
     }
 
-
     private void setReiniciar(){
+        LectorSonido.reproducirClick();
 
         // Botón para reiniciar el juego
         JButton reiniciar = new JButton("Reiniciar Juego");

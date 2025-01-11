@@ -30,6 +30,20 @@ public class Juego {
 
     }
 
+    public Juego(Tablero tablero) {
+        this.tablero = tablero;
+        this.supervivientes = new Superviviente[4];
+        this.supervivientes[0]= new Superviviente("Superviviente1");
+        this.supervivientes[1]= new Superviviente("Superviviente2");
+        this.supervivientes[2]= new Superviviente("Superviviente3");
+        this.supervivientes[3]= new Superviviente("Superviviente4");
+        this.zombies = new ArrayList<>();
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
+        this.zombies.add(generarZombie());
+        this.ataques = new Ataques();
+    }
+
     public Juego(Tablero tablero, Superviviente[] supervivientes, ArrayList<Zombie> zombies) {
         this.tablero = tablero;
         this.supervivientes = new Superviviente[supervivientes.length];
@@ -200,6 +214,5 @@ public class Juego {
         }
         return false;
     }
-
 
 }

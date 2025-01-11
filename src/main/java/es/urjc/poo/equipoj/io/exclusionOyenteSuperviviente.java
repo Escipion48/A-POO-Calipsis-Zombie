@@ -15,7 +15,7 @@ public class exclusionOyenteSuperviviente implements ExclusionStrategy {
     //javax.swing , es decir para que no tenga en cuenta el campo de superviviente donde tenemos el oyente
     @Override
     public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-        return fieldAttributes.getDeclaringClass().getName().startsWith("javax.swing");
+        return fieldAttributes.getName().equals("support");
     }
 
     @Override

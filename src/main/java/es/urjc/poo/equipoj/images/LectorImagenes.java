@@ -110,8 +110,8 @@ public class LectorImagenes {
         return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/pruebaIcono.gif");
     }
 
-    static public Image cargarImagenPersona(){
-        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/personaIcono.gif").getImage();
+    static public Icon cargarImagenPersona(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/personaIcono.gif");
     }
 
 }

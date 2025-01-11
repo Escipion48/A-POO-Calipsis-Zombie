@@ -1,51 +1,118 @@
 package es.urjc.poo.equipoj.ui;
 
-import es.urjc.poo.equipoj.entidades.Juego;
-import es.urjc.poo.equipoj.entidades.Posicion;
-import es.urjc.poo.equipoj.entidades.Superviviente;
-import es.urjc.poo.equipoj.entidades.Zombie;
+import es.urjc.poo.equipoj.entidades.*;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class TableroUI extends JPanel {
-    Juego juego;
-    JTextPane texto;
+    private Juego juego;
+    private JTextPane texto;
+    boolean prueba; //True si es una prueba, en tal caso preguntara por dimensiones, sino, crea el tablero directamente
 
-    public TableroUI(Juego juego, JTextPane texto) {
-        this.juego = juego;
+    public TableroUI(Juego juego, JTextPane texto, boolean prueba) {
         this.texto = texto;
 
+        if(prueba){
+            JDialogDimensiones();
+        }
+        else{
+            this.juego = juego;
+            juego.setTablero(new Tablero(new Posicion(10,10),new Posicion(9,9)));
+        }
+        setLayout(new BorderLayout(10,10));
         JPanel panelConCasillas = new JPanel();
-        panelConCasillas.setLayout(new GridLayout(10, 10, 2, 2));
+        panelConCasillas.setBorder(new EmptyBorder(10,10,10,10));
+        panelConCasillas.setLayout(new GridLayout(juego.getTablero().getDimensiones().getPosicionY(), juego.getTablero().getDimensiones().getPosicionX(), 2, 2));
         panelConCasillas.setBackground(Color.WHITE);
 
-        for(int i=0 ; i<juego.getTablero().getDimensiones().getPosicionX() ; i++){
+        for(int i=0 ; i<this.juego.getTablero().getDimensiones().getPosicionX() ; i++){
 
-            for(int j=0 ; j<juego.getTablero().getDimensiones().getPosicionY() ; j++){
+            for(int j=0 ; j<this.juego.getTablero().getDimensiones().getPosicionY() ; j++){
                 JButton casilla = new JButton(new celdaDePosicion(nombresUbicaciones(),i,j));
 
-                if(i==juego.getTablero().getObjetivo().getPosicionX()&&j==juego.getTablero().getObjetivo().getPosicionY()){
+                if(i==this.juego.getTablero().getObjetivo().getPosicionX()&&j==this.juego.getTablero().getObjetivo().getPosicionY()){
                     casilla.setBackground(Color.GREEN);
                 }
 
                 panelConCasillas.add(casilla);
             }
         }
-        add(panelConCasillas);
+        this.add(panelConCasillas, BorderLayout.CENTER);
     }
 
 
 
+    private void JDialogDimensiones(){
+
+        JDialog dialogoPrincipal = new JDialog(SwingUtilities.getWindowAncestor(this),"Tamaño",Dialog.ModalityType.APPLICATION_MODAL);
+        dialogoPrincipal.setSize(600,200);
+        dialogoPrincipal.setBackground(Color.WHITE);
+        dialogoPrincipal.setLocationRelativeTo(null);
+        dialogoPrincipal.setLayout(new BorderLayout(10,10));
+
+        JPanel panelJDialogDimensiones = new JPanel();
+        panelJDialogDimensiones.setBorder(new EmptyBorder(10,10,10,10));
+        panelJDialogDimensiones.setLayout(new GridLayout(3, 3, 10, 10));
+        panelJDialogDimensiones.setBackground(Color.WHITE);
+
+        JLabel l1 = new JLabel("Ingrese el tamaño del tablero:");
+        JLabel l2 = new JLabel("Ingrese el objetivo:");
+        panelJDialogDimensiones.add(l2);
+
+        JSpinner dimensionesX = new JSpinner(new SpinnerNumberModel(1,1,null,1));
+        JSpinner dimensionesY = new JSpinner(new SpinnerNumberModel(1,1,null,1));
+        JSpinner objetivoX = new JSpinner(new SpinnerNumberModel(1,1,null,1));
+        JSpinner objetivoY = new JSpinner(new SpinnerNumberModel(1,1,null,1));
+
+        JButton aceptarButton = new JButton("Aceptar");
+
+        panelJDialogDimensiones.add(l1);
+        panelJDialogDimensiones.add(dimensionesX);
+        panelJDialogDimensiones.add(dimensionesY);
+        panelJDialogDimensiones.add(l2);
+        panelJDialogDimensiones.add(objetivoX);
+        panelJDialogDimensiones.add(objetivoY);
+        //Jlabel vacio para ajustar el diseño
+        panelJDialogDimensiones.add(new JLabel());
+        panelJDialogDimensiones.add(new JLabel());
+        panelJDialogDimensiones.add(aceptarButton);
+
+
+        //Añadimos el panel al panel principal
+        dialogoPrincipal.add(panelJDialogDimensiones);
+
+        //Añadimos el listener de aceptar
+        aceptarButton.addActionListener(e -> {
+            int dimensionX = (int)dimensionesX.getValue();
+            int dimensionY = (int)dimensionesY.getValue();
+            int objetivox = (int)objetivoX.getValue();
+            int objetivoy = (int)objetivoY.getValue();
+            if(objetivox>dimensionX || objetivoy>dimensionY){
+                JOptionPane.showMessageDialog(this, "El objetivo está fuera del rango del tablero.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            else{
+                Posicion dimensiones = new Posicion(dimensionX,dimensionY);
+                Posicion objetivo = new Posicion(objetivox-1, objetivoy-1);
+                Tablero tablero = new Tablero(dimensiones,objetivo);
+                this.juego= new Juego(tablero);
+                dialogoPrincipal.dispose();
+            }
+        });
+    dialogoPrincipal.setVisible(true);
+    }
+
 
     private class celdaDePosicion extends AbstractAction {
 
-        celdaDePosicion(String texto, int x, int y) {
-            putValue(Action.NAME, texto);
+        celdaDePosicion(String nombre, int x, int y) {
+            putValue(Action.NAME, nombre);
             putValue(Action.SHORT_DESCRIPTION, "["+x+","+y+"]");
             putValue("x", x);
             putValue("y", y);
@@ -55,20 +122,26 @@ public class TableroUI extends JPanel {
         public void actionPerformed(ActionEvent e) {
             LectorSonido.reproducirClick();
 
-            StringBuilder informacionEnPosicion = new StringBuilder();
+            Posicion posicion = new Posicion((int)getValue("x"),(int)getValue("y"));
 
-            for(Superviviente superviviente : juego.getSupervivientes()) {
-                if(superviviente.getPosicion().equals(new Posicion((int)getValue("x"),(int)getValue("y"))));
-                informacionEnPosicion.append(superviviente.toString()+"\n");
-            }
-
-            for(Zombie zombie : juego.getZombies()) {
-                if(zombie.getPosicion().equals(new Posicion((int)getValue("x"),(int)getValue("y")))); {
-                    informacionEnPosicion.append(zombie.toString()+"\n");
+            StringBuilder stringBuilder = new StringBuilder();
+            for(Superviviente superviviente : juego.getSupervivientes()){
+                if(posicion.equals(superviviente.getPosicion())){
+                    stringBuilder.append(superviviente.getNombre()).append("\n");
                 }
             }
-
-            texto.setText(texto.getText()+informacionEnPosicion.toString());
+            for(Zombie z : juego.getZombies()){
+                if(posicion.equals(z.getPosicion())){
+                    stringBuilder.append(z).append("\n");
+                }
+            }
+            if(juego.getTablero().getCasilla(posicion).isExplorada()){
+                stringBuilder.append("Explorada\n");
+            }
+            else{
+                stringBuilder.append("No explorada\n");
+            }
+            texto.setText(texto.getText()+stringBuilder);
         }
     }
 

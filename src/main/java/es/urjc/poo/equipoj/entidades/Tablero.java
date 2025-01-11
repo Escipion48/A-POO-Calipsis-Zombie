@@ -14,8 +14,19 @@ public class Tablero {
         this.tablero = tablero;
     }
 
+    public Tablero(Posicion dimensiones, Posicion objetivo) {
+        this.dimensiones = dimensiones;
+        this.objetivo = objetivo;
+        this.tablero = new Casilla[dimensiones.getPosicionX()][dimensiones.getPosicionY()];
+        for(int i=0;i<this.dimensiones.getPosicionX();i++){
+            for(int j=0;j<this.dimensiones.getPosicionY();j++){
+                this.tablero[i][j] = new Casilla(new Posicion(i,j),false);
+            }
+        }
+    }
+
     public Tablero() {
-        this.dimensiones = new Posicion(9, 9);
+        this.dimensiones = new Posicion(10, 10);
         this.objetivo = new Posicion(9, 9);
         this.tablero = new Casilla[10][10];
         for (int i = 0; i < 10; i++) {
@@ -65,8 +76,8 @@ public class Tablero {
     public String toString() {
         StringBuilder builder = new StringBuilder("Tablero{ Dimensiones: "+getDimensiones().toString()+", Objetivo: "+getObjetivo().toString()+"}");
         builder.append("\nCasillas:\n");
-        for(int i = 0; i <= this.getDimensiones().posicionX; i++){
-            for(int j = 0; j <= this.getDimensiones().posicionY; j++){
+        for(int i = 0; i <= this.getDimensiones().posicionX-1; i++){
+            for(int j = 0; j <= this.getDimensiones().posicionY-1; j++){
                 builder.append(tablero[i][j].toString()+"\n");
             }
         }
