@@ -876,7 +876,7 @@ public class PanelPersonajePrueba extends JPanel{
                                 LectorSonido.reproducirClick();
                                 if(nombreTexto.getBackground() == Color.WHITE && alcanceTexto.getBackground() == Color.WHITE && potenciaTexto.getBackground() == Color.WHITE && valorExitoTexto.getBackground() == Color.WHITE && numeroDadosTexto.getBackground() == Color.WHITE ){
                                     for(int i = 0; i<5;i++){
-                                        if(superviviente.getArmaActiva(i)==null){
+                                        if(superviviente.getInventario(i)==null){
                                             superviviente.setInventario(new Arma(nombreTexto.getText(),Integer.parseInt(potenciaTexto.getText()),Integer.parseInt(alcanceTexto.getText()),Integer.parseInt(numeroDadosTexto.getText()),Integer.parseInt(valorExitoTexto.getText())),i);
                                             panelCrearArma.dispose();
                                             Window ventanaPadre = SwingUtilities.getWindowAncestor(panelCrearArma);
