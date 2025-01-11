@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
+import es.urjc.poo.equipoj.images.LectorImagenes;
 import es.urjc.poo.equipoj.io.*;
 
 import javax.swing.*;
@@ -25,14 +26,20 @@ public class EntradaGUI extends JFrame {//kk
     private void initUI() {
         //iniciar el panel de entrada
         panelInicio = new JPanel();
+        Dimension dimensionPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        panelInicio.setPreferredSize(dimensionPantalla);
+        panelInicio.setBounds(0, 0, dimensionPantalla.width, dimensionPantalla.height);
         panelInicio.setLayout(new GridLayout(3, 1,20,20));
         panelInicio.setBackground(Color.WHITE);
         panelInicio.setBorder(new EmptyBorder(20,20,20,20));
 
         //iniciar los botones del panel de entrada
         nuevoJuego = new JButton("Nuevo Juego");
+        nuevoJuego.setIcon(LectorImagenes.cargarIconoJuego());
         cargarJuego = new JButton("Cargar Juego");
+        cargarJuego.setIcon(LectorImagenes.cargarIconoCargar());
         pruebas = new JButton("Prueba");
+        pruebas.setIcon(LectorImagenes.cargarIconoprueba());
 
         //iniciar un panel de texto y poner el scrollbar
         JTextPane panelDeTexto = new JTextPane();

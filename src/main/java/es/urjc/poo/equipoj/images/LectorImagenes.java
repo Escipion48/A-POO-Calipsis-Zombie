@@ -6,7 +6,7 @@ import java.awt.*;
 public class LectorImagenes {
 
     static public Icon cargarIconoJuego(){
-        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/iconoJuego.gif");
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/favicon.ico");
     }
 
     static public Icon cargarIconoAtacar(){
