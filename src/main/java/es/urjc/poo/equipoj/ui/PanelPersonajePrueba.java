@@ -1178,6 +1178,7 @@ public class PanelPersonajePrueba extends JPanel{
 
         // Usar StringBuilder para construir el texto
         StringBuilder textoZombies = new StringBuilder();
+        System.out.println(juego.toString());
         for(Zombie z : juego.getZombies()){
             textoZombies.append(z.toString()).append("\n");
         }
