@@ -294,10 +294,11 @@ public class PanelPersonajePrueba extends JPanel{
                 JOptionPane.showMessageDialog(dialogo, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
             }else{
                 // Asignar los nombres a los supervivientes
-                juego.getSuperviviente(0).setNombre(nombre1);
-                juego.getSuperviviente(1).setNombre(nombre2);
-                juego.getSuperviviente(2).setNombre(nombre3);
-                juego.getSuperviviente(3).setNombre(nombre4);
+                juego.setSuperviviente(new Superviviente(nombre1),0);
+                juego.setSuperviviente(new Superviviente(nombre2),1);
+                juego.setSuperviviente(new Superviviente(nombre3),2);
+                juego.setSuperviviente(new Superviviente(nombre4),3);
+
                 // Actualizar la interfaz con los nuevos nombres
 
 
