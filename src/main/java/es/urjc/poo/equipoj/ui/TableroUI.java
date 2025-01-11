@@ -106,9 +106,10 @@ public class TableroUI extends JPanel {
                 //Asignamos al tablero el nuevo tablero y regeneramos los zombies
                 juegoParametro.setTablero(tablero);
                 juegoParametro.getZombies().clear();
-                juegoParametro.generarZombie();
-                juegoParametro.generarZombie();
-                juegoParametro.generarZombie();
+                juegoParametro.getZombies().add(juegoParametro.generarZombie());
+                juegoParametro.getZombies().add(juegoParametro.generarZombie());
+                juegoParametro.getZombies().add(juegoParametro.generarZombie());
+                System.out.println(juegoParametro.getZombies().size());
                 dialogoPrincipal.dispose();
             }
         });
