@@ -1,5 +1,7 @@
 package es.urjc.poo.equipoj.entidades;
 
+import javax.swing.event.SwingPropertyChangeSupport;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,6 +19,9 @@ public class Superviviente implements EntidadActivable{
     private ArrayList<Zombie> zombiesEliminados;
     private ArrayList <Zombie> ataquesRecibidos;
     private Posicion posicion;
+    //Oyente para cambios en valores de las variables de Superviviente, nos sirve para cambiar de
+    //color el fondo del superviviente al recibir heridas
+    private final SwingPropertyChangeSupport support;
 
     public Superviviente(String nombre, TipoEstado estado, Arma[] armasActivas, Equipo [] inventario, int contadorZombiesEliminados, int heridas, ArrayList<Zombie> zombiesEliminados, ArrayList<Zombie> ataquesRecibidos, int acciones, Posicion posicion) {
         this.acciones = acciones;
@@ -33,6 +38,7 @@ public class Superviviente implements EntidadActivable{
         this.zombiesEliminados.addAll(zombiesEliminados);
         this.ataquesRecibidos = new ArrayList<Zombie>();
         this.ataquesRecibidos.addAll(ataquesRecibidos);
+        this.support = new SwingPropertyChangeSupport(this);
     }
 
     public Superviviente(String nombre) {
@@ -709,6 +715,8 @@ public class Superviviente implements EntidadActivable{
         if(this.heridas>=2){
             this.setEstado(TipoEstado.ELIMINADO);
         }
+        //Lanza un firePropertyChange para avisar al oyente de que se ha cambiado la variable herida
+        support.firePropertyChange("heridas", null, this.heridas);
     }
 
     /**
@@ -819,4 +827,13 @@ public class Superviviente implements EntidadActivable{
         }
         return false;
         }
+
+    //Metodos para controlar el aumento de heridas, añadimos oyentes para el cambio de variables
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
+    }
 }

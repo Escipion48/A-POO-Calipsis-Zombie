@@ -905,22 +905,24 @@ public class PanelPersonajePrueba extends JPanel{
             JPanel panelSuperviviente = new JPanel();
             panelSuperviviente.setLayout(new GridLayout(7,1,10,10));
             panelSuperviviente.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+            panelSuperviviente.setBackground(Color.WHITE);
 
-            Color colorFondo;
-            if(superviviente.getHeridas()==2){
-                colorFondo = Color.RED;
-            }
-            else if(superviviente.getHeridas()==1){
-                colorFondo = Color.YELLOW;
-            }
-            else{
-                colorFondo = Color.WHITE;
-            }
+            //Añadimos el listener a superviviente que se encargara de cambiar de color de fondo segun sus heridas
+            superviviente.addPropertyChangeListener(evt -> {
+                Color colorFondo;
+                if(superviviente.getHeridas()==1){
+                    System.out.println("Amarillo");
+                    colorFondo = Color.YELLOW;
+                }
+                else{
+                    colorFondo = Color.WHITE;
+                }
+                System.out.println(superviviente.getHeridas());
+                panelSuperviviente.setBackground(colorFondo);
+                panelSuperviviente.repaint();
+                panelSupervivientes.repaint();
+            });
 
-
-
-            panelSuperviviente.setBackground(colorFondo);
-            panelSupervivientes.repaint();
             panelSuperviviente.add(new JLabel(superviviente.getNombre()));
             panelSuperviviente.add(new JButton(new verInventario("Inventario","Accede al inventario del personaje",LectorImagenes.cargarIconoVerInventario(),i)));
             panelSuperviviente.add(new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",LectorImagenes.cargarIconoVerArmasActivas(),i)));
