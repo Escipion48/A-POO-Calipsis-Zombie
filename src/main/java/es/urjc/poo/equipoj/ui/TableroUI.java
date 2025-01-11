@@ -15,20 +15,21 @@ public class TableroUI extends JPanel {
     private JTextPane texto;
     boolean prueba; //True si es una prueba, en tal caso preguntara por dimensiones, sino, crea el tablero directamente
 
-    public TableroUI(Juego juego, JTextPane texto, boolean prueba) {
+    public TableroUI(Juego juegoParametro, JTextPane texto, boolean prueba) {
         this.texto = texto;
+        this.juego = juegoParametro;
 
         if(prueba){
-            JDialogDimensiones();
+            JDialogDimensiones(juegoParametro);
         }
         else{
-            this.juego = juego;
-            juego.setTablero(new Tablero(new Posicion(10,10),new Posicion(9,9)));
+            this.juego = juegoParametro;
+            juegoParametro.setTablero(new Tablero(new Posicion(10,10),new Posicion(9,9)));
         }
         setLayout(new BorderLayout(10,10));
         JPanel panelConCasillas = new JPanel();
         panelConCasillas.setBorder(new EmptyBorder(10,10,10,10));
-        panelConCasillas.setLayout(new GridLayout(juego.getTablero().getDimensiones().getPosicionY(), juego.getTablero().getDimensiones().getPosicionX(), 2, 2));
+        panelConCasillas.setLayout(new GridLayout(this.juego.getTablero().getDimensiones().getPosicionY(), this.juego.getTablero().getDimensiones().getPosicionX(), 2, 2));
         panelConCasillas.setBackground(Color.WHITE);
 
         for(int i=0 ; i<this.juego.getTablero().getDimensiones().getPosicionX() ; i++){
@@ -48,7 +49,7 @@ public class TableroUI extends JPanel {
 
 
 
-    private void JDialogDimensiones(){
+    private void JDialogDimensiones(Juego juegoParametro){
 
         JDialog dialogoPrincipal = new JDialog(SwingUtilities.getWindowAncestor(this),"Tamaño",Dialog.ModalityType.APPLICATION_MODAL);
         dialogoPrincipal.setSize(600,200);
@@ -102,6 +103,7 @@ public class TableroUI extends JPanel {
                 Posicion objetivo = new Posicion(objetivox-1, objetivoy-1);
                 Tablero tablero = new Tablero(dimensiones,objetivo);
                 this.juego= new Juego(tablero);
+                juegoParametro.setTablero(tablero);
                 dialogoPrincipal.dispose();
             }
         });
