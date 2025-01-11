@@ -102,4 +102,12 @@ public class LectorImagenes {
         return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/fondoPantalla1.gif").getImage();
     }
 
+    static public Icon cargarIconoCargar(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/cargarIcono.gif");
+    }
+
+    static public Icon cargarIconoprueba(){
+        return new ImageIcon("src/main/java/es/urjc/poo/equipoj/images/pruebaIcono.gif");
+    }
+
 }

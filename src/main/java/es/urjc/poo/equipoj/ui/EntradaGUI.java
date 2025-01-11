@@ -53,8 +53,8 @@ public class EntradaGUI extends JFrame {//kk
         //accion del boton nuevoJuego
         nuevoJuego.addActionListener(e -> {
             juego=new Juego();
-            TableroDefault tableroDefault= new TableroDefault(panelDeTexto, juego);
-            ShowPanel(tableroDefault);
+            TableroDefaultTemp tableroDefaultTemp = new TableroDefaultTemp(panelDeTexto, juego);
+            ShowPanel(tableroDefaultTemp);
             PanelPersonaje panelPersonaje=new PanelPersonaje(panelDeTexto, juego);
             panelInicio.add(panelPersonaje);
         });
@@ -64,8 +64,8 @@ public class EntradaGUI extends JFrame {//kk
             JDialogCargar(ruta);
             IO io = new IO();
             juego = io.leerJSON(ruta.getText());
-            TableroDefault tableroDefault = new TableroDefault(panelDeTexto, juego);
-            ShowPanel(tableroDefault);
+            TableroDefaultTemp tableroDefaultTemp = new TableroDefaultTemp(panelDeTexto, juego);
+            ShowPanel(tableroDefaultTemp);
             PanelPersonajeCargado panelPersonajeCargado = new PanelPersonajeCargado(panelDeTexto, juego);
             panelInicio.add(panelPersonajeCargado);
         });
@@ -73,10 +73,11 @@ public class EntradaGUI extends JFrame {//kk
 
         // Acción para el boton de pruebas
         pruebas.addActionListener(e ->{
+
             juego=new Juego();
-            TableroPrueba tableroPrueba= new TableroPrueba(panelDeTexto, juego);
+            TableroPrueba tableroPrueba= new TableroPrueba(panelDeTexto,juego);
             ShowPanel(tableroPrueba);
-            Posicion posicionObjetivo = tableroPrueba.getPosicionObjetivo();
+            Posicion posicionObjetivo = juego.getTablero().getObjetivo();
             PanelPersonajePrueba panelPersonajePrueba=new PanelPersonajePrueba(panelDeTexto, juego,posicionObjetivo);
             panelInicio.add(panelPersonajePrueba);
         });

@@ -4,9 +4,8 @@ import es.urjc.poo.equipoj.entidades.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
-public class TableroDefault extends JPanel {
+public class TableroDefaultTemp extends JPanel {
     final Juego juego;
     private JPanel panelTableroDefault;
     private String celdaPulsado = "";
@@ -14,7 +13,7 @@ public class TableroDefault extends JPanel {
     private JButton ultimoBotonPresionado;// Último botón presionado
     private JButton objetivo;// Posicion a la que se quiere llegar
 
-    public TableroDefault(JTextPane panelDeTexto,Juego juego) {
+    public TableroDefaultTemp(JTextPane panelDeTexto, Juego juego) {
         this.juego = juego;
         this.panelDeTexto = panelDeTexto;
         initUI();

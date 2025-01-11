@@ -628,16 +628,13 @@ public class Superviviente implements EntidadActivable{
      */
     private int[] lanzarDados(Ataque ataque,Arma arma) {
 
-        int numeroDados = arma.getNumeroDados();
-        int[] ResultadosDeLosDados= new int[numeroDados];
         Random random = new Random();
-
-        for (int i = 0; i < numeroDados; i++) {
-            ataque.dados[i] = random.nextInt(6) + 1; //Como simula un dado debe tomar valores de 1 a 6
+        for (int i = 0; i < arma.getNumeroDados(); i++) {
+            ataque.setDado(i,random.nextInt(6) + 1); //Como simula un dado debe tomar valores de 1 a 6
+            System.out.println(ataque.getDado(i));
         }
 
-        ataque.setDados(ResultadosDeLosDados);
-        return ataque.dados;
+        return ataque.getDados();
     }
 
     /**
@@ -647,12 +644,18 @@ public class Superviviente implements EntidadActivable{
      * @return numero de exitos
      */
     private int evaluarExito(Arma arma,int[]dados) {
+        System.out.println("Evaluando exito");
+        for(int i=0;i<dados.length;i++){
+            System.out.println(dados[i]);
+        }
         int exitos=0;
         for(int i=0 ; i<dados.length ; i++){
             if(dados[i]>=arma.getValorExito()){
                 exitos++;
             }
         }
+        System.out.println(arma.toString());
+        System.out.println(exitos);
         return exitos;
     }
 

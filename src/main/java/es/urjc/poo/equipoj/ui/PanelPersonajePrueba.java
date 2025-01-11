@@ -2,7 +2,6 @@ package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
 import es.urjc.poo.equipoj.images.LectorImagenes;
-import es.urjc.poo.equipoj.images.PanelConFondo;
 import es.urjc.poo.equipoj.io.*;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
@@ -13,7 +12,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -722,11 +720,14 @@ public class PanelPersonajePrueba extends JPanel{
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                LectorSonido.reproducirClick();
                                 if(nombreTexto.getBackground() == Color.WHITE && alcanceTexto.getBackground() == Color.WHITE && potenciaTexto.getBackground() == Color.WHITE && valorExitoTexto.getBackground() == Color.WHITE && numeroDadosTexto.getBackground() == Color.WHITE ){
                                     for(int i = 0; i<5;i++){
                                         if(superviviente.getArmaActiva(i)==null){
                                             superviviente.setInventario(new Arma(nombreTexto.getText(),Integer.parseInt(potenciaTexto.getText()),Integer.parseInt(alcanceTexto.getText()),Integer.parseInt(numeroDadosTexto.getText()),Integer.parseInt(valorExitoTexto.getText())),i);
                                             panelCrearArma.dispose();
+                                            Window ventanaPadre = SwingUtilities.getWindowAncestor(panelCrearArma);
+                                            ventanaPadre.dispose();
                                             break;
                                         }
                                     }
@@ -739,6 +740,9 @@ public class PanelPersonajePrueba extends JPanel{
                         cancelar.addActionListener(new ActionListener(){
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                LectorSonido.reproducirClick();
+                                Window ventanaPadre = SwingUtilities.getWindowAncestor(panelCrearArma);
+                                ventanaPadre.dispose();
                                 panelCrearArma.dispose();
                             }
                         });
@@ -859,11 +863,14 @@ public class PanelPersonajePrueba extends JPanel{
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                LectorSonido.reproducirClick();
                                 for(int i = 0; i<5; i++){
                                     if(superviviente.getInventario(i)==null){
                                         int[] caducidad = {((Date) caducidadTexto.getValue()).getDate(), ((Date) caducidadTexto.getValue()).getMonth() + 1, ((Date) caducidadTexto.getValue()).getYear() + 1900};
                                         superviviente.setInventario(new Provision(nombreTexto.getText().trim(),(int) kcalTexto.getValue(), caducidad,((int)tipoTexto.getValue() == 1 ? true : false)),i);
                                         panelCrearProvision.dispose();
+                                        Window ventanaPadre = SwingUtilities.getWindowAncestor(panelCrearProvision);
+                                        ventanaPadre.dispose();
                                         break;
                                     }
                                 }
@@ -872,6 +879,9 @@ public class PanelPersonajePrueba extends JPanel{
                         cancelar.addActionListener(new ActionListener(){
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                LectorSonido.reproducirClick();
+                                Window ventanaPadre = SwingUtilities.getWindowAncestor(panelCrearProvision);
+                                ventanaPadre.dispose();
                                 panelCrearProvision.dispose();
                             }
                         });
@@ -906,6 +916,8 @@ public class PanelPersonajePrueba extends JPanel{
             else{
                 colorFondo = Color.WHITE;
             }
+
+
 
             panelSuperviviente.setBackground(colorFondo);
             panelSupervivientes.repaint();
@@ -1508,6 +1520,15 @@ public class PanelPersonajePrueba extends JPanel{
             try {
                 int x = Integer.parseInt(valorX);
                 int y = Integer.parseInt(valorY);
+                if(x<0||y<0){
+                    JOptionPane.showMessageDialog(dialogo, "Las coordenadas deben ser números válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if(x>juego.getTablero().getDimensiones().getPosicionX()||y>juego.getTablero().getDimensiones().getPosicionY()){
+                    JOptionPane.showMessageDialog(dialogo, "Las coordenadas deben ser números válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 Posicion posicionObjetivo = new Posicion(x, y);
 
@@ -1516,26 +1537,34 @@ public class PanelPersonajePrueba extends JPanel{
                     return;
                 } else{
 
+                    if(arma.getAlcance()==0){
+                        LectorSonido.reproducirAtaqueCercanoSonido();
+                    }
+                    else{
+                        LectorSonido.reproducirDisparoSonido();
+                    }
+
                     int n = arma.getNumeroDados();
                     int[] nd = new int[n];
                     Ataque ataque = new Ataque(nd, "");
 
                     ArrayList<EntidadActivable> entidades = new ArrayList<>(juego.getZombies());
                     ArrayList<Zombie> zombiesEliminados = superviviente.resolverAtaque(arma, posicionObjetivo, entidades, ataque);
+
                     //Guardar el ataque resultado
-                    StringBuilder stringBuilder = new StringBuilder("Se ha eliminado a \n");
-                    for (Zombie zombie1 : zombiesEliminados){
-                        stringBuilder.append(zombie1.toString()).append("\n");
-                        for(Superviviente superviviente1 : juego.getSupervivientes()){
-                            if(zombie1 instanceof Toxico && zombie1.getPosicion().equals(superviviente1.getPosicion())){
-                                superviviente1.recibirAtaque(zombie1);
-                                panelDeTexto.setText(panelDeTexto.getText()+"\n"+superviviente1.getNombre()+" ha sido salpicado por un zombie toxico");
+                    StringBuilder stringBuilder = new StringBuilder(" "+superviviente.getNombre()+ "  con el arma: "+arma.toString() + "  elimino:\n");
+                    for (Zombie zombieEliminado : zombiesEliminados){
+                        stringBuilder.append(zombieEliminado.toString()).append("\n");
+                        for(Superviviente supervivienteSalpicado : juego.getSupervivientes()){
+                            if(zombieEliminado instanceof Toxico && zombieEliminado.getPosicion().equals(supervivienteSalpicado.getPosicion())){
+                                supervivienteSalpicado.recibirAtaque(zombieEliminado);
+                                panelDeTexto.setText(panelDeTexto.getText()+"\n"+supervivienteSalpicado.getNombre()+" ha sido salpicado por un zombie toxico");
                             }
                         }
                     }
                     ataque.setResultado(stringBuilder.toString());
                     juego.getAtaques().setAtaque(ataque);
-                    panelDeTexto.setText(panelDeTexto.getText()+"\n"+stringBuilder);
+                    panelDeTexto.setText(panelDeTexto.getText()+"\n"+ataque.toString());
 
                     ArrayList<EntidadActivable> entidadesZombie = new ArrayList<>(zombiesEliminados);
                     superviviente.atacar(entidadesZombie);

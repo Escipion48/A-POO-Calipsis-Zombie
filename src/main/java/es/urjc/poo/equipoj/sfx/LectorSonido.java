@@ -174,4 +174,70 @@ public class LectorSonido {
         clip.setFramePosition(0);
         clip.start();
     }
+
+    public static void reproducirDisparoSonido(){
+        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/ataqueDisparosEfectoSonido.wav");
+
+        AudioInputStream sonido = null;
+        try {
+            sonido = AudioSystem.getAudioInputStream(ficheroClick);
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        try {
+            clip.open(sonido);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        clip.setFramePosition(0);
+        clip.start();
+    }
+
+    public static void reproducirAtaqueCercanoSonido(){
+        File ficheroClick = new File("src/main/java/es/urjc/poo/equipoj/sfx/ataqueCercanoEfectoSonido.wav");
+
+        AudioInputStream sonido = null;
+        try {
+            sonido = AudioSystem.getAudioInputStream(ficheroClick);
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        try {
+            clip.open(sonido);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        clip.setFramePosition(0);
+        clip.start();
+    }
 }
