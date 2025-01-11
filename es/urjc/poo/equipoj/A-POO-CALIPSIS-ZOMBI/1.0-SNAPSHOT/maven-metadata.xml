@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>es.urjc.poo.equipoj</groupId>
+  <artifactId>A-POO-CALIPSIS-ZOMBI</artifactId>
+  <versioning>
+    <lastUpdated>20250111155755</lastUpdated>
+    <snapshot>
+      <timestamp>20250111.155755</timestamp>
+      <buildNumber>6</buildNumber>
+    </snapshot>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.0-20250111.155755-6</value>
+        <updated>20250111155755</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.0-20250111.155755-6</value>
+        <updated>20250111155755</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>resources</classifier>
+        <extension>jar</extension>
+        <value>1.0-20250111.155755-6</value>
+        <updated>20250111155755</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+  <version>1.0-SNAPSHOT</version>
+</metadata>
