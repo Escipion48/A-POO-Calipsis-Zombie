@@ -62,8 +62,7 @@ public class EntradaGUI extends JFrame {//kk
         //accion del boton cargarJuego
         cargarJuego.addActionListener(e -> {
             JDialogCargar(ruta);
-            IO io = new IO();
-            juego = io.leerJSON(ruta.getText());
+            juego = IO.leerJSON(ruta.getText());
             TableroDefaultTemp tableroDefaultTemp = new TableroDefaultTemp(panelDeTexto, juego);
             ShowPanel(tableroDefaultTemp);
             PanelPersonajeCargado panelPersonajeCargado = new PanelPersonajeCargado(panelDeTexto, juego);
@@ -126,9 +125,8 @@ public class EntradaGUI extends JFrame {//kk
         this.ruta = ruta;
         aceptar.addActionListener(e->{
             try{
-                if(finalRuta.getText()!=null){
-                    IO io = new IO();
-                    io.leerJSON(finalRuta.getText());
+                if(finalRuta.getText().length()!=0){
+                    IO.leerJSON(finalRuta.getText());
                     JOptionPane.showMessageDialog(this,"Se ha cargado correctamente","Partida Cargada",JOptionPane.INFORMATION_MESSAGE);
                     dialogo.dispose();
                 }

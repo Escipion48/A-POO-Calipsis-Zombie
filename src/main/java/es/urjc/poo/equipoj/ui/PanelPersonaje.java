@@ -1191,8 +1191,7 @@ public class PanelPersonaje extends JPanel{
         aceptar.addActionListener(e->{
             try{
                 if(textField.getText()!=null){
-                    IO io = new IO();
-                    io.escribirJSON(juego,textField.getText());
+                    IO.escribirJSON(juego,textField.getText());
                     JOptionPane.showMessageDialog(this,"Se ha guardado correctamente","Partida Guardada",JOptionPane.INFORMATION_MESSAGE);
                     dialogo.dispose();
                 }

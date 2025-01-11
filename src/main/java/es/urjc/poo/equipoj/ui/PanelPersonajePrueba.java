@@ -2,6 +2,7 @@ package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
 import es.urjc.poo.equipoj.images.LectorImagenes;
+import es.urjc.poo.equipoj.images.PanelConFondo;
 import es.urjc.poo.equipoj.io.*;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
@@ -107,6 +108,8 @@ public class PanelPersonajePrueba extends JPanel{
         dialogo.setSize(400, 300);
         dialogo.setLocationRelativeTo(parentWindow);
         dialogo.setLayout(new BorderLayout(10, 10));
+        dialogo.setIconImage(LectorImagenes.cargarImagenPersona());
+        dialogo.setResizable(false);
 
         // Panel de contenido del diálogo
         JPanel panelContenido = new JPanel(new GridLayout(5, 2, 10, 10));
@@ -120,6 +123,154 @@ public class PanelPersonajePrueba extends JPanel{
         JTextField c3 = new JTextField();
         JLabel l4 = new JLabel("Nombre del personaje 4:");
         JTextField c4 = new JTextField();
+
+        c1.setBackground(Color.RED);
+        c2.setBackground(Color.RED);
+        c3.setBackground(Color.RED);
+        c4.setBackground(Color.RED);
+
+        //Añadimos los listeners en los campos de texto para ponerlos en rojo en caso de que el nombre
+        //no sea valido, es decir, cuando el campo esta vacio
+        c1.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String texto = c1.getText().trim();
+                if(texto.length()==0){
+                    c1.setBackground(Color.RED);
+                }
+                else{
+                    c1.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String texto = c1.getText().trim();
+                if(texto.length()==0){
+                    c1.setBackground(Color.RED);
+                }
+                else{
+                    c1.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String texto = c1.getText().trim();
+                if(texto.length()==0){
+                    c1.setBackground(Color.RED);
+                }
+                else{
+                    c1.setBackground(Color.WHITE);
+                }
+            }
+        });
+        c2.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String texto = c2.getText().trim();
+                if(texto.length()==0){
+                    c2.setBackground(Color.RED);
+                }
+                else{
+                    c2.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String texto = c2.getText().trim();
+                if(texto.length()==0){
+                    c2.setBackground(Color.RED);
+                }
+                else{
+                    c2.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String texto = c2.getText().trim();
+                if(texto.length()==0){
+                    c2.setBackground(Color.RED);
+                }
+                else{
+                    c2.setBackground(Color.WHITE);
+                }
+            }
+        });
+        c3.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String texto = c3.getText().trim();
+                if(texto.length()==0){
+                    c3.setBackground(Color.RED);
+                }
+                else{
+                    c3.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String texto = c3.getText().trim();
+                if(texto.length()==0){
+                    c3.setBackground(Color.RED);
+                }
+                else{
+                    c3.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String texto = c3.getText().trim();
+                if(texto.length()==0){
+                    c3.setBackground(Color.RED);
+                }
+                else{
+                    c3.setBackground(Color.WHITE);
+                }
+            }
+        });
+        c4.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String texto = c4.getText().trim();
+                if(texto.length()==0){
+                    c4.setBackground(Color.RED);
+                }
+                else{
+                    c4.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String texto = c4.getText().trim();
+                if(texto.length()==0){
+                    c4.setBackground(Color.RED);
+                }
+                else{
+                    c4.setBackground(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String texto = c4.getText().trim();
+                if(texto.length()==0){
+                    c4.setBackground(Color.RED);
+                }
+                else{
+                    c4.setBackground(Color.WHITE);
+                }
+            }
+        });
 
         panelContenido.add(l1);
         panelContenido.add(c1);
@@ -1778,10 +1929,10 @@ public class PanelPersonajePrueba extends JPanel{
 
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e->{
+            IO.escribirJSON(new Juego(),"Prueba");
             try{
-                if(textField.getText()!=null){
-                    IO io = new IO();
-                    io.escribirJSON(juego,textField.getText());
+                if(textField.getText().length()!=0){
+                    IO.escribirJSON(juego,textField.getText());
                     JOptionPane.showMessageDialog(this,"Se ha guardado correctamente","Partida Guardada",JOptionPane.INFORMATION_MESSAGE);
                     dialogo.dispose();
                 }
