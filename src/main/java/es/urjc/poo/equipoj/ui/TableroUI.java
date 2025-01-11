@@ -103,7 +103,12 @@ public class TableroUI extends JPanel {
                 Posicion objetivo = new Posicion(objetivox-1, objetivoy-1);
                 Tablero tablero = new Tablero(dimensiones,objetivo);
                 this.juego= new Juego(tablero);
+                //Asignamos al tablero el nuevo tablero y regeneramos los zombies
                 juegoParametro.setTablero(tablero);
+                juegoParametro.getZombies().clear();
+                juegoParametro.generarZombie();
+                juegoParametro.generarZombie();
+                juegoParametro.generarZombie();
                 dialogoPrincipal.dispose();
             }
         });

@@ -128,13 +128,13 @@ public class Juego {
     }
 
     /**
-     * Este metodo privado se utilizará en el juego para generar Zombies aleatorios en posiciones aleatorias del juego.
+     * Este metodo publico se utilizará en el juego para generar Zombies aleatorios en posiciones aleatorias del juego.
      * @return Un zombie cualquiera según las probabilidades indicadas dentro del metodo.
      */
-    private Zombie generarZombie(){
+    public Zombie generarZombie(){
         Random random = new Random();
         //Generamos una posicion aleatoria con las dimensiones del tablero como valores máximos posibles.
-        Posicion posicionAleatoria = new Posicion(random.nextInt(this.getTablero().getDimensiones().getPosicionX())+1,random.nextInt(this.getTablero().getDimensiones().getPosicionY())+1);
+        Posicion posicionAleatoria = new Posicion(random.nextInt(this.getTablero().getDimensiones().getPosicionX()),random.nextInt(this.getTablero().getDimensiones().getPosicionY()));
 
         try{
             Thread.sleep(1);
