@@ -2,116 +2,47 @@ package es.urjc.poo.equipoj.images;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class LectorImagenes {
 
-    static public Icon cargarIconoJuego(){
-        return new ImageIcon("src/main/resources/images/iconoJuego.png");
-    }
+    static public  String ICONO_CARGAR = "/images/cargarIcono.gif";
+    static public  String ICONO_PRUEBA = "/images/pruebaIcono.gif";
 
-    static public Icon cargarIconoAtacar(){
-        return new ImageIcon("src/main/resources/images/atacarIcono.gif");
-    }
-
-    static public Icon cargarIconoNoHacerNada(){
-        return new ImageIcon("src/main/resources/images/noHacerNadaIcono.gif");
-    }
-
-    static public Icon cargarIconoEliminarEquipo(){
-        return new ImageIcon("src/main/resources/images/eliminarEquipoIcono.gif");
-    }
+    static public String ICONO_JUEGO = "/images/iconoJuego.png";
+    static public String ICONO_ATACAR = "/images/atacarIcono.gif";
+    static public String ICONO_NOHACERNADA = "/images/noHacerNadaIcono.gif";
+    static public String ICONO_ELIMINAR_EQUIPO = "/images/eliminarEquipoIcono.gif";
 
     //Prueba con un gif en movimiento, sorprendentemente funciona, cambiar si se quiere habilitar un icono para cambiar en movimiento
-    static public Icon cargarIconoCambiarArmaAnimado(){
-        return new ImageIcon("src/main/resources/images/cambiarArmaAnimadaIcono.gif");
+    static public String ICONO_CAMBIAR_ARMA_ANIMADA = "/images/cambiarArmaAnimadaIcono.gif";
+    static public String ICONO_CAMBIAR_ARMA = "/images/cambiarArmaIcono.gif";
+    static public String ICONO_BUSCAR = "/images/buscarIcono.gif";
+    static public String ICONO_MOVERSE = "/images/moverseIcono.gif";
+    static public String ICONO_VICTORIA = "/images/victoriaIcono.gif";
+    static public String ICONO_POSICION = "/images/posicionIcono.gif";
+    static public String ICONO_ATAQUES_RECIBIDOS = "/images/ataquesRecibidosIcono.gif";
+    static public String ICONO_ZOMBIES_ELIMINADOS = "/images/zombiesEliminadosIcono.gif";
+    static public String ICONO_VER_ARMAS_ACTIVAS = "/images/verArmasActivasIcon.gif";
+    static public String ICONO_VER_INVENTARIO = "/images/verInventarioIcon.gif";
+    static public String ICONO_CREAR = "/images/crearIcono.gif";
+    static public String ICONO_ARRIBA_IZQUIERDA = "/images/arribaIzquierdaIcono.gif";
+    static public String ICONO_ARRIBA = "/images/arribaIcono.gif";
+    static public String ICONO_ARRIBA_DERECHA ="/images/arribaDerechaIcono.gif";
+    static public String ICONO_IZQUIERDA = "/images/izquierdaIcono.gif";
+    static public String ICONO_DERECHA = "/images/derechaIcono.gif";
+    static public String ICONO_ABAJO_IZQUIERDA = "/images/abajoIzquierdaIcono.gif";
+    static public String ICONO_ABAJO = "/images/abajoIcono.gif";
+    static public String ICONO_ABAJO_DERECHA = "/images/abajoDerechaIcono.gif";
+    static public  String ICONO_PERSONA= "/images/personaIcono.gif";
+
+    public Image cargarImagenFondo1(){
+        return new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/fondoPantalla1.gif")).toString()).getImage();
     }
 
-    static public Icon cargarIconoCambiarArma(){
-        return new ImageIcon("src/main/resources/images/cambiarArmaIcono.gif");
+    public Icon CargarIcono(String icono) {
+        return new ImageIcon(Objects.requireNonNull(this.getClass().getResource(icono)));
     }
 
-    static public Icon cargarIconoBuscar(){
-        return new ImageIcon("src/main/resources/images/buscarIcono.gif");
-    }
-
-    static public Icon cargarMoverse(){
-        return new ImageIcon("src/main/resources/images/moverseIcono.gif");
-    }
-
-    static public Icon cargarIconoVictoria(){
-        return new ImageIcon("src/main/resources/images/victoriaIcono.gif");
-    }
-
-    static public Icon cargarIconoPosicion(){
-        return new ImageIcon("src/main/resources/images/posicionIcono.gif");
-    }
-
-    static public Icon cargarIconoAtaquesRecibidos(){
-        return new ImageIcon("src/main/resources/images/ataquesRecibidosIcono.gif");
-    }
-
-    static public Icon cargarIconoZombiesEliminados(){
-        return new ImageIcon("src/main/resources/images/zombiesEliminadosIcono.gif");
-    }
-
-    static public Icon cargarIconoVerArmasActivas(){
-        return new ImageIcon("src/main/resources/images/verArmasActivasIcon.gif");
-    }
-
-    static public Icon cargarIconoVerInventario(){
-        return new ImageIcon("src/main/resources/images/verInventarioIcon.gif");
-    }
-
-    static public Icon cargarIconoCrear(){
-        return new ImageIcon("src/main/resources/images/crearIcono.gif");
-    }
-
-    static public Icon cargarIconoArribaIzquierda(){
-        return new ImageIcon("ssrc/main/resources/images/arribaIzquierdaIcono.gif");
-    }
-
-    static public Icon cargarIconoArriba(){
-        return new ImageIcon("src/main/resources/images/arribaIcono.gif");
-    }
-
-    static public Icon cargarIconoArribaDerecha(){
-        return new ImageIcon("src/main/resources/images/arribaDerechaIcono.gif");
-    }
-
-    static public Icon cargarIconoIzquierda(){
-        return new ImageIcon("src/main/resources/images/izquierdaIcono.gif");
-    }
-
-    static public Icon cargarIconoDerecha(){
-        return new ImageIcon("src/main/resources/images/derechaIcono.gif");
-    }
-
-    static public Icon cargarIconoAbajoIzquierda(){
-        return new ImageIcon("src/main/resources/images/abajoIzquierdaIcono.gif");
-    }
-
-    static public Icon cargarIconoAbajo(){
-        return new ImageIcon("src/main/resources/images/abajoIcono.gif");
-    }
-
-    static public Icon cargarIconoAbajoDerecha(){
-        return new ImageIcon("src/main/resources/images/abajoDerechaIcono.gif");
-    }
-
-    static public Image cargarImagenFondo1(){
-        return new ImageIcon("src/main/resources/images/fondoPantalla1.gif").getImage();
-    }
-
-    static public Icon cargarIconoCargar(){
-        return new ImageIcon("src/main/resources/images/cargarIcono.gif");
-    }
-
-    static public Icon cargarIconoprueba(){
-        return new ImageIcon("src/main/resources/images/pruebaIcono.gif");
-    }
-
-    static public Icon cargarImagenPersona(){
-        return new ImageIcon("src/main/resources/images/personaIcono.gif");
-    }
 
 }

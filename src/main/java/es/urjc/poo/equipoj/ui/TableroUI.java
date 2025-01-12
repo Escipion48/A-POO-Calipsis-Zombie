@@ -1,6 +1,7 @@
 package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
+import es.urjc.poo.equipoj.images.LectorImagenes;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
 import javax.swing.*;
@@ -40,11 +41,13 @@ public class TableroUI extends JPanel {
                 if(i==this.juego.getTablero().getObjetivo().getPosicionX()&&j==this.juego.getTablero().getObjetivo().getPosicionY()){
                     casilla.setBackground(Color.GREEN);
                 }
-
                 panelConCasillas.add(casilla);
             }
         }
         this.add(panelConCasillas, BorderLayout.CENTER);
+
+//        JButton test = (JButton) panelConCasillas.getComponent(7);
+//        test.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_PRUEBA));
     }
 
 
@@ -102,14 +105,15 @@ public class TableroUI extends JPanel {
                 Posicion dimensiones = new Posicion(dimensionX,dimensionY);
                 Posicion objetivo = new Posicion(objetivox-1, objetivoy-1);
                 Tablero tablero = new Tablero(dimensiones,objetivo);
-                this.juego= new Juego(tablero);
+
                 //Asignamos al tablero el nuevo tablero y regeneramos los zombies
                 juegoParametro.setTablero(tablero);
                 juegoParametro.getZombies().clear();
                 juegoParametro.getZombies().add(juegoParametro.generarZombie());
                 juegoParametro.getZombies().add(juegoParametro.generarZombie());
                 juegoParametro.getZombies().add(juegoParametro.generarZombie());
-                System.out.println(juegoParametro.getZombies().size());
+                this.juego=juegoParametro;
+
                 dialogoPrincipal.dispose();
             }
         });

@@ -2,7 +2,6 @@ package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
 import es.urjc.poo.equipoj.images.LectorImagenes;
-import es.urjc.poo.equipoj.images.PanelConFondo;
 import es.urjc.poo.equipoj.io.*;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
@@ -43,7 +42,7 @@ public class PanelPersonajePrueba extends JPanel{
         // Panel de personajes
         panelSupervivienteEntero = new JPanel(new BorderLayout());
         crearSuperviviente = new JButton("CREAR SUPERVIVIENTES");
-        crearSuperviviente.setIcon( LectorImagenes.cargarImagenPersona());
+        crearSuperviviente.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_PERSONA));
         crearSuperviviente.addActionListener(e -> JDialogoCrearPersonaje());
         panelSupervivienteEntero.add(crearSuperviviente, BorderLayout.CENTER);
 
@@ -109,7 +108,7 @@ public class PanelPersonajePrueba extends JPanel{
         dialogo.setSize(400, 300);
         dialogo.setLocationRelativeTo(parentWindow);
         dialogo.setLayout(new BorderLayout(10, 10));
-        dialogo.setIconImage(((ImageIcon)LectorImagenes.cargarImagenPersona()).getImage());
+        dialogo.setIconImage(((ImageIcon)new LectorImagenes().CargarIcono(LectorImagenes.ICONO_PERSONA)).getImage());
         dialogo.setResizable(false);
 
         // Panel de contenido del diálogo
@@ -1077,12 +1076,12 @@ public class PanelPersonajePrueba extends JPanel{
             });
 
             panelSuperviviente.add(new JLabel(superviviente.getNombre()));
-            panelSuperviviente.add(new JButton(new verInventario("Inventario","Accede al inventario del personaje",LectorImagenes.cargarIconoVerInventario(),i)));
-            panelSuperviviente.add(new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",LectorImagenes.cargarIconoVerArmasActivas(),i)));
-            panelSuperviviente.add(new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida",LectorImagenes.cargarIconoZombiesEliminados(),i)));
-            panelSuperviviente.add(new JButton(new mostrarAtaqueZombies("Ataques Recibidos","Muestra los zombies que te han mordido, ten cuidado, las vidas son muy escasas",LectorImagenes.cargarIconoAtaquesRecibidos(),i)));
-            panelSuperviviente.add(new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", LectorImagenes.cargarIconoPosicion(),i)));
-            panelSuperviviente.add(new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje",LectorImagenes.cargarIconoCrear(), i)));
+            panelSuperviviente.add(new JButton(new verInventario("Inventario","Accede al inventario del personaje",new LectorImagenes().CargarIcono(LectorImagenes.ICONO_VER_INVENTARIO),i)));
+            panelSuperviviente.add(new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",new LectorImagenes().CargarIcono(LectorImagenes.ICONO_VER_ARMAS_ACTIVAS),i)));
+            panelSuperviviente.add(new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ZOMBIES_ELIMINADOS),i)));
+            panelSuperviviente.add(new JButton(new mostrarAtaqueZombies("Ataques Recibidos","Muestra los zombies que te han mordido, ten cuidado, las vidas son muy escasas", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ATAQUES_RECIBIDOS),i)));
+            panelSuperviviente.add(new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_POSICION),i)));
+            panelSuperviviente.add(new JButton(new crearEquipo("Crear","Crea un arma o una provisión que se añadira al inventario del personaje", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_CREAR), i)));
             panelSupervivientes.add(panelSuperviviente);
         }
 
@@ -1258,12 +1257,12 @@ public class PanelPersonajePrueba extends JPanel{
                 }
 
                 //Crear los Botones que contienen las acciones de los supervivientes
-                JButton noHacerNada = new JButton(new AccionesSuperviviente("No hacer nada","El superviviente descansará hasta el proximo turno",LectorImagenes.cargarIconoNoHacerNada()));
-                JButton atacar = new JButton(new AccionesSuperviviente("Atacar","El superviviente atacará con una de sus armas activas, necesitará antes tener por lo menos un arma activada",LectorImagenes.cargarIconoAtacar()));
-                JButton eliminarEquipoDelInventerio = new JButton(new AccionesSuperviviente("Eliminar equipo del inventario", "Elimina un elemento de tu inventario, ojo, no lo podrás recuperar",LectorImagenes.cargarIconoEliminarEquipo()));
-                JButton cambiarArmaActiva = new JButton(new AccionesSuperviviente("Cambiar arma Activa", "Elige un arma para activarte, si tienes ya dos armas activas tendrás que seleccionar una para cambiarla por la nueva", LectorImagenes.cargarIconoCambiarArma()));
-                JButton buscar = new JButton(new AccionesSuperviviente("Buscar equipo", "Busca equipo en la casilla en la que te encuentra, si ya esta buscada no podrás buscar y cuanto mas vacio este tu inventario, mas probable será encontrar algo.", LectorImagenes.cargarIconoBuscar()));
-                JButton moverse = new JButton(new AccionesSuperviviente("Moverse","Muevete a una casilla adyacente, te costará una acción extra por cada zombie que este en tu misma casilla", LectorImagenes.cargarMoverse()));
+                JButton noHacerNada = new JButton(new AccionesSuperviviente("No hacer nada","El superviviente descansará hasta el proximo turno", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_NOHACERNADA)));
+                JButton atacar = new JButton(new AccionesSuperviviente("Atacar","El superviviente atacará con una de sus armas activas, necesitará antes tener por lo menos un arma activada", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ATACAR)));
+                JButton eliminarEquipoDelInventerio = new JButton(new AccionesSuperviviente("Eliminar equipo del inventario", "Elimina un elemento de tu inventario, ojo, no lo podrás recuperar", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ELIMINAR_EQUIPO)));
+                JButton cambiarArmaActiva = new JButton(new AccionesSuperviviente("Cambiar arma Activa", "Elige un arma para activarte, si tienes ya dos armas activas tendrás que seleccionar una para cambiarla por la nueva", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_CAMBIAR_ARMA)));
+                JButton buscar = new JButton(new AccionesSuperviviente("Buscar equipo", "Busca equipo en la casilla en la que te encuentra, si ya esta buscada no podrás buscar y cuanto mas vacio este tu inventario, mas probable será encontrar algo.", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_BUSCAR)));
+                JButton moverse = new JButton(new AccionesSuperviviente("Moverse","Muevete a una casilla adyacente, te costará una acción extra por cada zombie que este en tu misma casilla", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_MOVERSE)));
 
 
 
@@ -1298,7 +1297,7 @@ public class PanelPersonajePrueba extends JPanel{
                     panelDeTexto.setText("");
                     JPanel terminar = new JPanel();
                     terminar.setLayout(new GridLayout());
-                    JLabel mensajeVictoria = new JLabel("Victoria",LectorImagenes.cargarIconoVictoria(),SwingConstants.CENTER);
+                    JLabel mensajeVictoria = new JLabel("Victoria", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_VICTORIA), SwingConstants.CENTER);
                     mensajeVictoria.setFont(new Font("Arial", Font.BOLD, 50));
                     terminar.add(mensajeVictoria);
                     add(terminar, BorderLayout.CENTER);
@@ -1519,20 +1518,20 @@ public class PanelPersonajePrueba extends JPanel{
         }
 
         JDialog dialogo = new JDialog(parentWindow, "Moverse", Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setIconImage(((ImageIcon)LectorImagenes.cargarMoverse()).getImage());
+        dialogo.setIconImage(((ImageIcon) new LectorImagenes().CargarIcono(LectorImagenes.ICONO_MOVERSE)).getImage());
         dialogo.setSize(400, 300);
         dialogo.setLayout(new GridLayout(3, 3,10,10));
         dialogo.setLocationRelativeTo(this);
 
         //Botones de Direccion
-        JButton arribaIzquierda = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoArribaIzquierda(),-1,-1,zombies));
-        JButton arriba = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoArriba(),0,-1,zombies));
-        JButton arribaDerecha = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoArribaDerecha(),1,-1,zombies));
-        JButton izquierda = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoIzquierda(),-1,0,zombies));
-        JButton derecha = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoDerecha(),1,0,zombies));
-        JButton abajoIzquierda = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoAbajoIzquierda(),-1,1,zombies));
-        JButton abajo = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoAbajo(),0,1,zombies));
-        JButton abajoDerecha = new JButton(new elegirDireccion(dialogo,LectorImagenes.cargarIconoAbajoDerecha(),1,1,zombies));
+        JButton arribaIzquierda = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ARRIBA_IZQUIERDA),-1,-1,zombies));
+        JButton arriba = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ARRIBA),0,-1,zombies));
+        JButton arribaDerecha = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ARRIBA_DERECHA),1,-1,zombies));
+        JButton izquierda = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_IZQUIERDA),-1,0,zombies));
+        JButton derecha = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_DERECHA),1,0,zombies));
+        JButton abajoIzquierda = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ABAJO_IZQUIERDA),-1,1,zombies));
+        JButton abajo = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ABAJO),0,1,zombies));
+        JButton abajoDerecha = new JButton(new elegirDireccion(dialogo, new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ABAJO_DERECHA),1,1,zombies));
 
         if(superviviente.getPosicion().getPosicionX()==0){
             arribaIzquierda.setEnabled(false);

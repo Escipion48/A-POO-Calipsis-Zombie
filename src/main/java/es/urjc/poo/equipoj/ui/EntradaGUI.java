@@ -32,11 +32,12 @@ public class EntradaGUI extends JFrame {//kk
 
         //iniciar los botones del panel de entrada
         nuevoJuego = new JButton("Nuevo Juego");
-        nuevoJuego.setIcon(LectorImagenes.cargarIconoJuego());
+        nuevoJuego.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_JUEGO));
         cargarJuego = new JButton("Cargar Juego");
-        cargarJuego.setIcon(LectorImagenes.cargarIconoCargar());
+        cargarJuego.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_CARGAR));
         pruebas = new JButton("Prueba");
-        pruebas.setIcon(LectorImagenes.cargarIconoprueba());
+        pruebas.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_PRUEBA));
+
 
         //iniciar un panel de texto y poner el scrollbar
         JTextPane panelDeTexto = new JTextPane();

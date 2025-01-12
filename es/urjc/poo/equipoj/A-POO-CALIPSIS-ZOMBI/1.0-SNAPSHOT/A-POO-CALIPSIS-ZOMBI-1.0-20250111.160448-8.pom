@@ -28,14 +28,13 @@
     </dependency>
   </dependencies>
 
-
   <build>
     <plugins>
-      <!-- Maven Jar Plugin para empaquetar el JAR
+      <!-- Maven Jar Plugin para empaquetar el JAR principal -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -44,53 +43,29 @@
             </goals>
             <configuration>
               <archive>
+                <!-- Incluir todas las clases y recursos en el JAR principal -->
                 <manifestEntries>
-                  <Main-Class>es.urjc.poo.equipoj.App</Main-Class>
+                  <Main-Class>es.urjc.poo.equipoj.App</Main-Class> <!-- Nombre de la clase principal de tu aplicación -->
                 </manifestEntries>
               </archive>
             </configuration>
           </execution>
         </executions>
-      </plugin> -->
-
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest><!-- Seespecifica el directorio de la clase principal Main -->
-              <mainClass>es.urjc.poo.equipoj.App</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <!-- this is used for inheritance merges -->
-            <phase>package</phase>
-            <!-- bind to the packaging phase -->
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
-      <!-- Maven Resources Plugin para copiar recursos -->
+      <!-- Maven Resources Plugin para copiar los recursos al JAR principal -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.2.0</version>
         <executions>
           <execution>
-            <phase>process-resources</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
             <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
               <resources>
                 <resource>
                   <directory>src/main/resources</directory>
@@ -99,14 +74,46 @@
                   </includes>
                 </resource>
               </resources>
-              <outputDirectory>${project.build.outputDirectory}/resources</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Si necesitas empaquetar recursos en otro JAR separado con un classifier -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <classifier>resources</classifier> <!-- Este classifier asegura que los recursos no reemplacen el JAR principal -->
+              <archive>
+                <manifestEntries>
+                  <Main-Class>es.urjc.poo.equipoj.App</Main-Class>
+                </manifestEntries>
+              </archive>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
-  </build>
 
+    <!-- Incluir tus imágenes y sonidos -->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/images/**</include>
+          <include>**/sfx/**</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
 
   <distributionManagement>
     <repository>
