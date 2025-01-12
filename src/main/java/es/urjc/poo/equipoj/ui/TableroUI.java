@@ -1,14 +1,12 @@
 package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
-import es.urjc.poo.equipoj.images.LectorImagenes;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class TableroUI extends JPanel {
@@ -132,7 +130,7 @@ public class TableroUI extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            LectorSonido.reproducirClick();
+            new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
             Posicion posicion = new Posicion((int)getValue("x"),(int)getValue("y"));
 

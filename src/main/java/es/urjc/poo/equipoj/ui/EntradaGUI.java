@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class EntradaGUI extends JFrame {//kk
+public class EntradaGUI extends JFrame {
     Juego juego;
     private JPanel panelInicio;
     private JButton nuevoJuego;
@@ -16,7 +16,6 @@ public class EntradaGUI extends JFrame {//kk
     private JButton pruebas;
     private JScrollPane jScrollPane;
     private JTextField ruta;
-
 
 
     public EntradaGUI() {
@@ -52,41 +51,33 @@ public class EntradaGUI extends JFrame {//kk
         panelInicio.add(cargarJuego);
         panelInicio.add(pruebas);
 
-
         setContentPane(panelInicio);
 
         //accion del boton nuevoJuego
         nuevoJuego.addActionListener(e -> {
-            juego=new Juego();
-            TableroUI tablero = new TableroUI(juego,panelDeTexto,false);
-            ShowPanel(tablero);
-            PanelPersonaje panelPersonaje=new PanelPersonaje(panelDeTexto, juego);
-            panelInicio.add(panelPersonaje);
+            Jugar(new Juego(), panelDeTexto, false, false);
         });
 
         //accion del boton cargarJuego
         cargarJuego.addActionListener(e -> {
             JDialogCargar(ruta);
-            juego = IO.leerJSON(ruta.getText());
-            TableroUI tablero = new TableroUI(juego,panelDeTexto,false);
-            ShowPanel(tablero);
-            PanelPersonajeCargado panelPersonajeCargado = new PanelPersonajeCargado(panelDeTexto, juego);
-            panelInicio.add(panelPersonajeCargado);
+            if(!ruta.getText().isEmpty()){
+                juego = IO.leerJSON(ruta.getText());
+                Jugar(juego, panelDeTexto, false, true);
+            }
         });
-
 
         // Acción para el boton de pruebas
         pruebas.addActionListener(e ->{
-
-            juego=new Juego();
-            TableroUI tablero= new TableroUI(juego,panelDeTexto,true);
-            ShowPanel(tablero);
-            Posicion posicionObjetivo = juego.getTablero().getObjetivo();
-            PanelPersonajePrueba panelPersonajePrueba=new PanelPersonajePrueba(panelDeTexto, juego,posicionObjetivo);
-            panelInicio.add(panelPersonajePrueba);
+            Jugar(new Juego(), panelDeTexto, true, false);
         });
+    }
 
-
+    private void Jugar(Juego juego, JTextPane panelDeTexto, boolean esPrueba, boolean esCargar) {
+        TableroUI tablero = new TableroUI(juego, panelDeTexto,esPrueba);
+        ShowPanel(tablero);
+        PanelPersonajeJuego panelPersonaje = new PanelPersonajeJuego(panelDeTexto, juego, esPrueba, esCargar);
+        panelInicio.add(panelPersonaje);
     }
 
     private void ShowPanel(JPanel p) {

@@ -1,243 +1,36 @@
 package es.urjc.poo.equipoj.sfx;
 
 import javax.sound.sampled.*;
-import javax.sound.sampled.spi.AudioFileReader;
-import java.applet.AudioClip;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class LectorSonido {
 
-    public static void reproducirClick(){
-        File ficheroClick = new File("src/main/resources/sfx/clickEfectoSonido.wav");
+    public static String SONIDO_CLICK = "/sfx/clickEfectoSonido.wav";
+    public static String SONIDO_RESPIROALIVIO = "/sfx/respiroAlivioEfectoSonido.wav";
+    public static String SONIDO_INVENTARIO = "/sfx/inventarioAbriendoyCerrandoseEfectoSonido.wav";
+    public static String SONIDO_PASOS = "/sfx/pasosEfectoSonido.wav";
+    public static String SONIDO_MORDISCO = "/sfx/mordiscoEfectoSonido.wav";
+    public static String SONIDO_DISPARO ="/sfx/ataqueDisparosEfectoSonido.wav";
+    public static String SONIDO_ATAQUECERCANO ="/sfx/ataqueCercanoEfectoSonido.wav";
 
-        AudioInputStream sonido = null;
-        try {
-            sonido = AudioSystem.getAudioInputStream(ficheroClick);
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            clip.open(sonido);
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        clip.setFramePosition(0);
-        clip.start();
-    }
-
-    public static void reproducirRespiroAlivio(){
-        File ficheroClick = new File("src/main/resources/sfx/respiroAlivioEfectoSonido.wav");
-
-        AudioInputStream sonido = null;
-        try {
-            sonido = AudioSystem.getAudioInputStream(ficheroClick);
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            clip.open(sonido);
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        clip.setFramePosition(0);
-        clip.start();
-    }
-
-    public static void reproducirInventario(){
-        File ficheroClick = new File("src/main/resources/sfx/inventarioAbriendoyCerrandoseEfectoSonido.wav");
-
-        AudioInputStream sonido = null;
-        try {
-            sonido = AudioSystem.getAudioInputStream(ficheroClick);
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            clip.open(sonido);
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        clip.setFramePosition(0);
-        clip.start();
-
-    }
-
-    public static void reproducirPasosSonido(){
-        File ficheroClick = new File("src/main/resources/sfx/pasosEfectoSonido.wav");
-
-        AudioInputStream sonido = null;
-        try {
-            sonido = AudioSystem.getAudioInputStream(ficheroClick);
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            clip.open(sonido);
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        clip.setFramePosition(0);
-        clip.start();
-
-    }
-
-    public static void reproducirMordiscoSonido(){
-        File ficheroClick = new File("src/main/resources/sfx/mordiscoEfectoSonido.wav");
-
-        AudioInputStream sonido = null;
-        try {
-            sonido = AudioSystem.getAudioInputStream(ficheroClick);
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            clip.open(sonido);
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        clip.setFramePosition(0);
-        clip.start();
-    }
-
-    public static void reproducirDisparoSonido(){
-        File ficheroClick = new File("src/main/resources/sfx/ataqueDisparosEfectoSonido.wav");
-
-        AudioInputStream sonido = null;
-        try {
-            sonido = AudioSystem.getAudioInputStream(ficheroClick);
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            clip.open(sonido);
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        clip.setFramePosition(0);
-        clip.start();
-    }
-
-    public static void reproducirAtaqueCercanoSonido(){
-        File ficheroClick = new File("src/main/resources/sfx/ataqueCercanoEfectoSonido.wav");
-
-        AudioInputStream sonido = null;
-        try {
-            sonido = AudioSystem.getAudioInputStream(ficheroClick);
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            clip.open(sonido);
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        clip.setFramePosition(0);
-        clip.start();
+    public void reproducirSonido(String fichero){
+//        try {
+//            File file = new File(Objects.requireNonNull(this.getClass().getResource(fichero)).toString());
+//            AudioInputStream sonido = null;
+//            sonido = AudioSystem.getAudioInputStream(file);
+//
+//            Clip clip = AudioSystem.getClip();
+//            clip.open(sonido);
+//            clip.setFramePosition(0);
+//            clip.start();
+//        } catch (UnsupportedAudioFileException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } catch (LineUnavailableException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }
