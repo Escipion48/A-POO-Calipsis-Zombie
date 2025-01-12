@@ -7,6 +7,7 @@ import es.urjc.poo.equipoj.io.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
 
 public class EntradaGUI extends JFrame {
     Juego juego;
@@ -60,7 +61,7 @@ public class EntradaGUI extends JFrame {
 
         //accion del boton cargarJuego
         cargarJuego.addActionListener(e -> {
-            JDialogCargar(ruta);
+            JDialogCargar();
             if(!ruta.getText().isEmpty()){
                 juego = IO.leerJSON(ruta.getText());
                 Jugar(juego, panelDeTexto, false, true);
@@ -94,37 +95,46 @@ public class EntradaGUI extends JFrame {
         getContentPane().repaint();
     }
 
-    private void JDialogCargar(JTextField ruta){
+    private void JDialogCargar(){
     Window parentWindow = SwingUtilities.getWindowAncestor(this);
 
     JDialog dialogo = new JDialog(parentWindow,"Cargar Partida",Dialog.ModalityType.APPLICATION_MODAL);
         dialogo.setLayout(new BorderLayout(10,10));
-        dialogo.setSize(400,300);
+        dialogo.setSize(400,150);
         dialogo.setBackground(Color.WHITE);
         dialogo.setLocationRelativeTo(null);
 
-        JPanel panelCargar= new JPanel();
+        JPanel panelCargar = new JPanel();
         panelCargar.setLayout(new GridLayout(1,2,10,10));
         panelCargar.setBackground(Color.WHITE);
         panelCargar.setBorder(new EmptyBorder(10,10,10,10));
-        JLabel l1 = new JLabel("Introduzca la ruta");
-        ruta= new JTextField();
+        JTextField textField = new JTextField();
 
-        panelCargar.add(l1);
-        panelCargar.add(ruta);
+        // Crear un botón para seleccionar un archivo
+        JButton btnAbrir = new JButton("Seleccionar Archivo");
+        btnAbrir.setBounds(50, 50, 50, 10);
+        btnAbrir.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int resultado = fileChooser.showOpenDialog(panelCargar);
+            if (resultado == JFileChooser.APPROVE_OPTION) {
+                File archivoSeleccionado = fileChooser.getSelectedFile();
+                textField.setText(archivoSeleccionado.getAbsolutePath());
+            }
+        });
 
-
-        dialogo.add(panelCargar,BorderLayout.CENTER);
+        // Añadir los botones al Panel
+        panelCargar.add(btnAbrir);
+        dialogo.add(panelCargar, BorderLayout.CENTER);
 
         JButton aceptar = new JButton("Aceptar");
-        JTextField finalRuta = ruta;
-        this.ruta = ruta;
-        aceptar.addActionListener(e->{
+        aceptar.addActionListener(e-> {
             try{
-                if(finalRuta.getText().length()!=0){
-                    IO.leerJSON(finalRuta.getText());
+                if(textField.getText().length()!=0) {
+                    this.ruta = textField;
                     JOptionPane.showMessageDialog(this,"Se ha cargado correctamente","Partida Cargada",JOptionPane.INFORMATION_MESSAGE);
                     dialogo.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this,"No se ha seleccionado ningun archivo","ERROR",JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,"No se ha cargado correctamente","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -140,6 +150,7 @@ public class EntradaGUI extends JFrame {
         panelBotones.add(cancelar);
 
         dialogo.add(panelBotones, BorderLayout.SOUTH);
+
         dialogo.setVisible(true);
     }
 }

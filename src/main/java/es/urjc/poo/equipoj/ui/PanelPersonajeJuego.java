@@ -2,7 +2,7 @@ package es.urjc.poo.equipoj.ui;
 
 import es.urjc.poo.equipoj.entidades.*;
 import es.urjc.poo.equipoj.images.LectorImagenes;
-import es.urjc.poo.equipoj.io.*;
+import es.urjc.poo.equipoj.io.IO;
 import es.urjc.poo.equipoj.sfx.LectorSonido;
 
 import javax.swing.*;
@@ -12,21 +12,25 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
-public class PanelPersonajePrueba extends JPanel{
+public class PanelPersonajeJuego extends JPanel{
     final Juego juego;
     private JPanel panelSupervivienteEntero;
     private JTextPane panelDeTexto;
     private JButton crearSuperviviente;
     private JButton empezar;
+    private boolean esPrueba;
+    private boolean esCargar;
 
-    public PanelPersonajePrueba(JTextPane panelDeTexto, Juego juego, Posicion posicionObjetivo){
+    public PanelPersonajeJuego(JTextPane panelDeTexto, Juego juego, boolean esPrueba, boolean esCargar){
         this.panelDeTexto = panelDeTexto;
         this.juego = juego;
-        this.juego.getTablero().setObjetivo(posicionObjetivo);
+        this.esPrueba = esPrueba;
+        this.esCargar = esCargar;
         initUI();
     }
 
@@ -41,17 +45,22 @@ public class PanelPersonajePrueba extends JPanel{
 
         // Panel de personajes
         panelSupervivienteEntero = new JPanel(new BorderLayout());
-        crearSuperviviente = new JButton("CREAR SUPERVIVIENTES");
-        crearSuperviviente.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_PERSONA));
-        crearSuperviviente.addActionListener(e -> JDialogoCrearPersonaje());
-        panelSupervivienteEntero.add(crearSuperviviente, BorderLayout.CENTER);
 
-        // Inicializamos el array de supervivientes
-        Superviviente[] superviviente = new Superviviente[4];
-        for(int i = 0; i < 4; i++){
-            superviviente[i] = new Superviviente();
+        if (!esCargar) {
+            crearSuperviviente = new JButton("CREAR SUPERVIVIENTES");
+            crearSuperviviente.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_PERSONA));
+            crearSuperviviente.addActionListener(e -> JDialogoCrearPersonaje());
+            panelSupervivienteEntero.add(crearSuperviviente, BorderLayout.CENTER);
+
+            // Inicializamos el array de supervivientes
+            Superviviente[] superviviente = new Superviviente[4];
+            for(int i = 0; i < 4; i++){
+                superviviente[i] = new Superviviente();
+            }
+            juego.setSupervivientes(superviviente);
+        } else {
+            panelBotonesDeInformacion();
         }
-        juego.setSupervivientes(superviviente);
 
         JPanel contenedorDeBotones = new JPanel();
         contenedorDeBotones.setBackground(Color.WHITE);
@@ -86,12 +95,13 @@ public class PanelPersonajePrueba extends JPanel{
         });
 
         terminar.addActionListener(e->Terminar());
-
         guardar.addActionListener(e->Guardar());
-
 
         // Agregar componentes
         add(panelSupervivienteEntero, BorderLayout.CENTER);
+        if (esCargar) {
+            add(empezar, BorderLayout.SOUTH);
+        }
     }
 
     /**
@@ -101,7 +111,7 @@ public class PanelPersonajePrueba extends JPanel{
     private void JDialogoCrearPersonaje(){
         // Obtener la ventana padre (JFrame o JDialog)
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
         // Crear el JDialog
         JDialog dialogo = new JDialog(parentWindow, "Crear Personaje", Dialog.ModalityType.APPLICATION_MODAL);
@@ -340,7 +350,7 @@ public class PanelPersonajePrueba extends JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //LectorSonido.reproducirInventario();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_INVENTARIO);
 
                 Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
 
@@ -372,7 +382,7 @@ public class PanelPersonajePrueba extends JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //LectorSonido.reproducirClick();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                 Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
 
@@ -408,7 +418,7 @@ public class PanelPersonajePrueba extends JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //LectorSonido.reproducirClick();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                 Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
                 StringBuilder textoZombiesEliminados = new StringBuilder();
@@ -422,8 +432,27 @@ public class PanelPersonajePrueba extends JPanel{
                         textoZombiesEliminados.append(zombie.toString()+"\n");
                     }
                 }
+
                 //Parte interna de la ventana
-                JScrollPane paneConAtaques = new JScrollPane(new JTextArea(textoZombiesEliminados.toString()));
+                JTextArea jtaResultado = new JTextArea(textoZombiesEliminados.toString());
+                jtaResultado.setEditable(false);
+
+                //Añadir opción para ordenar por Identificador
+                JButton ordenarPorIdentificador = new JButton("Ordenar por código");
+                ordenarPorIdentificador.addActionListener(e1 -> {
+                    new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
+                    textoZombiesEliminados.delete(0, textoZombiesEliminados.length());
+                    textoZombiesEliminados.append("Zombies eliminados: \n");
+                    superviviente.getZombiesEliminados().stream().sorted(Comparator.comparing(Zombie::getIdentificador)).forEach(zombie -> textoZombiesEliminados.append(zombie.toString()).append("\n"));
+                    jtaResultado.setText(textoZombiesEliminados.toString());
+                });
+
+                JPanel panel = new JPanel();
+                panel.setLayout(new BorderLayout());
+                panel.add(jtaResultado, BorderLayout.CENTER);
+                panel.add(ordenarPorIdentificador, BorderLayout.SOUTH);
+
+                JScrollPane paneConAtaques = new JScrollPane(panel);
                 paneConAtaques.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                 paneConAtaques.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -450,7 +479,7 @@ public class PanelPersonajePrueba extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //LectorSonido.reproducirClick();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                 Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
                 StringBuilder cadenaConAtaques = new StringBuilder();
@@ -464,7 +493,7 @@ public class PanelPersonajePrueba extends JPanel{
                     }
                 }
                 JOptionPane.showMessageDialog(null,cadenaConAtaques.toString(),"Ataques que ha sufrido "+superviviente.getNombre(),JOptionPane.INFORMATION_MESSAGE,(Icon) getValue(Action.SMALL_ICON));
-                //LectorSonido.reproducirRespiroAlivio();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_RESPIROALIVIO);
             }
         }
         class mostrarPosicionPersonaje extends AbstractAction {
@@ -478,7 +507,7 @@ public class PanelPersonajePrueba extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //LectorSonido.reproducirClick();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                 Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
                 JOptionPane.showMessageDialog(null,superviviente.getPosicion().toString(),"Posicion de "+superviviente.getNombre(),JOptionPane.INFORMATION_MESSAGE,(Icon) getValue(Action.SMALL_ICON));
@@ -491,11 +520,12 @@ public class PanelPersonajePrueba extends JPanel{
                 putValue(SHORT_DESCRIPTION,descripcion);
                 putValue(SMALL_ICON,imagen);
                 putValue("Indice personaje",indicePersonaje);
+                setEnabled(esPrueba);
             }
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //LectorSonido.reproducirClick();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                 JDialog panelCrearEquipo = new JDialog();
                 panelCrearEquipo.setTitle(getValue(NAME).toString());
@@ -532,7 +562,7 @@ public class PanelPersonajePrueba extends JPanel{
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //LectorSonido.reproducirClick();
+                    new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                     Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
                     if(superviviente.calcularNumeroObjetosInventario()==5){
@@ -872,7 +902,7 @@ public class PanelPersonajePrueba extends JPanel{
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                //LectorSonido.reproducirClick();
+                                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
                                 if(nombreTexto.getBackground() == Color.WHITE && alcanceTexto.getBackground() == Color.WHITE && potenciaTexto.getBackground() == Color.WHITE && valorExitoTexto.getBackground() == Color.WHITE && numeroDadosTexto.getBackground() == Color.WHITE ){
                                     for(int i = 0; i<5;i++){
                                         if(superviviente.getInventario(i)==null){
@@ -892,7 +922,7 @@ public class PanelPersonajePrueba extends JPanel{
                         cancelar.addActionListener(new ActionListener(){
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                //LectorSonido.reproducirClick();
+                                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
                                 Window ventanaPadre = SwingUtilities.getWindowAncestor(panelCrearArma);
                                 ventanaPadre.dispose();
                                 panelCrearArma.dispose();
@@ -926,7 +956,7 @@ public class PanelPersonajePrueba extends JPanel{
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //LectorSonido.reproducirClick();
+                    new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                     Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
                     if(superviviente.calcularNumeroObjetosInventario()==5){
@@ -1015,7 +1045,7 @@ public class PanelPersonajePrueba extends JPanel{
 
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                //LectorSonido.reproducirClick();
+                                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
                                 for(int i = 0; i<5; i++){
                                     if(superviviente.getInventario(i)==null){
                                         int[] caducidad = {((Date) caducidadTexto.getValue()).getDate(), ((Date) caducidadTexto.getValue()).getMonth() + 1, ((Date) caducidadTexto.getValue()).getYear() + 1900};
@@ -1031,7 +1061,7 @@ public class PanelPersonajePrueba extends JPanel{
                         cancelar.addActionListener(new ActionListener(){
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                //LectorSonido.reproducirClick();
+                                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
                                 Window ventanaPadre = SwingUtilities.getWindowAncestor(panelCrearProvision);
                                 ventanaPadre.dispose();
                                 panelCrearProvision.dispose();
@@ -1052,7 +1082,7 @@ public class PanelPersonajePrueba extends JPanel{
         panelSupervivientes.setLayout(new GridLayout(1,4,10,10));
         panelSupervivientes.setBackground(Color.white);
 
-        for(int i=0; i<juego.getSupervivientes().length;i++){
+        for(int i=0; i<juego.getSupervivientes().length; i++){
             Superviviente superviviente = juego.getSuperviviente(i);
             JPanel panelSuperviviente = new JPanel();
             panelSuperviviente.setLayout(new GridLayout(7,1,10,10));
@@ -1075,7 +1105,14 @@ public class PanelPersonajePrueba extends JPanel{
                 panelSupervivientes.repaint();
             });
 
-            panelSuperviviente.add(new JLabel(superviviente.getNombre()));
+            ImageIcon icono = (ImageIcon) new LectorImagenes().CargarIcono(LectorImagenes.ICONO_SUPERVIVIENTE);
+            JLabel nombreSuperviviente = new JLabel(superviviente.getNombre(), icono, SwingConstants.LEFT);
+            Random random = new Random();
+            Color colorAleatorio = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+            nombreSuperviviente.setForeground(colorAleatorio);
+            nombreSuperviviente.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
+            panelSuperviviente.add(nombreSuperviviente);
+
             panelSuperviviente.add(new JButton(new verInventario("Inventario","Accede al inventario del personaje",new LectorImagenes().CargarIcono(LectorImagenes.ICONO_VER_INVENTARIO),i)));
             panelSuperviviente.add(new JButton(new verArmasActivas("Armas Activas", "Mira que armas tiene activas el personaje",new LectorImagenes().CargarIcono(LectorImagenes.ICONO_VER_ARMAS_ACTIVAS),i)));
             panelSuperviviente.add(new JButton(new mostrarZombiesEliminados("Zombies eliminados", "Muestra todos los zombies que han sido eliminados por el personaje durante la partida", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ZOMBIES_ELIMINADOS),i)));
@@ -1088,16 +1125,20 @@ public class PanelPersonajePrueba extends JPanel{
         //Boton de la posicion de los zombies
         JButton posicionZombies = new JButton("Posicion Zombies");
         JButton ataques = new JButton("Ataques");
+        JButton ataquesZombie = new JButton("Daños Zombie");
         JButton crearZombie = new JButton("Crear Zombie");
+        crearZombie.setEnabled(esPrueba);
         posicionZombies.addActionListener(e -> JDialogVerPosicionZombies());
         ataques.addActionListener(e -> JDialogAtaquesHechos());
+        ataquesZombie.addActionListener(e -> JDialogAtaquesZombie());
         crearZombie.addActionListener(e->JDialogCrearZombie());
 
 
         JPanel panelArriba = new JPanel();
-        panelArriba.setLayout(new GridLayout(1, 3, 10, 10));
+        panelArriba.setLayout(new GridLayout(1, 4, 10, 10));
         panelArriba.add(posicionZombies);
         panelArriba.add(ataques);
+        panelArriba.add(ataquesZombie);
         panelArriba.add(crearZombie);
 
         panelSupervivienteEntero.add(panelArriba, BorderLayout.NORTH);
@@ -1110,11 +1151,75 @@ public class PanelPersonajePrueba extends JPanel{
     }
 
     /**
+     * JDialogAtaquesZombie recopila los Daños hechos por un Zombie
+     */
+    private void JDialogAtaquesZombie(){
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
+
+        JDialog dialogo = new JDialog(parentWindow, "Daños Zombie", JDialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setLayout(new BorderLayout(10, 10));
+        dialogo.setBackground(Color.white);
+        dialogo.setSize(500, 300);
+        dialogo.setLocationRelativeTo(null);
+
+        JPanel panelTextoAtaques = new JPanel();
+        panelTextoAtaques.setLayout(new BorderLayout(10, 10));
+        panelTextoAtaques.setBackground(Color.white);
+        panelTextoAtaques.setSize(400, 300);
+
+        JTextPane panelTexto = new JTextPane();
+        panelTexto.setEditable(false);
+        JScrollPane jScrollPane = new JScrollPane(panelTexto);
+        jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        JTextField textField = new JTextField(20);
+        textField.setSize(400, 50);
+        textField.setToolTipText("Introduce el identificador del zombie y pulse intro para buscar");
+        textField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Long zombieSeleccionado = Long.valueOf(textField.getText());
+                try{
+                    boolean encontrado = false;
+                    StringBuilder stringBuilder = new StringBuilder("El zombie ");
+                    for(Superviviente superviviente : juego.getSupervivientes()){
+                        for(Zombie zombie : superviviente.getAtaquesRecibidos()){
+                            if (zombie.getIdentificador() == zombieSeleccionado){
+                                stringBuilder.append(zombie.toString()).append(" ha recibido un ataque al superviviente ").append(superviviente.getNombre()).append("\n");
+                                encontrado = true;
+                            }
+                        }
+                    }
+                    if (!encontrado){
+                        stringBuilder.append("con este identifiacdor no ha atacado a ningún superviviente\n");
+                    }
+                    panelTexto.setText(stringBuilder.toString());
+                }catch(NullPointerException ex){
+                    panelTexto.setText("No se ha realizado ningun ataque\n");
+                }
+
+            }
+        });
+
+        panelTextoAtaques.add(jScrollPane, BorderLayout.CENTER);
+        panelTextoAtaques.add(jScrollPane, BorderLayout.CENTER);
+        JButton cerrar = new JButton("Cerrar");
+        cerrar.addActionListener(e -> dialogo.dispose());
+        dialogo.add(textField, BorderLayout.NORTH);
+        dialogo.add(panelTextoAtaques, BorderLayout.CENTER);
+        dialogo.add(cerrar, BorderLayout.SOUTH);
+
+        dialogo.setVisible(true);
+    }
+
+    /**
      * JDialogAtaquesHechos recopila los ataques hechos
      */
     private void JDialogAtaquesHechos(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
         JDialog dialogo = new JDialog(parentWindow, "Ataques Realizados", JDialog.ModalityType.APPLICATION_MODAL);
         dialogo.setLayout(new BorderLayout(10, 10));
@@ -1149,7 +1254,6 @@ public class PanelPersonajePrueba extends JPanel{
         dialogo.add(aceptar, BorderLayout.SOUTH);
 
         dialogo.setVisible(true);
-
     }
 
 
@@ -1158,7 +1262,7 @@ public class PanelPersonajePrueba extends JPanel{
      */
     private void JDialogVerPosicionZombies(){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
         String titulo = "Posición de Zombies";
         JDialog dialogo = new JDialog(parentWindow, titulo, Dialog.ModalityType.APPLICATION_MODAL);
@@ -1230,7 +1334,7 @@ public class PanelPersonajePrueba extends JPanel{
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        //LectorSonido.reproducirClick();
+                        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
                         String nombre = (String) getValue(Action.NAME);
 
@@ -1501,11 +1605,11 @@ public class PanelPersonajePrueba extends JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //LectorSonido.reproducirClick();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
                 ArrayList<EntidadActivable> entidades = (ArrayList<EntidadActivable>) getValue("entidades");
                 superviviente.moverse(entidades);
                 superviviente.setPosicion(new Posicion(superviviente.getPosicion().getPosicionX()+((int)getValue("x")),superviviente.getPosicion().getPosicionY()+((int)getValue("y"))));
-                //LectorSonido.reproducirPasosSonido();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_PASOS);
                 ((JDialog)getValue("Dialogo")).dispose();
             }
         }
@@ -1575,7 +1679,7 @@ public class PanelPersonajePrueba extends JPanel{
         int numeroObjetoInventerio = superviviente.calcularNumeroObjetosInventario();
         if(superviviente.buscar(casillaABuscar)){
             if(numeroObjetoInventerio<superviviente.calcularNumeroObjetosInventario()){
-                //LectorSonido.reproducirRespiroAlivio();
+                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_RESPIROALIVIO);
                 JOptionPane.showMessageDialog(null,"Has encontrado algo, mira en tu inventario","Busqueda", JOptionPane.INFORMATION_MESSAGE);
             }
             else{
@@ -1592,7 +1696,7 @@ public class PanelPersonajePrueba extends JPanel{
      */
     private void JDialogAtacar(Superviviente superviviente){
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
         JDialog dialogo = new JDialog(parentWindow, "Atacar", Dialog.ModalityType.APPLICATION_MODAL);
         dialogo.setSize(1000, 300);
@@ -1693,10 +1797,10 @@ public class PanelPersonajePrueba extends JPanel{
                 } else{
 
                     if(arma.getAlcance()==0){
-                        //LectorSonido.reproducirAtaqueCercanoSonido();
+                        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_ATAQUECERCANO);
                     }
                     else{
-                        //LectorSonido.reproducirDisparoSonido();
+                        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_DISPARO);
                     }
 
                     int n = arma.getNumeroDados();
@@ -1774,7 +1878,7 @@ public class PanelPersonajePrueba extends JPanel{
         }
 
         if(haHabidoMordiscos){
-            //LectorSonido.reproducirMordiscoSonido();
+            new LectorSonido().reproducirSonido(LectorSonido.SONIDO_MORDISCO);
         }
 
         juego.anadirZombie();
@@ -1797,7 +1901,7 @@ public class PanelPersonajePrueba extends JPanel{
 
     private void JDialogCrearZombie() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
         // Crear el cuadro de diálogo modal
         JDialog dialogo = new JDialog(parentWindow, "Crear Zombie", Dialog.ModalityType.APPLICATION_MODAL);
@@ -1894,7 +1998,7 @@ public class PanelPersonajePrueba extends JPanel{
     }
 
     private void Terminar(){
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
         removeAll();
         setLayout(new BorderLayout());
         panelDeTexto.setText("");
@@ -1909,12 +2013,12 @@ public class PanelPersonajePrueba extends JPanel{
     }
 
     private void Guardar() {
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialogo = new JDialog(parentWindow,"Guardar",Dialog.ModalityType.APPLICATION_MODAL);
 
         dialogo.setLayout(new BorderLayout(10,10));
-        dialogo.setSize(400,300);
+        dialogo.setSize(400,150);
         dialogo.setBackground(Color.WHITE);
         dialogo.setLocationRelativeTo(null);
 
@@ -1922,22 +2026,33 @@ public class PanelPersonajePrueba extends JPanel{
         panelGuardar.setLayout(new GridLayout(1,2,10,10));
         panelGuardar.setBackground(Color.WHITE);
         panelGuardar.setBorder(new EmptyBorder(10,10,10,10));
-        JLabel l1 = new JLabel("Introduzca la ruta");
         JTextField textField = new JTextField();
 
-        panelGuardar.add(l1);
-        panelGuardar.add(textField);
+        // Crear un botón para guardar un archivo
+        JButton btnGuardar = new JButton("Guardar Archivo");
+        btnGuardar.setBounds(220, 50, 50, 10);
+        btnGuardar.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int resultado = fileChooser.showSaveDialog(panelGuardar);
+            if (resultado == JFileChooser.APPROVE_OPTION) {
+                File archivoGuardar = fileChooser.getSelectedFile();
+                textField.setText(archivoGuardar.getAbsolutePath());
+            }
+        });
 
-
+        // Añadir los botones al Panel
+        panelGuardar.add(btnGuardar);
         dialogo.add(panelGuardar,BorderLayout.CENTER);
 
         JButton aceptar = new JButton("Aceptar");
         aceptar.addActionListener(e->{
             try{
                 if(textField.getText().length()!=0){
-                    IO.escribirJSON(juego,textField.getText());
+                    IO.escribirJSON(juego, textField.getText());
                     JOptionPane.showMessageDialog(this,"Se ha guardado correctamente","Partida Guardada",JOptionPane.INFORMATION_MESSAGE);
                     dialogo.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this,"No se ha guardado correctamente","ERROR",JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,"No se ha guardado correctamente","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -1957,7 +2072,7 @@ public class PanelPersonajePrueba extends JPanel{
     }
 
     private void setReiniciar(){
-        //LectorSonido.reproducirClick();
+        new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
 
         // Botón para reiniciar el juego
         JButton reiniciar = new JButton("Reiniciar Juego");
