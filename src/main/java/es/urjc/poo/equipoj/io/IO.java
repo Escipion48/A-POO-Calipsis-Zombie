@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import es.urjc.poo.equipoj.entidades.*;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class IO {
     ///Cargado y guardado con JSON ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,5 +28,32 @@ public class IO {
         catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+
+    ///Cargado y guardado Binario////////////////////////////////////////////
+
+    public static void escribirBinario(Juego juego, String fichero) {
+        try (FileOutputStream fileOut = new FileOutputStream(fichero);
+             ObjectOutputStream objOut = new ObjectOutputStream(fileOut)) {
+
+            objOut.writeObject(juego);
+            System.out.println("Guardado exitoso");
+
+        } catch (IOException e) {
+            System.out.println("Error en el escribirBinario" + e.getMessage());
+        }
+    }
+
+    public static Juego leerBinario(String fichero) {
+        try (FileInputStream fileIn = new FileInputStream(fichero);
+             ObjectInputStream objIn = new ObjectInputStream(fileIn)) {
+
+            return  (Juego) objIn.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

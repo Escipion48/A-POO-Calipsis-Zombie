@@ -215,4 +215,14 @@ public class Juego {
         return false;
     }
 
+    public int calcularIndiceSuperviviente(Superviviente superviviente){
+        for(int i = 0; i<4; i++) {
+            if(this.getSuperviviente(i).equals(superviviente)){
+                return i;
+            }
+        }
+        //No encontrado
+        return -1;
+    }
+
 }

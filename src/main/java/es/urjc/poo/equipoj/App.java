@@ -5,6 +5,19 @@ import es.urjc.poo.equipoj.ui.EntradaGUI;
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * Este juego ha sido creado como un trabajo de universidad, pido disculpas por los errores en el código y la falta de coherencia
+ * en muchas partes, ha sido desarrollada por varias personas y debido a la falta de tiempo me he visto incapaz de corregir muchas cosas,
+ * sin embargo, en un futuro intentaré ir cambiando cosas y arreglando otras, aunque no prometo nada. Si estás leyendo este texto
+ * significa que has entrado para ver como está programado o para arreglar o añadir cosas, antes que nada, espero que tengas un buen día, :).
+ * En la carpeta entidades se encuentra la lógica del juego, en imágenes y sfx evidentemente está el código encargado de esas partes,
+ * en io se encuentra el código encargado de guardar y cargar archivos en json y en ui se encuentra la interfaz gráfica.
+ *
+ * De parte de Pablo Sainz López.
+ *
+ */
+
 public class App {
  public static void main(String[] args) {
   SwingUtilities.invokeLater(() -> {
@@ -13,7 +26,6 @@ public class App {
    // Cargar el ícono desde el classpath
    Image icono = Toolkit.getDefaultToolkit().getImage(EntradaGUI.class.getResource((LectorImagenes.ICONO_JUEGO)));
    frame.setIconImage(icono);
-//   frame.setIconImage(((ImageIcon) new LectorImagenes().CargarIcono(LectorImagenes.ICONO_JUEGO)).getImage().getScaledInstance(64,64, Image.SCALE_SMOOTH));
    Dimension dimensionPantalla = Toolkit.getDefaultToolkit().getScreenSize();
    frame.setPreferredSize(new Dimension(dimensionPantalla.width/2, dimensionPantalla.height/2));
    frame.setSize(dimensionPantalla.width/2, dimensionPantalla.height/2);

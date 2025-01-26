@@ -334,6 +334,26 @@ public class PanelPersonajeJuego extends JPanel{
         dialogo.setVisible(true);
     }
 
+    private class mostrarPosicionPersonaje extends AbstractAction {
+        public mostrarPosicionPersonaje(String nombre, String descripcion, Icon imagen, int indicePersonaje) {
+            putValue(Action.NAME, nombre);
+            putValue(Action.SHORT_DESCRIPTION, descripcion);
+            putValue(Action.SMALL_ICON, imagen);
+            putValue("Indice personaje", indicePersonaje);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
+
+            Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
+            JOptionPane.showMessageDialog(null,superviviente.getPosicion().toString(),"Posicion de "+superviviente.getNombre(),JOptionPane.INFORMATION_MESSAGE,(Icon) getValue(Action.SMALL_ICON));
+
+        }
+    }
+
+
     /**
      * actualizarUI es una funcion que va actualizando toda la información de los botones
      * está en cada JDialog que modifique la información
@@ -494,24 +514,6 @@ public class PanelPersonajeJuego extends JPanel{
                 }
                 JOptionPane.showMessageDialog(null,cadenaConAtaques.toString(),"Ataques que ha sufrido "+superviviente.getNombre(),JOptionPane.INFORMATION_MESSAGE,(Icon) getValue(Action.SMALL_ICON));
                 new LectorSonido().reproducirSonido(LectorSonido.SONIDO_RESPIROALIVIO);
-            }
-        }
-        class mostrarPosicionPersonaje extends AbstractAction {
-            public mostrarPosicionPersonaje(String nombre, String descripcion, Icon imagen, int indicePersonaje) {
-                putValue(Action.NAME, nombre);
-                putValue(Action.SHORT_DESCRIPTION, descripcion);
-                putValue(Action.SMALL_ICON, imagen);
-                putValue("Indice personaje", indicePersonaje);
-            }
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                new LectorSonido().reproducirSonido(LectorSonido.SONIDO_CLICK);
-
-                Superviviente superviviente = juego.getSuperviviente((int)getValue("Indice personaje"));
-                JOptionPane.showMessageDialog(null,superviviente.getPosicion().toString(),"Posicion de "+superviviente.getNombre(),JOptionPane.INFORMATION_MESSAGE,(Icon) getValue(Action.SMALL_ICON));
-
             }
         }
         class crearEquipo extends AbstractAction{
@@ -1089,17 +1091,22 @@ public class PanelPersonajeJuego extends JPanel{
             panelSuperviviente.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
             panelSuperviviente.setBackground(Color.WHITE);
 
-            //Añadimos el listener a superviviente que se encargara de cambiar de color de fondo segun sus heridas
+            //Añadimos el listener a superviviente que se encargara de cambiar de color de fondo según sus heridas, tambien ponemos el color al crearlo, ya que puede ser una partida cargada
+
+            if(superviviente.getHeridas()==1){
+                panelSuperviviente.setBackground(Color.YELLOW);
+            }
+            else{
+                panelSuperviviente.setBackground(Color.WHITE);
+            }
             superviviente.addPropertyChangeListener(evt -> {
                 Color colorFondo;
                 if(superviviente.getHeridas()==1){
-                    System.out.println("Amarillo");
                     colorFondo = Color.YELLOW;
                 }
                 else{
                     colorFondo = Color.WHITE;
                 }
-                System.out.println(superviviente.getHeridas());
                 panelSuperviviente.setBackground(colorFondo);
                 panelSuperviviente.repaint();
                 panelSupervivientes.repaint();
@@ -1319,7 +1326,7 @@ public class PanelPersonajeJuego extends JPanel{
 
 
                 JPanel panelTurnoSuperviviente = new JPanel();
-                panelTurnoSuperviviente.setLayout(new GridLayout(6, 1, 10, 10));
+                panelTurnoSuperviviente.setLayout(new GridLayout(8, 1, 10, 10));
 
 
                 //Clase que hereda de AbstractAction para crear los botones e incluir los oyentes
@@ -1360,6 +1367,7 @@ public class PanelPersonajeJuego extends JPanel{
                     }
                 }
 
+
                 //Crear los Botones que contienen las acciones de los supervivientes
                 JButton noHacerNada = new JButton(new AccionesSuperviviente("No hacer nada","El superviviente descansará hasta el proximo turno", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_NOHACERNADA)));
                 JButton atacar = new JButton(new AccionesSuperviviente("Atacar","El superviviente atacará con una de sus armas activas, necesitará antes tener por lo menos un arma activada", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_ATACAR)));
@@ -1367,7 +1375,6 @@ public class PanelPersonajeJuego extends JPanel{
                 JButton cambiarArmaActiva = new JButton(new AccionesSuperviviente("Cambiar arma Activa", "Elige un arma para activarte, si tienes ya dos armas activas tendrás que seleccionar una para cambiarla por la nueva", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_CAMBIAR_ARMA)));
                 JButton buscar = new JButton(new AccionesSuperviviente("Buscar equipo", "Busca equipo en la casilla en la que te encuentra, si ya esta buscada no podrás buscar y cuanto mas vacio este tu inventario, mas probable será encontrar algo.", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_BUSCAR)));
                 JButton moverse = new JButton(new AccionesSuperviviente("Moverse","Muevete a una casilla adyacente, te costará una acción extra por cada zombie que este en tu misma casilla", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_MOVERSE)));
-
 
 
                 //Atacar y cambiar arma se desactivaran cuando no tenga sentido utilizarlas, para evitar problemas
@@ -1389,6 +1396,13 @@ public class PanelPersonajeJuego extends JPanel{
                 panelTurnoSuperviviente.add(moverse);
                 panelTurnoSuperviviente.add(buscar);
                 panelTurnoSuperviviente.add(atacar);
+
+                //Botones añadidos posteriormente para mejorar la jugabilidad, ver posicion y ver zombies
+                JButton posicionZombies = new JButton("Posicion Zombies");
+                posicionZombies.addActionListener(e -> JDialogVerPosicionZombies());
+                panelTurnoSuperviviente.add(posicionZombies);
+                panelTurnoSuperviviente.add(new JButton(new mostrarPosicionPersonaje("Posicion","Muestra la posición en la que se encuentra el personaje", new LectorImagenes().CargarIcono(LectorImagenes.ICONO_POSICION),juego.calcularIndiceSuperviviente(superviviente))));
+
                 menuTurnoSuperviviente.add(panelTurnoSuperviviente, BorderLayout.CENTER);
 
                 //Mensaje con acciones restantes

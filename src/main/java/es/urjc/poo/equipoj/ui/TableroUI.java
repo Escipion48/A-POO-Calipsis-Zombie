@@ -34,18 +34,15 @@ public class TableroUI extends JPanel {
         for(int i=0 ; i<this.juego.getTablero().getDimensiones().getPosicionX() ; i++){
 
             for(int j=0 ; j<this.juego.getTablero().getDimensiones().getPosicionY() ; j++){
-                JButton casilla = new JButton(new celdaDePosicion(nombresUbicaciones(),i,j));
+                JButton casilla = new JButton(new celdaDePosicion(nombresUbicaciones(),j,i));
 
-                if(i==this.juego.getTablero().getObjetivo().getPosicionX()&&j==this.juego.getTablero().getObjetivo().getPosicionY()){
+                if(j==this.juego.getTablero().getObjetivo().getPosicionX()&&i==this.juego.getTablero().getObjetivo().getPosicionY()){
                     casilla.setBackground(Color.GREEN);
                 }
                 panelConCasillas.add(casilla);
             }
         }
         this.add(panelConCasillas, BorderLayout.CENTER);
-
-//        JButton test = (JButton) panelConCasillas.getComponent(7);
-//        test.setIcon(new LectorImagenes().CargarIcono(LectorImagenes.ICONO_PRUEBA));
     }
 
 
