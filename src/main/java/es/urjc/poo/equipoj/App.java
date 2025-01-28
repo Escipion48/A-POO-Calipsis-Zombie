@@ -13,6 +13,8 @@ import java.awt.*;
  * significa que has entrado para ver como está programado o para arreglar o añadir cosas, antes que nada, espero que tengas un buen día, :).
  * En la carpeta entidades se encuentra la lógica del juego, en imágenes y sfx evidentemente está el código encargado de esas partes,
  * en io se encuentra el código encargado de guardar y cargar archivos en json y en ui se encuentra la interfaz gráfica.
+ * PD: sé que la ui es una chapuza y otras coas, pero me da mucha pereza rehacerlo, ya he perdido demasiado tiempo arreglando
+ * esta atrocidad que parece haber sido escrita por un mono con autismo severo.
  *
  * De parte de Pablo Sainz López.
  *

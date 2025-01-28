@@ -17,7 +17,8 @@ public class EntradaGUI extends JFrame {
     private JButton pruebas;
     private JScrollPane jScrollPane;
     private JTextField ruta;
-
+    private static String textoInicio=
+            "Bienvenido a  A-POO-CALIPSIS ZOMBIE, el juego de turnos sobre zombies. Las reglas son simples, todos los supervivientes deben conseguir llegar a la casilla de salida con una provisión no caducada. Los zombies irán apareciendo durante la partida, para matarlos tu arma debe tener una potencia igual o superior al aguante de un zombie, 1 para los normales y 3 para las abominaciones. Además de que el numero de dados representa la cantidad de ataques que se pueden hacer con un arma a la vez y el valor de éxito el valor mínimo que debe sacar el dado para que el ataque se considere un acierto. Tambien ten en cuenta que los corredores se moverán dos casillas por turno, los berserkers solo se les puede matar cuerpo a cuerpo y los zombies tóxicos al morir salpican haciendo daño a su alrededor. Ten en cuenta que cada superviviente solo tiene dos vidas, buena suerte :)\n";
 
     public EntradaGUI() {
         initUI();
@@ -43,6 +44,7 @@ public class EntradaGUI extends JFrame {
         JTextPane panelDeTexto = new JTextPane();
         panelDeTexto.setBackground(Color.WHITE);
         panelDeTexto.setEditable(false);
+        panelDeTexto.setText(textoInicio);
         jScrollPane = new JScrollPane(panelDeTexto);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
