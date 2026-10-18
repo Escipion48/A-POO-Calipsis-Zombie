@@ -1,5 +1,6 @@
 package com.github.escipion48.domain;
 
+import com.github.escipion48.domain.exceptions.SurvivorDeadException;
 import com.github.escipion48.domain.items.Item;
 import com.github.escipion48.domain.items.Supply;
 import com.github.escipion48.domain.exceptions.InvalidMoveException;
@@ -46,17 +47,21 @@ public final class Survivor {
     }
 
     public void heal(int amount){
+        if(amount <= 0) throw new IllegalArgumentException("heal amount must not be negative or 0");
         if(health == rules.maxSurvivorsHealth()) throw new MaxHealthException();
         health = Math.min(health + amount, rules.maxSurvivorsHealth());
     }
 
     public void consume(Supply supply) {
+        requireAlive();
+        Objects.requireNonNull(supply, "supply must not be null");
         requireOwned(supply);
         heal(supply.healing());
         items.remove(supply);
     }
 
     public void move(Position destination){
+        requireAlive();
         Objects.requireNonNull(destination, "destination must not be null");
         if(moves <= 0) throw new NoMovesLeftException();
         if(!this.position.isAdjacent(destination)) throw new InvalidMoveException("cannot move to a not adjacent position");
@@ -66,16 +71,16 @@ public final class Survivor {
 
     public void startTurn(){
 
-        this.moves = rules.movesPerTurn();
+        moves = isAlive() ? rules.movesPerTurn() : 0;
 
     }
 
-
-
-
-
     private void requireOwned(Item item) {
         if (!items.contains(item)) throw new IllegalArgumentException("survivor does not have that item");
+    }
+
+    private void requireAlive(){
+        if(!isAlive()) throw new SurvivorDeadException();
     }
 
     @Override
@@ -86,7 +91,7 @@ public final class Survivor {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Integer.hashCode(id);
     }
 
     public int getHealth() {
@@ -102,6 +107,6 @@ public final class Survivor {
     }
 
     public List<Item> getItems() {
-        return items;
+        return List.copyOf(items);
     }
 }
