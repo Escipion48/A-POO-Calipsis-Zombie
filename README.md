@@ -1,9 +1,33 @@
 # A-POO-Calipsis-Zombie
-Bienvenido al juego que hemos creado para un trabajo llamado A-POO-Calipsis-Zombie.
-Creado por: Pablo Sainz López y  Oscar Zhou.
 
-El juego esta inspirado en un juego de mesa por turnos, en el cual 4 supervivientes deben alcanzar la casilla de salida con una provision cada uno no caducada, mientras intentan que los zombies no les maten. Para ello tienen armas con un numero de dados, la cantidad de ataques que hace un arma por turno; valor de éxito, el valor que debe alcanzar un dado para que se considere un impacto y la potencia, cuyo valor debe superar el aguante del zombie para matarlo. Hay varios tipos de zombies, por lo general tendrán 1 aguante y 1 movimiento, sin embargo, los corredores tendrán dos movimientos por turno, las abominaciones tendrán aguante 3, los tóxicos al morir harán daño a los supervivientes que se encuentren alrededor y los berserkers solo les puedes dañar cuerpo a cuerpo.
+A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-Cosas a tener en cuenta: una vez iniciado un turno se tiene que acabar, es decir, no se podrá guardar a mitad de un turno. Si se presiona sobre una casilla del tablero mostrará todo lo que se encuentre en ella. El botón prueba es un modo "Sandbox". Para guardar hay que pulsar aceptar una vez haber seleccionado la ruta y el nombre, guardará correctamente cuando salga una ventana que indicará que el guardado ha sido exitoso. Para más dudas o ideas a cambiar y/o mejorar no dudes en contactar con nosotros. 
+This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
-Si decides mirar el código (no lo recomiendo) está un repositorio en GitHub: https://github.com/Escipion48/A-POO-Calipsis-Zombie
+## Platforms
+
+- `core`: Main module with the application logic shared by all platforms.
+- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+
+## Gradle
+
+This project uses [Gradle](https://gradle.org/) to manage dependencies.
+The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
+Useful Gradle tasks and flags:
+
+- `--continue`: when using this flag, errors will not stop the tasks from running.
+- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
+- `--offline`: when using this flag, cached dependency archives will be used.
+- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
+- `build`: builds sources and archives of every project.
+- `cleanEclipse`: removes Eclipse project data.
+- `cleanIdea`: removes IntelliJ project data.
+- `clean`: removes `build` folders, which store compiled classes and built archives.
+- `eclipse`: generates Eclipse project data.
+- `idea`: generates IntelliJ project data.
+- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
+- `lwjgl3:run`: starts the application.
+- `test`: runs unit tests (if any).
+
+Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
+For example, `core:clean` removes `build` folder only from the `core` project.
