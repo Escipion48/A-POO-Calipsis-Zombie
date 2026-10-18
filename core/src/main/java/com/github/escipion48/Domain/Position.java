@@ -1,4 +1,4 @@
-package com.github.Escipion48.Domain;
+package com.github.escipion48.Domain;
 
 public record Position(int x, int y) {
 

@@ -1,8 +1,8 @@
-package com.github.Escipion48.lwjgl3;
+package com.github.escipion48.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.github.Escipion48.Main;
+import com.github.escipion48.Main;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
