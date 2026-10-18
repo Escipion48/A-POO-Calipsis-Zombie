@@ -47,22 +47,27 @@ public final class Survivor {
     }
 
     public void heal(int amount){
-        if(amount <= 0) throw new IllegalArgumentException("heal amount must not be negative or 0");
+        if(amount <= 0) throw new IllegalArgumentException("heal amount must be positive");
         if(health == rules.maxSurvivorsHealth()) throw new MaxHealthException();
         health = Math.min(health + amount, rules.maxSurvivorsHealth());
     }
 
+    public void takeDamage(int damage) {
+        if (damage <= 0) throw new IllegalArgumentException("damage must be positive");
+        health = Math.max(0, health - damage);
+    }
+
     public void consume(Supply supply) {
-        requireAlive();
         Objects.requireNonNull(supply, "supply must not be null");
+        requireAlive();
         requireOwned(supply);
         heal(supply.healing());
         items.remove(supply);
     }
 
     public void move(Position destination){
-        requireAlive();
         Objects.requireNonNull(destination, "destination must not be null");
+        requireAlive();
         if(moves <= 0) throw new NoMovesLeftException();
         if(!this.position.isAdjacent(destination)) throw new InvalidMoveException("cannot move to a not adjacent position");
         moves--;
