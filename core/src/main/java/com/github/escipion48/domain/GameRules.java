@@ -1,4 +1,6 @@
-package com.github.escipion48.Domain;
+package com.github.escipion48.domain;
+
+import com.github.escipion48.domain.items.Item;
 
 import java.util.List;
 import java.util.Objects;
