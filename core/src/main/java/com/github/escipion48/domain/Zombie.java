@@ -1,135 +1,63 @@
 package com.github.escipion48.domain;
 
-import com.github.escipion48.domain.exceptions.GameRuleViolationException;
-import com.github.escipion48.domain.exceptions.InvalidMoveException;
-import com.github.escipion48.domain.exceptions.NoMovesLeftException;
-import com.github.escipion48.domain.rules.GameRules;
+import com.github.escipion48.domain.rules.MapRules;
+import com.github.escipion48.domain.rules.ZombieRules;
 
 import java.util.Objects;
 import java.util.random.RandomGenerator;
 
-public final class Zombie {
+final class Zombie extends Actor {
 
-    private final int id;
-    private final GameRules rules;
-    private final int movesPerTurn;
+    private final int damage;
 
-    private int health;
-    private int moves;
-    private Position position;
-
-    private Zombie(
-        int id,
-        GameRules rules,
+    Zombie(
+        long id,
+        MapRules map,
+        Position position,
         int health,
-        int movesPerTurn,
+        int actionsPerTurn,
+        int damage
+    ) {
+
+        if (damage <= 0) {
+            throw new IllegalArgumentException(
+                "zombie damage must be positive");
+        }
+
+        super(id, map, position, health, actionsPerTurn);
+
+
+        this.damage = damage;
+    }
+
+    static Zombie create(
+        long id,
+        MapRules map,
+        ZombieRules rules,
+        RandomGenerator random,
         Position position
     ) {
-        this.id = id;
-        this.rules = rules;
-        this.health = health;
-        this.movesPerTurn = movesPerTurn;
-        this.moves = movesPerTurn;
-        this.position = position;
-    }
-
-    public static Zombie createNewZombie(int id, GameRules rules, RandomGenerator random) {
+        Objects.requireNonNull(map, "map");
         Objects.requireNonNull(rules, "rules");
         Objects.requireNonNull(random, "random");
+        Objects.requireNonNull(position, "position");
 
-        return createNewZombie(
-            id,
-            rules,
-            random,
-            rules.map().randomPosition(random)
-        );
-    }
-
-    public static Zombie createNewZombie(int id, GameRules rules, RandomGenerator random, Position spawn) {
-        Objects.requireNonNull(rules, "rules");
-        Objects.requireNonNull(random, "random");
-        Objects.requireNonNull(spawn, "spawn");
-
-        if (!rules.map().contains(spawn)) {
+        if (id <= 0 || !map.contains(position)) {
             throw new IllegalArgumentException(
-                "zombie spawn must be inside the map");
+                "invalid zombie id or spawn position");
         }
 
         return new Zombie(
             id,
-            rules,
-            rules.zombies().initialHealth().sample(random),
-            rules.zombies().movesPerTurn().sample(random),
-            spawn
+            map,
+            position,
+            rules.initialHealth().sample(random),
+            rules.actionsPerTurn().sample(random),
+            rules.damage().sample(random)
         );
     }
 
-    public boolean isAlive() {
-        return health > 0;
-    }
-
-    public void takeDamage(int damage) {
-        if (damage <= 0) {
-            throw new IllegalArgumentException(
-                "damage must be positive");
-        }
-
-        health = Math.max(0, health - damage);
-
-        if (!isAlive()) {
-            moves = 0;
-        }
-    }
-
-    public void move(Position destination) {
-        Objects.requireNonNull(destination, "destination");
-        requireAlive();
-
-        if (moves <= 0) {
-            throw new NoMovesLeftException();
-        }
-
-        if (!rules.map().contains(destination)) {
-            throw new InvalidMoveException(
-                "destination must be inside the map");
-        }
-
-        if (!position.isAdjacent(destination)) {
-            throw new InvalidMoveException(
-                "destination must be adjacent");
-        }
-
-        position = destination;
-        moves--;
-    }
-
-    public void startTurn() {
-        moves = isAlive() ? movesPerTurn : 0;
-    }
-
-    private void requireAlive() {
-        if (!isAlive()) {
-            throw new GameRuleViolationException("zombie is dead");
-        }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public int getMoves() {
-        return moves;
-    }
-
-    public int getMovesPerTurn() {
-        return movesPerTurn;
-    }
-
-    public Position getPosition() {
-        return position;
+    int damage() {
+        return damage;
     }
 }

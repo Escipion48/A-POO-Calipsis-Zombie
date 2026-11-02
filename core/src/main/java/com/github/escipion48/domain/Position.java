@@ -5,14 +5,22 @@ import java.util.Objects;
 public record Position(int x, int y) {
 
     public Position {
-        if (x < 0) throw new IllegalArgumentException("Position coordenates must not be negative");
-        if (y < 0) throw new IllegalArgumentException("Position coordenates must not be negative");
+        if (x < 0 || y < 0) {
+            throw new IllegalArgumentException(
+                "position coordinates must not be negative");
+        }
+    }
+
+    public int distanceTo(Position other) {
+        Objects.requireNonNull(other, "other");
+
+        return Math.max(
+            Math.abs(x - other.x),
+            Math.abs(y - other.y)
+        );
     }
 
     public boolean isAdjacent(Position other) {
-        Objects.requireNonNull(other, "position to check must not be null");
-        int dx = Math.abs(x - other.x);
-        int dy = Math.abs(y - other.y);
-        return Math.max(dx, dy) == 1;
+        return distanceTo(other) == 1;
     }
 }

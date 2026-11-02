@@ -2,21 +2,20 @@ package com.github.escipion48.domain.rules;
 
 import java.util.Objects;
 
-public record GameRules
-    (
+public record GameRules(
     SurvivorRules survivors,
     ZombieRules zombies,
-    MapRules map
-)
-{
+    MapRules map,
+    PositionRange exitPosition
+) {
+
     public GameRules {
         Objects.requireNonNull(survivors, "survivors");
         Objects.requireNonNull(zombies, "zombies");
         Objects.requireNonNull(map, "map");
+        Objects.requireNonNull(exitPosition, "exitPosition");
 
-        if (!map.contains(survivors.survivorsInitialPosition())) {
-            throw new IllegalArgumentException(
-                "survivors initial position must be inside the map");
-        }
+        survivors.initialPosition().requireInside(map);
+        exitPosition.requireInside(map);
     }
 }

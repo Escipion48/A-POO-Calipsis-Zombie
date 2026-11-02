@@ -1,173 +1,72 @@
 package com.github.escipion48.domain;
 
-import com.github.escipion48.domain.exceptions.InvalidMoveException;
-import com.github.escipion48.domain.exceptions.MaxHealthException;
-import com.github.escipion48.domain.exceptions.NoMovesLeftException;
-import com.github.escipion48.domain.exceptions.SurvivorDeadException;
+import com.github.escipion48.domain.exceptions.GameRuleViolationException;
 import com.github.escipion48.domain.items.Item;
-import com.github.escipion48.domain.items.Supply;
-import com.github.escipion48.domain.rules.GameRules;
+import com.github.escipion48.domain.rules.MapRules;
 import com.github.escipion48.domain.rules.SurvivorRules;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class Survivor {
+final class Survivor extends Actor {
 
-    private final int id;
-    private final GameRules rules;
+    private final SurvivorRules rules;
     private final List<Item> items;
-    private int health;
-    private int moves;
-    private Position position;
 
-    private Survivor(
-        int id,
-        GameRules rules,
-        int health,
-        int moves,
-        Position position,
-        List<Item> items
+    Survivor(
+        long id,
+        SurvivorRules rules,
+        MapRules map,
+        Position position
     ) {
-        this.id = id;
-        this.rules = rules;
-        this.health = health;
-        this.moves = moves;
-        this.position = position;
-        this.items = items;
-    }
-
-    public static Survivor createNewSurvivor(int id, GameRules rules) {
-        Objects.requireNonNull(rules, "rules must not be null");
-
-        SurvivorRules survivorRules = rules.survivors();
-
-        return new Survivor(
+        super(
             id,
-            rules,
-            survivorRules.initialSurvivorsHealth(),
-            survivorRules.movesPerTurn(),
-            survivorRules.survivorsInitialPosition(),
-            new ArrayList<>(survivorRules.initialSurvivorsItems())
+            map,
+            position,
+            Objects.requireNonNull(rules, "rules").initialHealth(),
+            rules.actionsPerTurn()
         );
+
+        this.rules = rules;
+        this.items = new ArrayList<>(rules.initialItems());
+
+        startTurn();
     }
 
-    public boolean isAlive() {
-        return health > 0;
-    }
-
-    public void heal(int amount) {
-        if (amount <= 0) {
+    Item itemAt(int index) {
+        if (index < 0 || index >= items.size()) {
             throw new IllegalArgumentException(
-                "heal amount must be positive");
+                "invalid inventory index");
         }
 
-        int maxHealth = rules.survivors().maxSurvivorsHealth();
-
-        if (health == maxHealth) {
-            throw new MaxHealthException();
-        }
-
-        health = (int) Math.min((long) health + amount, maxHealth);
+        return items.get(index);
     }
 
-    public void takeDamage(int damage) {
-        if (damage <= 0) {
-            throw new IllegalArgumentException(
-                "damage must be positive");
-        }
-
-        health = Math.max(0, health - damage);
-
-        if (!isAlive()) {
-            moves = 0;
+    void requireInventorySpace() {
+        if (items.size() >= rules.inventoryCapacity()) {
+            throw new GameRuleViolationException(
+                "inventory is full");
         }
     }
 
-    public void consume(Supply supply) {
-        Objects.requireNonNull(supply, "supply must not be null");
-        requireAlive();
-        requireOwned(supply);
+    void addItem(Item item) {
+        Objects.requireNonNull(item, "item");
+        requireInventorySpace();
 
-        heal(supply.healing());
-        items.remove(supply);
-        moves--;
+        items.add(item);
     }
 
-    public void move(Position destination) {
-        Objects.requireNonNull(
-            destination,
-            "destination must not be null");
-
-        requireAlive();
-
-        if (moves <= 0) {
-            throw new NoMovesLeftException();
-        }
-
-        if (!rules.map().contains(destination)) {
-            throw new InvalidMoveException(
-                "destination must be inside the map");
-        }
-
-        if (!position.isAdjacent(destination)) {
-            throw new InvalidMoveException(
-                "destination must be adjacent");
-        }
-
-        position = destination;
-        moves--;
+    Item removeItem(int index) {
+        itemAt(index);
+        return items.remove(index);
     }
 
-    public void startTurn() {
-        moves = isAlive() ? rules.survivors().movesPerTurn() : 0;
+    int heal(int amount) {
+        return restoreHealth(amount, rules.maxHealth());
     }
 
-    private void requireOwned(Item item) {
-        if (!items.contains(item)) {
-            throw new IllegalArgumentException(
-                "survivor does not have that item");
-        }
-    }
-
-    private void requireAlive() {
-        if (!isAlive()) {
-            throw new SurvivorDeadException();
-        }
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof Survivor survivor)) {
-            return false;
-        }
-
-        return id == survivor.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Integer.hashCode(id);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public int getMoves() {
-        return moves;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public List<Item> getItems() {
+    List<Item> items() {
         return List.copyOf(items);
     }
 }

@@ -1,26 +1,55 @@
 package com.github.escipion48.domain.rules;
 
-import com.github.escipion48.domain.Position;
 import com.github.escipion48.domain.items.Item;
 
 import java.util.List;
 import java.util.Objects;
 
 public record SurvivorRules(
-    int initialSurvivorsHealth,
-    int maxSurvivorsHealth,
-    int movesPerTurn,
-    Position survivorsInitialPosition,
-    List<Item> initialSurvivorsItems
+    int initialHealth,
+    int maxHealth,
+    int actionsPerTurn,
+    int inventoryCapacity,
+    IntRange initialCount,
+    PositionRange initialPosition,
+    List<Item> initialItems
 ) {
+
     public SurvivorRules {
-        if(initialSurvivorsHealth <= 0) throw new IllegalArgumentException("survivors health must be at least 1");
-        if(maxSurvivorsHealth <= 0) throw new IllegalArgumentException("max health must be at least 1");
-        if(initialSurvivorsHealth > maxSurvivorsHealth) throw new IllegalArgumentException("survivors health must not be greater than max health");
-        if(movesPerTurn <= 0) throw new IllegalArgumentException("moves per turn must be at least 1");
-        Objects.requireNonNull(survivorsInitialPosition, "initial position must not be null");
-        Objects.requireNonNull(initialSurvivorsItems, "initial survivor items must not be null");
-        initialSurvivorsItems = List.copyOf(initialSurvivorsItems);
+        if (initialHealth <= 0) {
+            throw new IllegalArgumentException(
+                "initial health must be positive");
+        }
+
+        if (maxHealth < initialHealth) {
+            throw new IllegalArgumentException(
+                "max health must be at least initial health");
+        }
+
+        if (actionsPerTurn <= 0) {
+            throw new IllegalArgumentException(
+                "actions per turn must be positive");
+        }
+
+        if (inventoryCapacity < 0) {
+            throw new IllegalArgumentException(
+                "inventory capacity must not be negative");
+        }
+
+        Objects.requireNonNull(initialCount, "initialCount");
+        Objects.requireNonNull(initialPosition, "initialPosition");
+        Objects.requireNonNull(initialItems, "initialItems");
+
+        if (initialCount.min() < 1) {
+            throw new IllegalArgumentException(
+                "there must be at least one survivor");
+        }
+
+        initialItems = List.copyOf(initialItems);
+
+        if (initialItems.size() > inventoryCapacity) {
+            throw new IllegalArgumentException(
+                "initial items exceed inventory capacity");
+        }
     }
 }
-
